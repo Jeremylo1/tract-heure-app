@@ -8,22 +8,38 @@ const StyledLogo = styled.img`
   width: 110px;
 `
 
-//Style de l'entête.
-const NavContainer = styled.nav`
-  padding: 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`
-
 //Entête pour naviguer entre les pages.
 function Header() {
   return (
-    <NavContainer>
-      <Link to="/">
-        <StyledLogo src={Logo} alt="Logo" />
-      </Link>
-    </NavContainer>
+    <nav className="navbar" role="navigation" aria-label="main navigation">
+      <div className="navbar-brand">
+        <Link to="/" className="navbar-item">
+          <StyledLogo src={Logo} alt="Logo" />
+        </Link>
+      </div>
+
+      <div className="navbar-start">
+        <Link to="/" className="navbar-item">
+          Accueil
+        </Link>
+        <Link to="/inventory" className="navbar-item">
+          Catalogue
+        </Link>
+        <Link to="/calendar" className="navbar-item">
+          Calendrier
+        </Link>
+      </div>
+
+      <div className="navbar-end">
+        <div className="navbar-item">
+          <div className="buttons">
+            <a className="button is-primary">
+              <strong>Se déconnecter</strong>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
   )
 }
 

@@ -1,7 +1,7 @@
 function Footer() {
   return (
     <footer>
-      <p>Footer</p>
+      <p>Ici se trouve le footer.</p>
     </footer>
   )
 }
