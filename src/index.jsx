@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Home from './pages/home'
 import Inventory from './pages/inventory'
 import Calendar from './pages/calendar'
+import Test from './pages/test'
 /*Components*/
 import Header from './components/header'
 import Footer from './components/footer'
@@ -17,6 +18,7 @@ root.render(
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/test" element={<Test />} />
         <Route path="*" element={<Error />} />
       </Routes>
     </Router>
