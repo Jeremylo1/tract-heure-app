@@ -1,4 +1,13 @@
 import { Link } from 'react-router-dom'
+import styled from 'styled-components'
+import 'bulma/css/bulma.min.css'
+
+const StyledLink = styled(Link)`
+  &.button {
+    background-color: #000000;
+    border-color: #00d1b2;
+  }
+`
 
 function Home() {
   return (
@@ -11,9 +20,9 @@ function Home() {
           Vous trouverez ici toutes les informations concernant la vie de la
           commune.
         </p>
-        <Link to="/news" className="home__button">
+        <StyledLink to="/news" className="button is-primary">
           Actualités
-        </Link>
+        </StyledLink>
       </div>
     </div>
   )
