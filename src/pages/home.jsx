@@ -7,6 +7,9 @@ const StyledLink = styled(Link)`
     background-color: #000000;
     border-color: #00d1b2;
   }
+  &.button:hover {
+    background-color: red;
+  }
 `
 
 function Home() {
