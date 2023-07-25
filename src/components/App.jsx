@@ -1,6 +1,6 @@
-import logo from '../assets/logo.svg';
-import 'bulma/css/bulma.min.css';
-import '../styles/App.css';
+import logo from '../assets/logo.svg'
+import 'bulma/css/bulma.min.css'
+import '../styles/App.css'
 
 function App() {
   return (
@@ -20,7 +20,7 @@ function App() {
         </a>
       </header>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
