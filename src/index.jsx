@@ -1,6 +1,6 @@
 /*Librairies*/
 import React from 'react'
-import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom/client'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 /*Pages*/
 import Home from './pages/home'
@@ -16,11 +16,15 @@ const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <React.StrictMode>
     <Router>
+      <Header />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/inventory" element={<Inventory />} />
+        <Route path="/calendar" element={<Calendar />} />
         <Route path="/test" element={<Test />} />
         <Route path="*" element={<Error />} />
       </Routes>
+      <Footer />
     </Router>
   </React.StrictMode>,
 )

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+/*CSS*/
 import styled from 'styled-components'
 import 'bulma/css/bulma.min.css'
 
