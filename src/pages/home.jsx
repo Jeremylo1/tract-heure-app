@@ -15,11 +15,13 @@ const StyledLink = styled(Link)`
 
 function Home() {
   return (
-    <div>
-      <h1>Page d'accueil</h1>
-      <StyledLink to="/inventory" className="button is-primary">
-        Voir inventaire
-      </StyledLink>
+    <div className="home">
+      <div>
+        <h1 className="home__title">Bienvenue sur Tract Heure !</h1>
+        <StyledLink to="/test" className="button is-primary">
+          Tester la connexion à la base de données
+        </StyledLink>
+      </div>
     </div>
   )
 }
