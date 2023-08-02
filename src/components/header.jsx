@@ -33,7 +33,7 @@ function Header() {
       <div className="navbar-end">
         <div className="navbar-item">
           <div className="buttons">
-            <a className="button is-primary">
+            <a className="button is-primary" href="##">
               <strong>Se déconnecter</strong>
             </a>
           </div>
