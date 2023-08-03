@@ -2,19 +2,19 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 
 function Test() {
-  const [title, setTitle] = useState('') // Le titre du todo à ajouter
-  const [selectedUserId, setSelectedUserId] = useState('') // Pour stocker l'ID de l'utilisateur sélectionné
+  const [title, setTitle] = useState('') //Le titre du todo à ajouter.
+  const [selectedUserId, setSelectedUserId] = useState('') //Pour stocker l'ID de l'utilisateur sélectionné.
 
-  // État pour suivre si les données doivent être affichées en format JSON ou non
+  //État pour suivre si les données doivent être affichées en format JSON ou non.
   const [showJSON, setShowJSON] = useState(false)
 
-  // Permet de récupérer les données todos depuis Hasura.
+  //Permet de récupérer les données todos depuis Hasura.
   const { data, isLoading, error, reload } = useFetchHasura(
     'https://champion-tiger-15.hasura.app/v1/graphql',
     `{todos{id title is_public is_completed user_id user { name }}}`,
   )
 
-  // Permet de récupérer les données utilisateurs depuis Hasura.
+  //Permet de récupérer les données utilisateurs depuis Hasura.
   const {
     data: usersData,
     isLoading: usersLoading,
@@ -24,7 +24,7 @@ function Test() {
     `{users{id name}}`,
   )
 
-  // Permet de sélectionner le premier utilisateur par défaut et de réinitialiser l'ID sélectionné si la liste des utilisateurs change.
+  //Permet de sélectionner le premier utilisateur par défaut et de réinitialiser l'ID sélectionné si la liste des utilisateurs change.
   useEffect(() => {
     if (usersData && usersData.users.length > 0) {
       setSelectedUserId(usersData.users[0].id)
