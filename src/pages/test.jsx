@@ -2,8 +2,9 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 
 function Test() {
-  const [title, setTitle] = useState('') //Le titre du todo à ajouter.
-  const [selectedUserId, setSelectedUserId] = useState('') //Pour stocker l'ID de l'utilisateur sélectionné.
+  const [title, setTitle] = useState('') // Le titre du todo à ajouter
+  const [selectedUserId, setSelectedUserId] = useState('') // Pour stocker l'ID de l'utilisateur sélectionné
+  const apiKey = process.env.REACT_APP_HASURA_API_KEY
 
   //État pour suivre si les données doivent être affichées en format JSON ou non.
   const [showJSON, setShowJSON] = useState(false)
@@ -104,7 +105,6 @@ function Test() {
           </div>
         )}
       </div>
-      {/* Le reste du code d'affichage reste le même */}
     </div>
   )
 }
@@ -117,8 +117,7 @@ function useMutationHasura(url) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-hasura-admin-secret':
-            '2rbDMpmAVf8hUXvGy535Gv6xf5U87Ht0zTxLIzukfh3VtqDZRxPUkxZwko3ln5Bo',
+          'x-hasura-admin-secret': process.env.REACT_APP_HASURA_API_KEY,
         },
         body: JSON.stringify({ query: mutation, variables }),
       })
@@ -156,8 +155,7 @@ function useFetchHasura(url, query) {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'x-hasura-admin-secret':
-              '2rbDMpmAVf8hUXvGy535Gv6xf5U87Ht0zTxLIzukfh3VtqDZRxPUkxZwko3ln5Bo',
+            'x-hasura-admin-secret': process.env.REACT_APP_HASURA_API_KEY,
           },
           body: JSON.stringify({ query }),
         })
