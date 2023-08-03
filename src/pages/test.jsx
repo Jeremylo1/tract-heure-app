@@ -34,7 +34,7 @@ function Test() {
   }, [usersData])
 
   //Permet d'envoyer une requête de mutation (INSERT, UPDATE, DELETE) à Hasura.
-  const { sendQueryMutation } = useMutationHasura(
+  const { doMutation } = useMutationHasura(
     'https://champion-tiger-15.hasura.app/v1/graphql',
   )
 
@@ -48,7 +48,7 @@ function Test() {
       }
     `
 
-    await sendQueryMutation(mutation, { title, userId: selectedUserId })
+    await doMutation(mutation, { title, userId: selectedUserId })
     setTitle('')
     setSelectedUserId('') // Réinitialiser l'ID sélectionné
     reload() // Appeler reload pour déclencher un rechargement des todos
@@ -110,7 +110,7 @@ function Test() {
   )
 }
 
-//Définition des types des props.
+// Définition des types des props.
 Test.propTypes = {
   title: PropTypes.string,
   selectedUserId: PropTypes.string,
@@ -121,7 +121,6 @@ Test.propTypes = {
   usersData: PropTypes.object,
   usersLoading: PropTypes.bool,
   usersError: PropTypes.bool,
-  sendQueryMutation: PropTypes.func,
   handleAddTodo: PropTypes.func,
   reload: PropTypes.func,
   doMutation: PropTypes.func,
@@ -146,6 +145,8 @@ function useMutationHasura(url) {
       }
 
       const responseData = await response.json()
+      console.log(response)
+      console.log(responseData)
       if (!responseData.data) {
         throw new Error('Erreur de connexion à la base de données')
       }
