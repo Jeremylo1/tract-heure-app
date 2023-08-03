@@ -2,9 +2,8 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 
 function Test() {
-  const [title, setTitle] = useState('') // Le titre du todo à ajouter
-  const [selectedUserId, setSelectedUserId] = useState('') // Pour stocker l'ID de l'utilisateur sélectionné
-  const apiKey = process.env.REACT_APP_HASURA_API_KEY
+  const [title, setTitle] = useState('') //Le titre du todo à ajouter.
+  const [selectedUserId, setSelectedUserId] = useState('') //Pour stocker l'ID de l'utilisateur sélectionné.
 
   //État pour suivre si les données doivent être affichées en format JSON ou non.
   const [showJSON, setShowJSON] = useState(false)
@@ -32,8 +31,8 @@ function Test() {
     }
   }, [usersData])
 
-  // Permet d'envoyer une requête à Hasura.
-  const { doMutation } = useMutationHasura(
+  //Permet d'envoyer une requête de mutation (INSERT, UPDATE, DELETE) à Hasura.
+  const { sendQueryMutation } = useMutationHasura(
     'https://champion-tiger-15.hasura.app/v1/graphql',
   )
 
@@ -47,7 +46,7 @@ function Test() {
       }
     `
 
-    await doMutation(mutation, { title, userId: selectedUserId })
+    await sendQueryMutation(mutation, { title, userId: selectedUserId })
     setTitle('')
     setSelectedUserId('') // Réinitialiser l'ID sélectionné
     reload() // Appeler reload pour déclencher un rechargement des todos
@@ -137,17 +136,17 @@ function useMutationHasura(url) {
   return { doMutation }
 }
 
-// Hook pour récupérer des données depuis Hasura
+//Hook pour récupérer des données depuis Hasura.
 function useFetchHasura(url, query) {
   const [data, setData] = useState(null)
   const [isLoading, setLoading] = useState(true)
   const [error, setError] = useState(false)
-  const [reloadTimestamp, setReloadTimestamp] = useState(0) // Nouvel état pour le timestamp de rechargement
-  const reload = () => setReloadTimestamp(Date.now()) // Fonction pour déclencher un rechargement
+  const [reloadTimestamp, setReloadTimestamp] = useState(0) //Timestamp de rechargement.
+  const reload = () => setReloadTimestamp(Date.now()) //Fonction pour déclencher un rechargement.
 
   useEffect(() => {
-    if (!url || !query) return // Ne fait rien si l'url ou la requête sont indéfinis
-    setLoading(true)
+    if (!url || !query) return //Aucune action si l'url ou la requête est indéfinie.
+    setLoading(true) //Données en cours de chargement.
 
     async function fetchData() {
       try {
@@ -160,6 +159,7 @@ function useFetchHasura(url, query) {
           body: JSON.stringify({ query }),
         })
 
+        //La base de données Hasura renvoie une erreur si la requête est invalide.
         if (!response.ok) {
           throw new Error('Network response was not ok')
         }
@@ -170,12 +170,11 @@ function useFetchHasura(url, query) {
         console.error(err)
         setError(true)
       } finally {
-        setLoading(false)
+        setLoading(false) //Données plus en cours de chargement.
       }
     }
-
     fetchData()
-  }, [url, query, reloadTimestamp]) // Ajoutez reloadTodos ici
+  }, [url, query, reloadTimestamp]) //Recharge les données si l'url, la requête ou le timestamp de rechargement change.
 
   return { isLoading, data, error, reload }
 }
