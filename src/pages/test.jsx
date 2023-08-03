@@ -13,16 +13,21 @@ function Test() {
   const [showJSON, setShowJSON] = useState(false)
 
   //Permet de récupérer les données todos depuis Hasura.
-  const { data, isLoading, error, reload } = useFetchHasura(
+  const {
+    data: todo_data,
+    isLoading: todo_loading,
+    error: todo_error,
+    reload,
+  } = useFetchHasura(
     'https://champion-tiger-15.hasura.app/v1/graphql',
     `{todos{id title is_public is_completed user_id user { name }}}`,
   )
 
   //Permet de récupérer les données utilisateurs depuis Hasura.
   const {
-    data: usersData, //On crée une variable usersData pour éviter les conflits.
-    isLoading: usersLoading,
-    error: usersError,
+    data: user_data, //On crée une variable user_data pour éviter les conflits.
+    isLoading: user_loading,
+    error: user_error,
   } = useFetchHasura(
     'https://champion-tiger-15.hasura.app/v1/graphql',
     `{users{id name}}`,
@@ -30,10 +35,10 @@ function Test() {
 
   //Permet de sélectionner le premier utilisateur par défaut et de réinitialiser l'ID sélectionné si la liste des utilisateurs change.
   useEffect(() => {
-    if (usersData && usersData.users.length > 0) {
-      setSelectedUserId(usersData.users[0].id)
+    if (user_data && user_data.users.length > 0) {
+      setSelectedUserId(user_data.users[0].id)
     }
-  }, [usersData])
+  }, [user_data])
 
   //Permet d'envoyer une requête de mutation (INSERT, UPDATE, DELETE) à Hasura.
   const { doMutation } = useMutationHasura(
@@ -69,16 +74,16 @@ function Test() {
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Ajouter un todo"
         />
-        {usersLoading ? (
-          <div>Chargement des utilisateurs...</div>
-        ) : usersError ? (
-          <div>Erreur lors du chargement des utilisateurs</div>
+        {user_loading ? (
+          <div>Chargement des utilisateurs ...</div>
+        ) : user_error ? (
+          <div>Erreur lors du chargement des utilisateurs !</div>
         ) : (
           <select
             value={selectedUserId}
             onChange={(e) => setSelectedUserId(e.target.value)}
           >
-            {usersData.users.map((user) => (
+            {user_data.users.map((user) => (
               <option key={user.id} value={user.id}>
                 {user.name}
               </option>
@@ -86,19 +91,19 @@ function Test() {
           </select>
         )}
         <button onClick={addTodo}>Ajouter</button>
-        {error ? (
-          <div>Erreur lors du chargement des données</div>
-        ) : isLoading ? (
-          <div>Chargement...</div>
+        {todo_error ? (
+          <div>Erreur lors du chargement des todos !</div>
+        ) : todo_loading ? (
+          <div>Chargement des todos ...</div>
         ) : showJSON ? (
           // Si showJSON est vrai, affiche les données au format JSON
-          <pre>{JSON.stringify(data, null, 2)}</pre>
+          <pre>{JSON.stringify(todo_data, null, 2)}</pre>
         ) : (
           // Si showJSON est faux, affiche les données formatées
           <div>
             <h2>Todos:</h2>
             <ul>
-              {data.todos.map((todo) => (
+              {todo_data.todos.map((todo) => (
                 <li key={todo.id}>
                   {todo.title} (Par : {todo.user.name}) -{' '}
                   {todo.is_completed ? 'Complété' : 'Non Complété'}
@@ -117,12 +122,12 @@ Test.propTypes = {
   title: PropTypes.string,
   selectedUserId: PropTypes.string,
   showJSON: PropTypes.bool,
-  data: PropTypes.object,
-  isLoading: PropTypes.bool,
-  error: PropTypes.bool,
-  usersData: PropTypes.object,
-  usersLoading: PropTypes.bool,
-  usersError: PropTypes.bool,
+  todo_data: PropTypes.object,
+  todo_loading: PropTypes.bool,
+  todo_error: PropTypes.bool,
+  user_data: PropTypes.object,
+  user_loading: PropTypes.bool,
+  user_error: PropTypes.bool,
   addTodo: PropTypes.func,
   reload: PropTypes.func,
   doMutation: PropTypes.func,
