@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { useState, useEffect } from 'react'
+import { useFetchHasura } from '../utils/react/hooks'
 
 function Test() {
   //Le titre du todo à ajouter.
@@ -160,57 +161,6 @@ function useMutationHasura(url) {
   }
 
   return { doMutation }
-}
-
-//Hook pour récupérer des données depuis Hasura.
-function useFetchHasura(url, query) {
-  const [data, setData] = useState(null)
-  const [isLoading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
-  const [reloadTimestamp, setReloadTimestamp] = useState(0) //Timestamp de rechargement.
-  const reload = () => setReloadTimestamp(Date.now()) //Fonction pour déclencher un rechargement.
-
-  useEffect(() => {
-    if (!url || !query) return //Aucune action si l'url ou la requête est indéfinie.
-    setLoading(true) //Données en cours de chargement.
-
-    async function fetchData() {
-      try {
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-hasura-admin-secret': process.env.REACT_APP_HASURA_API_KEY,
-          },
-          body: JSON.stringify({ query }),
-        })
-
-        //Erreur si on ne reçoit pas de réponse.
-        if (!response.ok) {
-          setError(true)
-          throw new Error('Erreur de connexion à la base de données')
-        }
-
-        const responseData = await response.json()
-
-        //Erreur si on ne reçoit pas de données.
-        if (!responseData.data) {
-          setError(true)
-          throw new Error('Erreur de connexion à la base de données')
-        }
-
-        setData(responseData.data)
-      } catch (err) {
-        console.error(err)
-        setError(true)
-      } finally {
-        setLoading(false) //Données plus en cours de chargement.
-      }
-    }
-    fetchData()
-  }, [url, query, reloadTimestamp]) //Recharge les données si l'url, la requête ou le timestamp de rechargement change.
-
-  return { isLoading, data, error, reload }
 }
 
 export default Test
