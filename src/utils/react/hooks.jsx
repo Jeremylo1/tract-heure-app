@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-//Permet de récupérer (LIRE) des données depuis Hasura.
+//Permet de récupérer (SELECT) des données depuis Hasura.
 export function useFetchHasura(url, query) {
   const [data, setData] = useState(null)
   const [isLoading, setLoading] = useState(true)
@@ -50,3 +50,5 @@ export function useFetchHasura(url, query) {
 
   return { isLoading, data, error, reload }
 }
+
+//Permet d'envoyer une requête de mutation (INSERT, UPDATE, DELETE) à Hasura.

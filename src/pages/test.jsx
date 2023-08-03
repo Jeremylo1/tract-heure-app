@@ -40,7 +40,7 @@ function Test() {
   )
 
   // Permet d'ajouter un todo à la base de données. Le titre du todo est récupéré depuis le state `title`.
-  const handleAddTodo = async () => {
+  const addTodo = async () => {
     const mutation = `
       mutation InsertTodo($title: String!, $userId: String!) {
         insert_todos(objects: [{title: $title, user_id: $userId}]) {
@@ -84,7 +84,7 @@ function Test() {
             ))}
           </select>
         )}
-        <button onClick={handleAddTodo}>Ajouter</button>
+        <button onClick={addTodo}>Ajouter</button>
         {error ? (
           <div>Erreur lors du chargement des données</div>
         ) : isLoading ? (
@@ -122,7 +122,7 @@ Test.propTypes = {
   usersData: PropTypes.object,
   usersLoading: PropTypes.bool,
   usersError: PropTypes.bool,
-  handleAddTodo: PropTypes.func,
+  addTodo: PropTypes.func,
   reload: PropTypes.func,
   doMutation: PropTypes.func,
   fetchData: PropTypes.func,
@@ -130,7 +130,12 @@ Test.propTypes = {
 
 //Hook pour envoyer une requête de mutation à Hasura.
 function useMutationHasura(url) {
+  const [error, setError] = useState(false)
+
+  if (!url) return //Aucune action si l'url est indéfinie.
+
   const doMutation = async (mutation, variables) => {
+    //ici.
     try {
       const response = await fetch(url, {
         method: 'POST',
@@ -138,11 +143,12 @@ function useMutationHasura(url) {
           'Content-Type': 'application/json',
           'x-hasura-admin-secret': process.env.REACT_APP_HASURA_API_KEY,
         },
-        body: JSON.stringify({ query: mutation, variables }),
+        body: JSON.stringify({ query: mutation, variables }), //ici.
       })
 
       //Erreur si on ne reçoit pas de réponse.
       if (!response.ok) {
+        setError(true)
         throw new Error('Erreur de connexion à la base de données')
       }
 
@@ -150,17 +156,18 @@ function useMutationHasura(url) {
 
       //Erreur si on ne reçoit pas de données.
       if (!responseData.data) {
+        setError(true)
         throw new Error('Erreur de connexion à la base de données')
       }
 
       return responseData.data
     } catch (err) {
       console.error(err)
-      throw err
+      setError(true)
     }
   }
 
-  return { doMutation }
+  return { doMutation } //ici : return error.
 }
 
 export default Test
