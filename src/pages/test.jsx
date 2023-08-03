@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { useState, useEffect } from 'react'
 import { useFetchHasura } from '../utils/react/hooks'
+/*import { useMutationHasura } from '../utils/react/hooks'*/
 
 function Test() {
   //Le titre du todo à ajouter.
