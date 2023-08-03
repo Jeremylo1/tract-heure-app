@@ -1,10 +1,12 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { useState, useEffect } from 'react'
 
 function Test() {
-  const [title, setTitle] = useState('') //Le titre du todo à ajouter.
-  const [selectedUserId, setSelectedUserId] = useState('') //Pour stocker l'ID de l'utilisateur sélectionné.
-
+  //Le titre du todo à ajouter.
+  const [title, setTitle] = useState('')
+  //Pour stocker l'ID de l'utilisateur sélectionné.
+  const [selectedUserId, setSelectedUserId] = useState('')
   //État pour suivre si les données doivent être affichées en format JSON ou non.
   const [showJSON, setShowJSON] = useState(false)
 
@@ -16,7 +18,7 @@ function Test() {
 
   //Permet de récupérer les données utilisateurs depuis Hasura.
   const {
-    data: usersData,
+    data: usersData, //On crée une variable usersData pour éviter les conflits.
     isLoading: usersLoading,
     error: usersError,
   } = useFetchHasura(
@@ -106,6 +108,24 @@ function Test() {
       </div>
     </div>
   )
+}
+
+//Définition des types des props.
+Test.propTypes = {
+  title: PropTypes.string,
+  selectedUserId: PropTypes.string,
+  showJSON: PropTypes.bool,
+  data: PropTypes.object,
+  isLoading: PropTypes.bool,
+  error: PropTypes.bool,
+  usersData: PropTypes.object,
+  usersLoading: PropTypes.bool,
+  usersError: PropTypes.bool,
+  sendQueryMutation: PropTypes.func,
+  handleAddTodo: PropTypes.func,
+  reload: PropTypes.func,
+  doMutation: PropTypes.func,
+  fetchData: PropTypes.func,
 }
 
 // Hook pour envoyer une requête de mutation à Hasura
