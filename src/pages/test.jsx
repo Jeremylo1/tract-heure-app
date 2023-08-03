@@ -122,10 +122,14 @@ function useMutationHasura(url) {
       })
 
       if (!response.ok) {
-        throw new Error('Network response was not ok')
+        throw new Error('Erreur de connexion à la base de données')
       }
 
       const responseData = await response.json()
+      if (!responseData.data) {
+        throw new Error('Erreur de connexion à la base de données')
+      }
+
       return responseData.data
     } catch (err) {
       console.error(err)
@@ -161,10 +165,16 @@ function useFetchHasura(url, query) {
 
         //La base de données Hasura renvoie une erreur si la requête est invalide.
         if (!response.ok) {
-          throw new Error('Network response was not ok')
+          setError(true)
+          throw new Error('Erreur de connexion à la base de données')
         }
 
         const responseData = await response.json()
+        if (!responseData.data) {
+          setError(true)
+          throw new Error('Erreur de connexion à la base de données')
+        }
+
         setData(responseData.data)
       } catch (err) {
         console.error(err)
