@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import Logo from '../assets/logo-tract-heure.svg'
+/*import Logo from '../assets/logo-tract-heure.svg'*/
 import LogoTxt from '../assets/logo-texte.png'
 import styled from 'styled-components'
 import 'bulma/css/bulma.min.css'
@@ -22,6 +22,11 @@ const StyledLogoTouch = styled.img`
   display: block;
 `
 
+//Style du logo sur ordinateur.
+const StyledLogoDesktop = styled.img`
+  width: 150px;
+`
+
 //Entête pour naviguer entre les pages selon le type d'appareil.
 function Header() {
   //Fonction pour changer d'onglet.
@@ -37,8 +42,7 @@ function Header() {
         <div>
           <StyledLogoTouch src={LogoTxt} alt="Logo" />
         </div>
-
-        <div class="tabs is-centered">
+        <div className="tabs is-centered">
           <ul>
             <li
               className={activeTab === 'accueil' ? 'is-active' : ''}
@@ -77,33 +81,48 @@ function Header() {
       </div>
 
       <div className="is-hidden-touch">
-        <nav className="navbar" role="navigation" aria-label="main navigation">
+        <nav
+          className="navbar is-light"
+          role="navigation"
+          aria-label="main navigation"
+        >
           <div className="navbar-brand">
             <Link to="/" className="navbar-item">
-              <StyledLogoTouch src={Logo} alt="Logo" />
+              <StyledLogoDesktop src={LogoTxt} alt="Logo" />
             </Link>
           </div>
-          <div className="navbar-start">
+          <div className="navbar-start is-flex-grow-1 is-justify-content-center">
             <Link to="/" className="navbar-item">
-              <Icon path={mdiHome} size={1} color="black" />
               Accueil
             </Link>
             <Link to="/inventory" className="navbar-item">
-              <Icon path={mdiTractorVariant} size={1} color="black" />
               Catalogue
             </Link>
             <Link to="/calendar" className="navbar-item">
-              <Icon path={mdiCalendarMonth} size={1} color="black" />
               Calendrier
             </Link>
           </div>
-
-          <div>
-            <div className="navbar-end">
-              <div className="navbar-item">
-                <div className="button is-primary">
-                  <strong>Se déconnecter</strong>
-                </div>
+          <div className="navbar-end">
+            <div className="navbar-item has-dropdown is-hoverable">
+              <div className="narbar-link is-align-self-center">
+                <Icon path={mdiMenu} size={1} color="black" />
+              </div>
+              <div className="navbar-dropdown is-right">
+                <Link to="/" className="navbar-item">
+                  Profil
+                </Link>
+                <Link to="/" className="navbar-item">
+                  Historique
+                </Link>
+                <hr className="navbar-divider" />
+                <Link to="/" className="navbar-item">
+                  Crédits
+                </Link>
+              </div>
+            </div>
+            <div className="navbar-item">
+              <div className="button is-info">
+                <strong>Se déconnecter</strong>
               </div>
             </div>
           </div>
