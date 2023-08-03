@@ -127,7 +127,7 @@ Test.propTypes = {
   fetchData: PropTypes.func,
 }
 
-// Hook pour envoyer une requête de mutation à Hasura
+//Hook pour envoyer une requête de mutation à Hasura.
 function useMutationHasura(url) {
   const doMutation = async (mutation, variables) => {
     try {
@@ -140,13 +140,14 @@ function useMutationHasura(url) {
         body: JSON.stringify({ query: mutation, variables }),
       })
 
+      //Erreur si on ne reçoit pas de réponse.
       if (!response.ok) {
         throw new Error('Erreur de connexion à la base de données')
       }
 
       const responseData = await response.json()
-      console.log(response)
-      console.log(responseData)
+
+      //Erreur si on ne reçoit pas de données.
       if (!responseData.data) {
         throw new Error('Erreur de connexion à la base de données')
       }
@@ -184,13 +185,15 @@ function useFetchHasura(url, query) {
           body: JSON.stringify({ query }),
         })
 
-        //La base de données Hasura renvoie une erreur si la requête est invalide.
+        //Erreur si on ne reçoit pas de réponse.
         if (!response.ok) {
           setError(true)
           throw new Error('Erreur de connexion à la base de données')
         }
 
         const responseData = await response.json()
+
+        //Erreur si on ne reçoit pas de données.
         if (!responseData.data) {
           setError(true)
           throw new Error('Erreur de connexion à la base de données')
