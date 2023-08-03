@@ -7,6 +7,7 @@ import Home from './pages/home'
 import Inventory from './pages/inventory'
 import Calendar from './pages/calendar'
 import Burger from './pages/burger'
+import Connection from './pages/connection'
 import Test from './pages/test'
 /*Components*/
 import Header from './components/header'
@@ -20,6 +21,7 @@ root.render(
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/connection" element={<Connection />} />
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/others" element={<Burger />} />

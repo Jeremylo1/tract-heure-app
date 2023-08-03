@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react'
 function Test() {
   const [title, setTitle] = useState('') // Le titre du todo à ajouter
   const [selectedUserId, setSelectedUserId] = useState('') // Pour stocker l'ID de l'utilisateur sélectionné
-  const apiKey = process.env.REACT_APP_HASURA_API_KEY
 
   // État pour suivre si les données doivent être affichées en format JSON ou non
   const [showJSON, setShowJSON] = useState(false)
