@@ -15,8 +15,10 @@ export function AuthProvider({ children }) {
   // }
 
   //Fonction pour se connecter.
-  const setLogin = () => {
+
+  const setLogin = (userType) => {
     setIsConnected(true)
+    localStorage.setItem('userType', userType)
     localStorage.setItem('isConnected', 'true')
   }
 
@@ -24,6 +26,7 @@ export function AuthProvider({ children }) {
   const setLogout = () => {
     setIsConnected(false)
     localStorage.removeItem('isConnected')
+    localStorage.removeItem('userType')
   }
 
   return (

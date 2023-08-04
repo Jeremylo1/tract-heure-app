@@ -33,7 +33,8 @@ function Connection() {
         (username === 'admin' && password === 'admin') ||
         (username === 'user' && password === 'user')
       ) {
-        setLogin()
+        setLogin(username)
+        console.log(localStorage.getItem('userType'))
         setError('')
         navigate('/') //Redirection vers la page d'accueil.
       } else {
