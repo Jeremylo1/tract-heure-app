@@ -142,6 +142,9 @@ Test.propTypes = {
   doMutation: PropTypes.func,
   error_mutation: PropTypes.bool,
   addTodo: PropTypes.func,
+  reload: PropTypes.func,
 }
 
 export default Test
+
+/* ================================================== */
