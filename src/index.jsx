@@ -16,6 +16,7 @@ import Error from './components/error'
 /*Context*/
 import { AuthProvider } from './utils/react/context'
 /*CSS*/
+import ProtectedRoute from './components/protectedroute'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
@@ -24,12 +25,24 @@ root.render(
       <AuthProvider>
         <Header />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/test-no-protect" element={<Test />} />
+
+          <Route path="/" element={<ProtectedRoute />}>
+            <Route index element={<Home />} />
+          </Route>
           <Route path="/login" element={<Login />} />
-          <Route path="/inventory" element={<Inventory />} />
-          <Route path="/calendar" element={<Calendar />} />
-          <Route path="/others" element={<Burger />} />
-          <Route path="/test" element={<Test />} />
+          <Route path="/inventory" element={<ProtectedRoute />}>
+            <Route index element={<Inventory />} />
+          </Route>
+          <Route path="/calendar" element={<ProtectedRoute />}>
+            <Route index element={<Calendar />} />
+          </Route>
+          <Route path="/others" element={<ProtectedRoute />}>
+            <Route index element={<Burger />} />
+          </Route>
+          <Route path="/test" element={<ProtectedRoute />}>
+            <Route index element={<Test />} />
+          </Route>
           <Route path="*" element={<Error />} />
         </Routes>
         <Footer />
