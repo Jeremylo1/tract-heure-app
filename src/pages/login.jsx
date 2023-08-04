@@ -34,7 +34,6 @@ function Connection() {
         (username === 'user' && password === 'user')
       ) {
         setLogin(username)
-        console.log(localStorage.getItem('userType'))
         setError('')
         navigate('/') //Redirection vers la page d'accueil.
       } else {

@@ -42,7 +42,6 @@ function Header() {
   //Fonction pour se déconnecter (!!!!!!!!!).
   const handleLogout = () => {
     setLogout()
-    console.log('Déconnexion réussie')
     navigate('/login')
   }
 
