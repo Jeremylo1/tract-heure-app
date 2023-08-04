@@ -1,13 +1,12 @@
 import React from 'react'
 import { useState, useEffect, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-/*import Logo from '../assets/logo-tract-heure.svg'*/
 import LogoTxt from '../assets/logo-texte.png'
 import styled from 'styled-components'
 import 'bulma/css/bulma.min.css'
+/*Context*/
 import { AuthContext } from '../utils/react/context'
-
-//Importation des icônes.
+/*Importation des icônes*/
 import Icon from '@mdi/react'
 import { mdiHome } from '@mdi/js'
 import { mdiTractorVariant } from '@mdi/js'
