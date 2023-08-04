@@ -1,10 +1,11 @@
 import React from 'react'
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect, useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 /*import Logo from '../assets/logo-tract-heure.svg'*/
 import LogoTxt from '../assets/logo-texte.png'
 import styled from 'styled-components'
 import 'bulma/css/bulma.min.css'
+import { AuthContext } from '../utils/react/context'
 
 //Importation des icônes.
 import Icon from '@mdi/react'
@@ -31,8 +32,18 @@ const StyledLogoDesktop = styled.img`
 function Header() {
   //Fonction pour changer d'onglet.
   const [activeTab, setActiveTab] = useState('accueil')
+  const { isConnected, logout } = useContext(AuthContext)
   const handleTabClick = (tabId) => {
     setActiveTab(tabId)
+  }
+
+  const navigate = useNavigate()
+
+  //Fonction pour se déconnecter.
+  const handleLogout = () => {
+    logout()
+    console.log('Déconnexion réussie')
+    navigate('/login')
   }
 
   //Affichage selon le type d'appareil.
@@ -121,9 +132,22 @@ function Header() {
               </div>
             </div>
             <div className="navbar-item">
-              <div className="button is-info">
-                <strong>Se déconnecter</strong>
-              </div>
+              {!isConnected ? (
+                // Si l'utilisateur est déconnecté
+                <div className="buttons is-info">
+                  <Link to="/login" className="button is-primary">
+                    <strong>Connexion</strong>
+                  </Link>
+                </div>
+              ) : (
+                // Si l'utilisateur est connecté, alors le déconnecter
+                // Supprimer le localStorage et rediriger vers la page de connexion
+                <div className="buttons is-info">
+                  <button onClick={handleLogout} className="button is-primary">
+                    <strong>Déconnexion</strong>
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </nav>
