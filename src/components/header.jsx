@@ -1,13 +1,12 @@
 import React from 'react'
 import { useState, useEffect, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-/*import Logo from '../assets/logo-tract-heure.svg'*/
 import LogoTxt from '../assets/logo-texte.png'
 import styled from 'styled-components'
 import 'bulma/css/bulma.min.css'
+/*Context*/
 import { AuthContext } from '../utils/react/context'
-
-//Importation des icônes.
+/*Importation des icônes*/
 import Icon from '@mdi/react'
 import { mdiHome } from '@mdi/js'
 import { mdiTractorVariant } from '@mdi/js'
@@ -32,7 +31,7 @@ const StyledLogoDesktop = styled.img`
 function Header() {
   //Fonction pour changer d'onglet.
   const [activeTab, setActiveTab] = useState('accueil')
-  const { isConnected, logout } = useContext(AuthContext)
+  const { isConnected, setLogout } = useContext(AuthContext)
   const handleTabClick = (tabId) => {
     setActiveTab(tabId)
   }
@@ -41,7 +40,7 @@ function Header() {
 
   //Fonction pour se déconnecter (!!!!!!!!!).
   const handleLogout = () => {
-    logout()
+    setLogout()
     console.log('Déconnexion réussie')
     navigate('/login')
   }
