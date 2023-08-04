@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { useState, useEffect } from 'react'
 import { useFetchHasura } from '../utils/react/hooks'
-/*import { useMutationHasura } from '../utils/react/hooks'*/
+import { useMutationHasura } from '../utils/react/hooks'
 
 function Test() {
   //Le titre du todo à ajouter.
@@ -41,11 +41,12 @@ function Test() {
   }, [user_data])
 
   //Permet d'envoyer une requête de mutation (INSERT, UPDATE, DELETE) à Hasura.
-  const { doMutation } = useMutationHasura(
+  const { doMutation, error_mutation } = useMutationHasura(
     'https://champion-tiger-15.hasura.app/v1/graphql',
   )
 
-  // Permet d'ajouter un todo à la base de données. Le titre du todo est récupéré depuis le state `title`.
+  /*Permet d'ajouter un todo à la base de données. 
+  Le titre du todo est récupéré depuis le state `title`.*/
   const addTodo = async () => {
     const mutation = `
       mutation InsertTodo($title: String!, $userId: String!) {
@@ -55,10 +56,20 @@ function Test() {
       }
     `
 
-    await doMutation(mutation, { title, userId: selectedUserId })
-    setTitle('')
-    setSelectedUserId('') // Réinitialiser l'ID sélectionné
-    reload() // Appeler reload pour déclencher un rechargement des todos
+    try {
+      const responseDataMutation = await doMutation(mutation, {
+        title,
+        userId: selectedUserId,
+      })
+      if (responseDataMutation) {
+        setTitle('')
+        setSelectedUserId('') //Réinitialiser l'ID sélectionné.
+        reload() //Pour déclencher un rechargement des todos.
+      }
+    } catch (err) {
+      console.error(err)
+      //Gérer l'erreur, si nécessaire !!!!!!!
+    }
   }
 
   // Affichage de la page de test avec le formulaire et les données récupérées depuis Hasura.
@@ -128,52 +139,9 @@ Test.propTypes = {
   user_data: PropTypes.object,
   user_loading: PropTypes.bool,
   user_error: PropTypes.bool,
-  addTodo: PropTypes.func,
-  reload: PropTypes.func,
   doMutation: PropTypes.func,
-  fetchData: PropTypes.func,
-}
-
-//Hook pour envoyer une requête de mutation à Hasura.
-function useMutationHasura(url) {
-  const [error, setError] = useState(false)
-
-  if (!url) return //Aucune action si l'url est indéfinie.
-
-  const doMutation = async (mutation, variables) => {
-    //ici.
-    try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-hasura-admin-secret': process.env.REACT_APP_HASURA_API_KEY,
-        },
-        body: JSON.stringify({ query: mutation, variables }), //ici.
-      })
-
-      //Erreur si on ne reçoit pas de réponse.
-      if (!response.ok) {
-        setError(true)
-        throw new Error('Erreur de connexion à la base de données')
-      }
-
-      const responseData = await response.json()
-
-      //Erreur si on ne reçoit pas de données.
-      if (!responseData.data) {
-        setError(true)
-        throw new Error('Erreur de connexion à la base de données')
-      }
-
-      return responseData.data
-    } catch (err) {
-      console.error(err)
-      setError(true)
-    }
-  }
-
-  return { doMutation } //ici : return error.
+  error_mutation: PropTypes.bool,
+  addTodo: PropTypes.func,
 }
 
 export default Test
