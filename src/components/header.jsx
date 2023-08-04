@@ -32,7 +32,7 @@ const StyledLogoDesktop = styled.img`
 function Header() {
   //Fonction pour changer d'onglet.
   const [activeTab, setActiveTab] = useState('accueil')
-  const { isConnected, logout } = useContext(AuthContext)
+  const { isConnected, setLogout } = useContext(AuthContext)
   const handleTabClick = (tabId) => {
     setActiveTab(tabId)
   }
@@ -41,7 +41,7 @@ function Header() {
 
   //Fonction pour se déconnecter (!!!!!!!!!).
   const handleLogout = () => {
-    logout()
+    setLogout()
     console.log('Déconnexion réussie')
     navigate('/login')
   }

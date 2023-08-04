@@ -11,7 +11,7 @@ function Connection() {
   const [connectionTryCount, setConnectionTryCount] = useState(0)
   const [lastTryTimestamp, setLastTryTimestamp] = useState(0)
   const [error, setError] = useState('')
-  const { isConnected, login } = useContext(AuthContext)
+  const { isConnected, setLogin } = useContext(AuthContext)
   const navigate = useNavigate()
 
   //Fonction pour se connecter.
@@ -33,7 +33,8 @@ function Connection() {
         (username === 'admin' && password === 'admin') ||
         (username === 'user' && password === 'user')
       ) {
-        login()
+        setLogin(username)
+        console.log(localStorage.getItem('userType'))
         setError('')
         navigate('/') //Redirection vers la page d'accueil.
       } else {

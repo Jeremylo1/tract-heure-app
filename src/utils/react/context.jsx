@@ -10,18 +10,20 @@ export function AuthProvider({ children }) {
     setIsConnected(connected)
   }, [])
 
-  const login = () => {
+  const setLogin = (userType) => {
     setIsConnected(true)
+    localStorage.setItem('userType', userType)
     localStorage.setItem('isConnected', 'true')
   }
 
-  const logout = () => {
+  const setLogout = () => {
     setIsConnected(false)
     localStorage.removeItem('isConnected')
+    localStorage.removeItem('userType')
   }
 
   return (
-    <AuthContext.Provider value={{ isConnected, login, logout }}>
+    <AuthContext.Provider value={{ isConnected, setLogin, setLogout }}>
       {children}
     </AuthContext.Provider>
   )
