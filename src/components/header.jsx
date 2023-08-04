@@ -39,7 +39,7 @@ function Header() {
 
   const navigate = useNavigate()
 
-  //Fonction pour se déconnecter.
+  //Fonction pour se déconnecter (!!!!!!!!!).
   const handleLogout = () => {
     logout()
     console.log('Déconnexion réussie')
@@ -133,17 +133,16 @@ function Header() {
             </div>
             <div className="navbar-item">
               {!isConnected ? (
-                // Si l'utilisateur est déconnecté
-                <div className="buttons is-info">
-                  <Link to="/login" className="button is-primary">
+                //Si l'utilisateur est déconnecté.
+                <div>
+                  <Link to="/login" className="button is-info">
                     <strong>Connexion</strong>
                   </Link>
                 </div>
               ) : (
-                // Si l'utilisateur est connecté, alors le déconnecter
-                // Supprimer le localStorage et rediriger vers la page de connexion
-                <div className="buttons is-info">
-                  <button onClick={handleLogout} className="button is-primary">
+                //Si l'utilisateur est connecté, alors déconnexion.
+                <div>
+                  <button onClick={handleLogout} className="button is-info">
                     <strong>Déconnexion</strong>
                   </button>
                 </div>

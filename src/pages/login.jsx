@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { AuthContext } from '../utils/react/context'
 import 'bulma/css/bulma.min.css'
 
+//Permet de se connecter à l'application.
 function Connection() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -13,9 +14,11 @@ function Connection() {
   const { isConnected, login } = useContext(AuthContext)
   const navigate = useNavigate()
 
+  //Fonction pour se connecter.
   function tryConnection() {
     const diff = Date.now() - lastTryTimestamp
 
+    //Si l'utilisateur est déjà connecté, si le nombre de tentatives de connexion est supérieur à 3 et si le délai entre les tentatives est inférieur à 3 secondes, alors on affiche un message d'erreur.
     if (isConnected) {
       setError('Vous êtes déjà connecté')
     } else if (connectionTryCount >= 3 && diff <= 3000) {
@@ -25,13 +28,14 @@ function Connection() {
         setConnectionTryCount(0)
       }
 
+      //Si le nom d'utilisateur et le mot de passe sont corrects, alors on se connecte et on est redirigé vers la page d'accueil.
       if (
         (username === 'admin' && password === 'admin') ||
         (username === 'user' && password === 'user')
       ) {
         login()
         setError('')
-        navigate('/') // Rediriger vers la page d'accueil
+        navigate('/') //Redirection vers la page d'accueil.
       } else {
         setError("Nom d'utilisateur ou mot de passe incorrect")
       }
@@ -42,11 +46,11 @@ function Connection() {
   }
 
   const handleSubmit = (e) => {
-    e.preventDefault() // Empêche la soumission par défaut du formulaire
+    e.preventDefault() //Empêche la soumission par défaut du formulaire.
     tryConnection()
   }
 
-  // Page de connexion avec un champ nom d'utilisateur et un champ mot de passe
+  //Page de connexion avec un champ nom d'utilisateur et un champ mot de passe.
   return (
     <div className="container">
       <h1 className="title">Page de connexion</h1>
@@ -78,8 +82,8 @@ function Connection() {
         {error && <p className="help is-danger">{error}</p>}
         <div className="field">
           <div className="control">
-            <button className="button is-primary" type="submit">
-              Se connecter
+            <button className="button is-info" type="submit">
+              Connexion
             </button>
           </div>
         </div>

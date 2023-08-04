@@ -2,6 +2,7 @@ import { useContext } from 'react'
 import { Outlet, Navigate } from 'react-router-dom'
 import { AuthContext } from '../utils/react/context'
 
+//Fonction pour protéger les routes.
 function ProtectedRoute(children) {
   const { isConnected } = useContext(AuthContext)
   console.log('Is connected?', isConnected)
