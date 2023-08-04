@@ -5,9 +5,16 @@ import { AuthContext } from '../utils/react/context'
 //Fonction pour protéger les routes.
 function ProtectedRoute() {
   const { isConnected } = useContext(AuthContext)
-  // retourne Outlet si isConnected est true, sinon retourne Navigate
-  // <Outlet /> permet de faire le rendu des routes enfants (voir dans src\index.jsx)
-  return isConnected ? <Outlet /> : <Navigate to="/login" replace />
+
+  if (window.location.pathname === '/login' && isConnected) {
+    return <Navigate to="/" replace />
+  }
+
+  if (window.location.pathname !== '/login' && !isConnected) {
+    return <Navigate to="/login" replace />
+  }
+
+  return <Outlet />
 }
 
 export default ProtectedRoute
