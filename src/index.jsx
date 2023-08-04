@@ -23,7 +23,9 @@ root.render(
       <AuthProvider>
         <Header />
         <Routes>
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<ProtectedRoute />}>
+            <Route index element={<Login />} />
+          </Route>
           <Route path="/" element={<ProtectedRoute />}>
             <Route index element={<Home />} />
           </Route>
