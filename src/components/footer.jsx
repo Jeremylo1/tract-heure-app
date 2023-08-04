@@ -1,7 +1,11 @@
 function Footer() {
   return (
-    <footer>
-      <p>Ici se trouve le footer.</p>
+    <footer className="footer">
+      <div className="content has-text-centered">
+        <p>
+          <strong>Tract'Heure</strong> par Jérémy Le Toullec et Isa Hérode ☺
+        </p>
+      </div>
     </footer>
   )
 }
