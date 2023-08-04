@@ -17,7 +17,6 @@ import ProtectedRoute from './utils/react/protectedroute'
 /*Context*/
 import { AuthProvider } from './utils/react/context'
 /*Style*/
-import 'bulma/css/bulma.min.css'
 import styled from 'styled-components'
 
 //Style du wrapper.
