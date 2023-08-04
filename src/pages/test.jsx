@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { useState, useEffect } from 'react'
 import { useFetchHasura } from '../utils/react/hooks'
 import { useMutationHasura } from '../utils/react/hooks'
+import TodoList from '../components/todos'
 
 function Test() {
   //Le titre du todo à ajouter.
@@ -74,56 +75,57 @@ function Test() {
 
   // Affichage de la page de test avec le formulaire et les données récupérées depuis Hasura.
   return (
-    <div>
-      <h1>Page de test</h1>
-      <button onClick={() => setShowJSON(!showJSON)}>
+    <div className="container">
+      <h1 className="title">Page de test</h1>
+      <button className="button" onClick={() => setShowJSON(!showJSON)}>
         {showJSON ? 'Afficher au format normal' : 'Afficher au format JSON'}
       </button>
-      <div>
-        <input
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Ajouter un todo"
-        />
-        {user_loading ? (
-          <div>Chargement des utilisateurs ...</div>
-        ) : user_error ? (
-          <div>Erreur lors du chargement des utilisateurs !</div>
-        ) : (
-          <select
-            value={selectedUserId}
-            onChange={(e) => setSelectedUserId(e.target.value)}
-          >
-            {user_data.users.map((user) => (
-              <option key={user.id} value={user.id}>
-                {user.name}
-              </option>
-            ))}
-          </select>
-        )}
-        <button onClick={addTodo}>Ajouter</button>
-        {todo_error ? (
-          <div>Erreur lors du chargement des todos !</div>
-        ) : todo_loading ? (
-          <div>Chargement des todos ...</div>
-        ) : showJSON ? (
-          // Si showJSON est vrai, affiche les données au format JSON
-          <pre>{JSON.stringify(todo_data, null, 2)}</pre>
-        ) : (
-          // Si showJSON est faux, affiche les données formatées
-          <div>
-            <h2>Todos:</h2>
-            <ul>
-              {todo_data.todos.map((todo) => (
-                <li key={todo.id}>
-                  {todo.title} (Par : {todo.user.name}) -{' '}
-                  {todo.is_completed ? 'Complété' : 'Non Complété'}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+      <div className="field">
+        <div className="control">
+          <input
+            className="input"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Ajouter un todo"
+          />
+        </div>
       </div>
+      {user_loading ? (
+        <div>Chargement des utilisateurs ...</div>
+      ) : user_error ? (
+        <div>Erreur lors du chargement des utilisateurs !</div>
+      ) : (
+        <div className="field">
+          <div className="control">
+            <div className="select">
+              <select
+                value={selectedUserId}
+                onChange={(e) => setSelectedUserId(e.target.value)}
+              >
+                {user_data.users.map((user) => (
+                  <option key={user.id} value={user.id}>
+                    {user.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+      )}
+      <div className="field">
+        <div className="control">
+          <button className="button is-primary" onClick={addTodo}>
+            Ajouter
+          </button>
+        </div>
+      </div>
+      {todo_error ? (
+        <div>Erreur lors du chargement des todos !</div>
+      ) : todo_loading ? (
+        <div>Chargement des todos ...</div>
+      ) : (
+        <TodoList todos={todo_data.todos} showJSON={showJSON} /> // Ici
+      )}
     </div>
   )
 }
