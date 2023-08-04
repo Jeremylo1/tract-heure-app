@@ -4,7 +4,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import LogoTxt from '../assets/logo-texte.png'
 import styled from 'styled-components'
 import 'bulma/css/bulma.min.css'
-/*Context*/
 import { AuthContext } from '../utils/react/context'
 /*Importation des icônes*/
 import Icon from '@mdi/react'
@@ -29,9 +28,10 @@ const StyledLogoDesktop = styled.img`
 
 //Entête pour naviguer entre les pages selon le type d'appareil.
 function Header() {
+  const { isConnected, setLogout } = useContext(AuthContext)
+
   //Fonction pour changer d'onglet.
   const [activeTab, setActiveTab] = useState('accueil')
-  const { isConnected, setLogout } = useContext(AuthContext)
   const handleTabClick = (tabId) => {
     setActiveTab(tabId)
   }
