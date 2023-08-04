@@ -13,10 +13,9 @@ import Test from './pages/test'
 import Header from './components/header'
 import Footer from './components/footer'
 import Error from './components/error'
+import ProtectedRoute from './components/protectedroute'
 /*Context*/
 import { AuthProvider } from './utils/react/context'
-/*CSS*/
-import ProtectedRoute from './components/protectedroute'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
