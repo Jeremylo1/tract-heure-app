@@ -25,12 +25,10 @@ root.render(
       <AuthProvider>
         <Header />
         <Routes>
-          <Route path="/test-no-protect" element={<Test />} />
-
+          <Route path="/login" element={<Login />} />
           <Route path="/" element={<ProtectedRoute />}>
             <Route index element={<Home />} />
           </Route>
-          <Route path="/login" element={<Login />} />
           <Route path="/inventory" element={<ProtectedRoute />}>
             <Route index element={<Inventory />} />
           </Route>
