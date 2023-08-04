@@ -49,6 +49,7 @@ function Header() {
   //Affichage selon le type d'appareil.
   return (
     <div>
+      {/* Design pour mobile */}
       <div className="is-hidden-desktop">
         <div>
           <StyledLogoTouch src={LogoTxt} alt="Logo" />
@@ -101,7 +102,7 @@ function Header() {
           </ul>
         </div>
       </div>
-
+      {/* Design pour ordinateur */}
       <div className="is-hidden-touch">
         <nav
           className="navbar is-light"

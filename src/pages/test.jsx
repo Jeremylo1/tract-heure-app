@@ -124,7 +124,7 @@ function Test() {
       ) : todo_loading ? (
         <div>Chargement des todos ...</div>
       ) : (
-        <TodoList todos={todo_data.todos} showJSON={showJSON} /> // Ici
+        <TodoList todos={todo_data.todos} showJSON={showJSON} />
       )}
     </div>
   )
