@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Home from './pages/home'
 import Inventory from './pages/inventory'
 import Calendar from './pages/calendar'
+import Dashboard from './pages/dashboard'
 import Burger from './pages/burger'
 import Login from './pages/login'
 import Test from './pages/test'
@@ -34,6 +35,9 @@ root.render(
           </Route>
           <Route path="/calendar" element={<ProtectedRoute />}>
             <Route index element={<Calendar />} />
+          </Route>
+          <Route path="/admin" element={<ProtectedRoute />}>
+            <Route index element={<Dashboard />} />
           </Route>
           <Route path="/others" element={<ProtectedRoute />}>
             <Route index element={<Burger />} />

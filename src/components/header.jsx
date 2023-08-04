@@ -10,6 +10,7 @@ import Icon from '@mdi/react'
 import { mdiHome } from '@mdi/js'
 import { mdiTractorVariant } from '@mdi/js'
 import { mdiCalendarMonth } from '@mdi/js'
+import { mdiFileEditOutline } from '@mdi/js'
 import { mdiMenu } from '@mdi/js'
 
 //Style du logo sur mobile.
@@ -29,6 +30,7 @@ const StyledLogoDesktop = styled.img`
 //Entête pour naviguer entre les pages selon le type d'appareil.
 function Header() {
   const { isConnected, setLogout } = useContext(AuthContext)
+  const { userType } = useContext(AuthContext)
 
   //Fonction pour changer d'onglet.
   const [activeTab, setActiveTab] = useState('accueil')
@@ -77,6 +79,17 @@ function Header() {
                 <Icon path={mdiCalendarMonth} size={1.5} color="black" />
               </Link>
             </li>
+            {userType === 'admin' ? (
+              //Si admin, on affiche l'onglet "dashboard".
+              <li
+                className={activeTab === 'dashboard' ? 'is-active' : ''}
+                onClick={() => handleTabClick('dashboard')}
+              >
+                <Link to="/admin" className="navbar-item">
+                  <Icon path={mdiFileEditOutline} size={1.5} color="black" />
+                </Link>
+              </li>
+            ) : null}
             <li
               className={activeTab === 'burger' ? 'is-active' : ''}
               onClick={() => handleTabClick('burger')}
@@ -110,6 +123,12 @@ function Header() {
             <Link to="/calendar" className="navbar-item">
               Calendrier
             </Link>
+            {userType === 'admin' ? (
+              //Si admin, on affiche l'onglet "dashboard".
+              <Link to="/admin" className="navbar-item">
+                Administrateur
+              </Link>
+            ) : null}
           </div>
           <div className="navbar-end">
             <div className="navbar-item has-dropdown is-hoverable">
@@ -130,21 +149,14 @@ function Header() {
               </div>
             </div>
             <div className="navbar-item">
-              {!isConnected ? (
-                //Si l'utilisateur est déconnecté.
-                <div>
-                  <Link to="/login" className="button is-info">
-                    <strong>Connexion</strong>
-                  </Link>
-                </div>
-              ) : (
+              {isConnected ? (
                 //Si l'utilisateur est connecté, alors déconnexion.
                 <div>
                   <button onClick={handleLogout} className="button is-info">
                     <strong>Déconnexion</strong>
                   </button>
                 </div>
-              )}
+              ) : null}
             </div>
           </div>
         </nav>
