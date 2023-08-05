@@ -11,6 +11,7 @@ export function useFetchHasura(url, query) {
   useEffect(() => {
     if (!url || !query) return //Aucune action si l'url ou la requête est indéfinie.
     setLoading(true) //Données en cours de chargement.
+    console.log(query) //!DEBUG
 
     async function fetchData() {
       try {
