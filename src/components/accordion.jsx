@@ -33,11 +33,11 @@ const StyledIcon = styled.span`
 
 //Style du panneau.
 const StyledPanel = styled.div`
-  padding: 0 18px;
+  padding: ${(props) => (props.open ? '18px' : '0')};
   background-color: white;
   max-height: ${(props) => (props.open ? '1000px' : '0')};
   overflow: hidden;
-  transition: max-height 0.2s ease-out;
+  transition: max-height;
 `
 
 /*PRENDRE EN COMPTE LE EASE-OUT SI ON VEUT FAIRE UN PANNEAU PLUS COMPLEXE*/
