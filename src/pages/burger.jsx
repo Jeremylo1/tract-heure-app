@@ -5,7 +5,7 @@ function Burger() {
     <div className="columns">
       <div className="column is-8 is-offset-2">
         <h1>Menu Burger - Brouillon Accordéon</h1>
-
+        {/* Exemple d'accordéon à supprimer */}
         <Accordion
           title="Fleur"
           content="En biologie, chez toutes sortes de « plantes à fleur », la fleur

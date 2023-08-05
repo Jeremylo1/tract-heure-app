@@ -94,7 +94,16 @@ function Inventory() {
             ) : machinery_error ? (
               <div>Erreur lors du chargement de la machinerie !</div>
             ) : (
-              <Accordion />
+              <div>
+                {/* On fait un accordéon avec chaque machine trouvée */}
+                {machinery_data[table_name_machinery].map((machinery) => (
+                  <Accordion
+                    key={machinery[column_id]}
+                    title={`${machinery[column_name]} ${machinery[column_model]}`}
+                    content={`Numéro de série : ${machinery[column_serial_number]} - Statut : ${machinery[column_status]}`}
+                  />
+                ))}
+              </div>
             )}
           </div>
         </div>
@@ -130,7 +139,16 @@ function Inventory() {
             ) : machinery_error ? (
               <div>Erreur lors du chargement de la machinerie !</div>
             ) : (
-              <Accordion />
+              <div>
+                {/* On fait un accordéon avec chaque machine trouvée */}
+                {machinery_data[table_name_machinery].map((machinery) => (
+                  <Accordion
+                    key={machinery[column_id]}
+                    title={`${machinery[column_name]} ${machinery[column_model]}`}
+                    content={`Numéro de série : ${machinery[column_serial_number]} - Statut : ${machinery[column_status]}`}
+                  />
+                ))}
+              </div>
             )}
           </div>
         </div>
