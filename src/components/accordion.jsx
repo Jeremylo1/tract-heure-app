@@ -40,8 +40,6 @@ const StyledPanel = styled.div`
   transition: max-height;
 `
 
-/*PRENDRE EN COMPTE LE EASE-OUT SI ON VEUT FAIRE UN PANNEAU PLUS COMPLEXE*/
-
 //Composant de l'accordéon.
 function Accordion({ title, content }) {
   //Pour savoir si le panneau est ouvert ou non.
