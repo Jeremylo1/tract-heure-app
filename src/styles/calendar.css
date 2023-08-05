@@ -1,74 +1,73 @@
 .calendar {
     padding: 20px;
-  }
-  
-  .calendar-grid {
+}
+
+.calendar-grid {
     display: flex;
-    flex-wrap: nowrap; /* Empêche le débordement en s'assurant que les éléments ne se déplacent pas à la ligne suivante */
-  }
-  
-  .timeline {
+    flex-wrap: nowrap;
+    /* Empêche le débordement en s'assurant que les éléments ne se déplacent pas à la ligne suivante */
+}
+
+.timeline {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    width: 80px; /* Augmentez la largeur si nécessaire */
-  }
-  
-  .time-space {
-    height: 70px; /* Ajustez cette valeur en fonction de la hauteur de l'information de la journée */
-  }
+    width: 80px;
+    /* Augmentez la largeur si nécessaire */
+}
 
-  .time-marker {
-    height: 25px; /* 1 hour * 25px */
+.time-space {
+    height: 70px;
+    /* Ajustez cette valeur en fonction de la hauteur de l'information de la journée */
+}
+
+.time-marker {
+    height: 25px;
+    /* 1 hour * 25px */
     display: flex;
     align-items: center;
     justify-content: flex-end;
-  }
-  
-  .days {
+}
+
+.days {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     width: calc(100% - 80px);
-  }
-  
-  .day {
+}
+
+.day {
     border-left: 1px solid #ccc;
     position: relative;
     flex-basis: calc(100% / 7);
     display: flex;
-    flex-direction: column; /* Ajoutez cette ligne pour aligner correctement les éléments à l'intérieur du jour */
-  }
-  
-  .date {
+    flex-direction: column;
+    /* Ajoutez cette ligne pour aligner correctement les éléments à l'intérieur du jour */
+}
+
+.date {
     padding: 10px;
     background-color: #f5f5f5;
-    height: 70px; /* Hauteur fixe pour la date */
-  }
-  
-  .events {
+    height: 70px;
+    /* Hauteur fixe pour la date */
+}
+
+.events {
     position: relative;
-    height: calc(600px); /* 24 hours * 25px */
-  }
-  
-  .event {
+    height: calc(600px);
+    /* 24 hours * 25px */
+}
+
+/* Supprimer le margin-bottom pour les événements sur toute la journée */
+.event.notification.allday {
+    margin-bottom: 0;
+}
+
+.event {
     position: absolute;
     left: 0;
     right: 0;
     border: 1px solid #ccc;
     padding: 5px;
     background-color: #e5e5e5;
-  }
-  
-  /* Exemple de classes pour différents types d'événements */
-  .securities {
-    background-color: #f0c2c2;
-  }
-  
-  .corp-fi {
-    background-color: #c2f0c2;
-  }
-  
-  /* Exemple de classes pour positionner les événements */
-
-  
+}

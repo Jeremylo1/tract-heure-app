@@ -15,9 +15,15 @@ function Calendar() {
       id: 1,
       title: 'Corporate Finance',
       start: new Date(2023, 7, 8, 15), // 8 août 2023, 15h00
-      end: new Date(2023, 7, 10, 18), // 8 août 2023, 18h00
+      end: new Date(2023, 7, 10, 18), // 10 août 2023, 18h00
     },
-    // Ajouter plus d'événements ici
+    {
+      id: 2,
+      title: 'Corporate Finance',
+      start: new Date(2023, 7, 7, 10), //7 août 2023, 10h00
+      end: new Date(2023, 7, 7, 14), // 7 août 2023, 14h00
+    },
+    // Ajouter plus d'événements ici pour les tests
   ]
 
   // Obtenir la date actuelle et la stocker dans l'état
@@ -49,31 +55,49 @@ function Calendar() {
         dateDay: day.charAt(0).toUpperCase() + day.slice(1),
         events: eventsJSON
           .filter((event) => {
-            const eventStart = new Date(event.start)
-            const eventEnd = new Date(event.end)
-            return (
-              (date >= eventStart && date <= eventEnd) ||
-              (date.getFullYear() === eventStart.getFullYear() &&
-                date.getMonth() === eventStart.getMonth() &&
-                date.getDate() === eventStart.getDate())
-            )
+            if (event.allDay) {
+              // Si l'événement dure toute la journée, vérifiez si la date du jour est égale à celle de l'événement
+              return (
+                date.getFullYear() === event.start.getFullYear() &&
+                date.getMonth() === event.start.getMonth() &&
+                date.getDate() === event.start.getDate()
+              )
+            } else {
+              const eventDate = new Date(date)
+              eventDate.setHours(event.start.getHours())
+              eventDate.setMinutes(event.start.getMinutes())
+              return (
+                (date >= event.start && date <= event.end) ||
+                (eventDate >= event.start && eventDate <= event.end)
+              )
+            }
           })
           .map((event) => {
-            // Calcule les valeurs de top et bottom pour le style
-            const startHour =
-              event.allDay || date.getDate() !== event.start.getDate()
-                ? 0
-                : event.start.getHours()
-            const endHour =
-              event.allDay || date.getDate() !== event.end.getDate()
-                ? 24
-                : event.end.getHours()
-            return {
-              ...event,
-              style: {
-                top: `${startHour * 25}px`,
-                bottom: `${(24 - endHour) * 25}px`,
-              },
+            if (event.allDay) {
+              // Pour les événements sur toute la journée, utilisez 0 pour l'heure de début et 23 pour l'heure de fin
+              return {
+                ...event,
+                style: {
+                  top: '0px',
+                  bottom: '0px',
+                },
+              }
+            } else {
+              const startHour =
+                date.getDate() !== event.start.getDate()
+                  ? 0
+                  : event.start.getHours()
+              const endHour =
+                date.getDate() !== event.end.getDate()
+                  ? 24
+                  : event.end.getHours()
+              return {
+                ...event,
+                style: {
+                  top: `${startHour * 25}px`,
+                  bottom: `${(24 - endHour) * 25}px`,
+                },
+              }
             }
           }),
       }
@@ -81,22 +105,7 @@ function Calendar() {
   )
 
   // Obtenir le nom du mois
-  const monthNames = [
-    'Janvier',
-    'Février',
-    'Mars',
-    'Avril',
-    'Mai',
-    'Juin',
-    'Juillet',
-    'Août',
-    'Septembre',
-    'Octobre',
-    'Novembre',
-    'Décembre',
-  ]
-
-  const monthName = monthNames[currentDate.getMonth()]
+  const monthName = currentDate.toLocaleDateString('fr-FR', { month: 'long' })
 
   return (
     <div className="calendar section">
@@ -156,7 +165,9 @@ function Calendar() {
                 <div className="events">
                   {day.events.map((event) => (
                     <div
-                      className={`event notification ${event.type}`}
+                      className={`event notification ${event.type} ${
+                        event.allDay ? 'allday' : ''
+                      }`}
                       key={event.title}
                       style={event.style}
                     >
