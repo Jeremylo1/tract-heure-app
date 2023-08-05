@@ -23,6 +23,12 @@ function Calendar() {
       start: new Date(2023, 7, 7, 10), //7 août 2023, 10h00
       end: new Date(2023, 7, 7, 14), // 7 août 2023, 14h00
     },
+    {
+      id: 3,
+      title: 'France 2',
+      start: new Date(2023, 7, 4, 0),
+      end: new Date(2023, 7, 4, 19),
+    },
     // Ajouter plus d'événements ici pour les tests
   ]
 

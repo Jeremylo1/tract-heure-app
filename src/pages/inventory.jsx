@@ -22,7 +22,7 @@ function Inventory() {
   const column_status = 'statut_id'
   const column_category_id = 'categorie_id'
   //Pour stocker l'ID de la catégorie sélectionnée.
-  const [selectedCategoryId, setSelectedCategoryId] = useState('')
+  const [selectedCategoryId, setSelectedCategoryId] = useState(0)
 
   //Permet de récupérer les catégories depuis Hasura.
   const {
