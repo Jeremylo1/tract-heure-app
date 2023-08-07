@@ -7,6 +7,7 @@ function Calendar() {
     {
       id: 0,
       title: 'Securities Regulation',
+      type: 1,
       allDay: true,
       start: new Date(2023, 7, 7), // 7 août 2023
       end: new Date(2023, 7, 7),
@@ -14,18 +15,21 @@ function Calendar() {
     {
       id: 1,
       title: 'Corporate Finance',
+      type: 2,
       start: new Date(2023, 7, 8, 15), // 8 août 2023, 15h00
       end: new Date(2023, 7, 10, 18), // 10 août 2023, 18h00
     },
     {
       id: 2,
       title: 'Corporate Finance',
+      type: 1,
       start: new Date(2023, 7, 7, 10), //7 août 2023, 10h00
       end: new Date(2023, 7, 7, 14), // 7 août 2023, 14h00
     },
     {
       id: 3,
       title: 'France 2',
+      type: 1,
       start: new Date(2023, 7, 4, 0),
       end: new Date(2023, 7, 4, 19),
     },
@@ -171,7 +175,7 @@ function Calendar() {
                 <div className="events">
                   {day.events.map((event) => (
                     <div
-                      className={`event notification ${event.type} ${
+                      className={`box event ${event.type} ${
                         event.allDay ? 'allday' : ''
                       }`}
                       key={event.title}

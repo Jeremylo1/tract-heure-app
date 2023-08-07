@@ -53,41 +53,43 @@ function Connection() {
   //Page de connexion avec un champ nom d'utilisateur et un champ mot de passe.
   return (
     <div className="container">
-      <h1 className="title">Page de connexion</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="field">
-          <label className="label">Nom d'utilisateur :</label>
-          <div className="control">
-            <input
-              className={`input ${error && 'is-danger'}`}
-              type="text"
-              name="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
+      <div className="box">
+        <h1 className="title">Page de connexion</h1>
+        <form onSubmit={handleSubmit}>
+          <div className="field">
+            <label className="label">Nom d'utilisateur :</label>
+            <div className="control">
+              <input
+                className={`input ${error && 'is-danger'}`}
+                type="text"
+                name="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </div>
           </div>
-        </div>
-        <div className="field">
-          <label className="label">Mot de passe :</label>
-          <div className="control">
-            <input
-              className={`input ${error && 'is-danger'}`}
-              type="password"
-              name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+          <div className="field">
+            <label className="label">Mot de passe :</label>
+            <div className="control">
+              <input
+                className={`input ${error && 'is-danger'}`}
+                type="password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
           </div>
-        </div>
-        {error && <p className="help is-danger">{error}</p>}
-        <div className="field">
-          <div className="control">
-            <button className="button is-info" type="submit">
-              Connexion
-            </button>
+          {error && <p className="help is-danger">{error}</p>}
+          <div className="field">
+            <div className="control">
+              <button className="button is-info" type="submit">
+                Connexion
+              </button>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   )
 }

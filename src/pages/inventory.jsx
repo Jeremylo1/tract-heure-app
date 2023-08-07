@@ -28,6 +28,7 @@ function Inventory() {
 
   //Pour stocker l'ID de la catégorie sélectionnée.
   const [selectedCategoryId, setSelectedCategoryId] = useState(0)
+  const [firstLoading, setFirstLoading] = useState(true)
 
   //Permet de récupérer les catégories depuis Hasura.
   const {
@@ -37,6 +38,7 @@ function Inventory() {
   } = useFetchHasura(
     api_url,
     `{${table_category}{${column_id} ${column_name}}}`,
+    firstLoading,
   )
 
   //Permet de sélectionner la première catégorie par défaut et de réinitialiser l'ID sélectionné si la liste des catégories change.
@@ -58,14 +60,19 @@ function Inventory() {
   } = useFetchHasura(
     api_url,
     `{
-      ${table_machinery}(where: {${column_category_id}: {_eq: ${selectedCategoryId}}}) {
+      ${table_machinery} {
         ${column_name}
         ${column_model}
         ${column_serial_number}
         ${column_status}
       }
     }`,
+    firstLoading,
   )
+
+  useEffect(() => {
+    setFirstLoading(false)
+  }, [])
 
   return (
     <div>
@@ -87,7 +94,10 @@ function Inventory() {
                   onChange={(e) => setSelectedCategoryId(e.target.value)}
                 >
                   {category_data[table_category].map((category) => (
-                    <option key={category.id} value={category.id}>
+                    <option
+                      key={`${category.nom}-${category.id}`}
+                      value={category.id}
+                    >
                       {category.nom}
                     </option>
                   ))}

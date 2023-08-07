@@ -23,7 +23,7 @@ const StyledButton = styled.button`
 //Style de l'icône du bouton de l'accordéon.
 const StyledIcon = styled.span`
   &::before {
-    content: ${(props) => (props.active ? '"\\2212"' : '"\\002B"')};
+    content: ${(props) => (props.open ? '"\\2212"' : '"\\002B"')};
     color: #777;
     font-weight: bold;
     float: right;
@@ -53,7 +53,7 @@ function Accordion({ title, content }) {
     <div>
       <StyledButton onClick={toggleAccordion}>
         {title}
-        <StyledIcon active={isOpen} />
+        <StyledIcon open={isOpen} />
       </StyledButton>
       <StyledPanel open={isOpen}>
         <p>{content}</p>
