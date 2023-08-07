@@ -12,7 +12,7 @@ const StyledTitle = styled.h1`
 
 function Inventory() {
   /*INFOS SUR LA BASE DE DONNÉES (À MODIFIER AU BESOIN)*/
-  //Lien de l'API GraphQL.
+  //Lien de l'API GraphQL à utiliser.
   const api_url = 'https://champion-tiger-15.hasura.app/v1/graphql'
   //Nom des tables à utiliser.
   const table_category = 'machinerie_categorie'
