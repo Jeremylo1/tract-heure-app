@@ -11,16 +11,21 @@ const StyledTitle = styled.h1`
 `
 
 function Inventory() {
-  //Nom des tables à utiliser (À MODIFIER AU BESOIN).
+  /*INFOS SUR LA BASE DE DONNÉES (À MODIFIER AU BESOIN)*/
+  //Lien de l'API GraphQL.
+  const api_url = 'https://champion-tiger-15.hasura.app/v1/graphql'
+  //Nom des tables à utiliser.
   const table_name_category = 'machinerie_categorie'
   const table_name_machinery = 'machinerie'
-  //Nom des colonnes à utiliser (À MODIFIER AU BESOIN).
+  //Nom des colonnes à utiliser.
   const column_id = 'id'
   const column_name = 'nom'
   const column_model = 'modele'
   const column_serial_number = 'num_serie'
   const column_status = 'statut_id'
   const column_category_id = 'categorie_id'
+  /* FIN DES INFOS*/
+
   //Pour stocker l'ID de la catégorie sélectionnée.
   const [selectedCategoryId, setSelectedCategoryId] = useState(0)
 
@@ -30,8 +35,8 @@ function Inventory() {
     isLoading: category_loading,
     error: category_error,
   } = useFetchHasura(
-    'https://champion-tiger-15.hasura.app/v1/graphql',
-    `{${table_name_category}{id nom}}`,
+    api_url,
+    `{${table_name_category}{${column_id} ${column_name}}}`,
   )
 
   //Permet de sélectionner la première catégorie par défaut et de réinitialiser l'ID sélectionné si la liste des catégories change.
@@ -51,7 +56,7 @@ function Inventory() {
     isLoading: machinery_loading,
     error: machinery_error,
   } = useFetchHasura(
-    'https://champion-tiger-15.hasura.app/v1/graphql',
+    api_url,
     `{
       ${table_name_machinery}(where: {${column_category_id}: {_eq: ${selectedCategoryId}}}) {
         ${column_name}
