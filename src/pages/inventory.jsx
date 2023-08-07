@@ -10,6 +10,11 @@ const StyledTitle = styled.h1`
   margin-top: 20px;
 `
 
+//Style du wrapper des accordéons.
+const StyledAccordionWrapper = styled.div`
+  margin-top: 20px;
+`
+
 function Inventory() {
   /*INFOS SUR LA BASE DE DONNÉES (À MODIFIER AU BESOIN)*/
   //Lien de l'API GraphQL à utiliser.
@@ -48,6 +53,15 @@ function Inventory() {
     `{${table_category}{${column_id} ${column_name}}}`,
     firstLoading,
   )
+
+  //Trie les catégories par ordre alphabétique.
+  useEffect(() => {
+    if (category_data && category_data[table_category]) {
+      category_data[table_category].sort((a, b) =>
+        a[column_name].localeCompare(b[column_name]),
+      )
+    }
+  }, [category_data])
 
   //Permet de sélectionner la première catégorie par défaut.
   useEffect(() => {
@@ -137,7 +151,7 @@ function Inventory() {
             ) : machinery_error ? (
               <div>Erreur lors du chargement de la machinerie !</div>
             ) : (
-              <div>
+              <StyledAccordionWrapper>
                 {/* On fait un accordéon avec chaque machine trouvée */}
                 {filteredMachineryData.map((machinery) => (
                   <Accordion
@@ -146,7 +160,7 @@ function Inventory() {
                     content={`Numéro de série : ${machinery[column_serial_number]} - Statut : ${machinery[column_status]}`}
                   />
                 ))}
-              </div>
+              </StyledAccordionWrapper>
             )}
           </div>
         </div>
@@ -187,7 +201,7 @@ function Inventory() {
             ) : machinery_error ? (
               <div>Erreur lors du chargement de la machinerie !</div>
             ) : (
-              <div>
+              <StyledAccordionWrapper>
                 {/* On fait un accordéon avec chaque machine trouvée */}
                 {filteredMachineryData.map((machinery) => (
                   <Accordion
@@ -196,7 +210,7 @@ function Inventory() {
                     content={`Numéro de série : ${machinery[column_serial_number]} - Statut : ${machinery[column_status]}`}
                   />
                 ))}
-              </div>
+              </StyledAccordionWrapper>
             )}
           </div>
         </div>
