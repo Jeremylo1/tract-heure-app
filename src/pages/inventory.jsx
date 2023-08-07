@@ -15,8 +15,8 @@ function Inventory() {
   //Lien de l'API GraphQL.
   const api_url = 'https://champion-tiger-15.hasura.app/v1/graphql'
   //Nom des tables à utiliser.
-  const table_name_category = 'machinerie_categorie'
-  const table_name_machinery = 'machinerie'
+  const table_category = 'machinerie_categorie'
+  const table_machinery = 'machinerie'
   //Nom des colonnes à utiliser.
   const column_id = 'id'
   const column_name = 'nom'
@@ -36,17 +36,17 @@ function Inventory() {
     error: category_error,
   } = useFetchHasura(
     api_url,
-    `{${table_name_category}{${column_id} ${column_name}}}`,
+    `{${table_category}{${column_id} ${column_name}}}`,
   )
 
   //Permet de sélectionner la première catégorie par défaut et de réinitialiser l'ID sélectionné si la liste des catégories change.
   useEffect(() => {
     if (
       category_data &&
-      category_data[table_name_category] &&
-      category_data[table_name_category].length > 0
+      category_data[table_category] &&
+      category_data[table_category].length > 0
     ) {
-      setSelectedCategoryId(category_data[table_name_category][0].id)
+      setSelectedCategoryId(category_data[table_category][0].id)
     }
   }, [category_data])
 
@@ -58,7 +58,7 @@ function Inventory() {
   } = useFetchHasura(
     api_url,
     `{
-      ${table_name_machinery}(where: {${column_category_id}: {_eq: ${selectedCategoryId}}}) {
+      ${table_machinery}(where: {${column_category_id}: {_eq: ${selectedCategoryId}}}) {
         ${column_name}
         ${column_model}
         ${column_serial_number}
@@ -86,7 +86,7 @@ function Inventory() {
                   value={selectedCategoryId}
                   onChange={(e) => setSelectedCategoryId(e.target.value)}
                 >
-                  {category_data[table_name_category].map((category) => (
+                  {category_data[table_category].map((category) => (
                     <option key={category.id} value={category.id}>
                       {category.nom}
                     </option>
@@ -101,7 +101,7 @@ function Inventory() {
             ) : (
               <div>
                 {/* On fait un accordéon avec chaque machine trouvée */}
-                {machinery_data[table_name_machinery].map((machinery) => (
+                {machinery_data[table_machinery].map((machinery) => (
                   <Accordion
                     key={machinery[column_id]}
                     title={`${machinery[column_name]} ${machinery[column_model]}`}
@@ -131,7 +131,7 @@ function Inventory() {
                   value={selectedCategoryId}
                   onChange={(e) => setSelectedCategoryId(e.target.value)}
                 >
-                  {category_data[table_name_category].map((category) => (
+                  {category_data[table_category].map((category) => (
                     <option key={category.id} value={category.id}>
                       {category.nom}
                     </option>
@@ -146,7 +146,7 @@ function Inventory() {
             ) : (
               <div>
                 {/* On fait un accordéon avec chaque machine trouvée */}
-                {machinery_data[table_name_machinery].map((machinery) => (
+                {machinery_data[table_machinery].map((machinery) => (
                   <Accordion
                     key={machinery[column_id]}
                     title={`${machinery[column_name]} ${machinery[column_model]}`}
