@@ -61,7 +61,7 @@
 }
 
 /* Supprimer le margin-bottom pour les événements sur toute la journée */
-.event.notification.allday {
+.event.allday {
     margin-bottom: 0;
 }
 

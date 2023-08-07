@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 
 //Permet de récupérer (SELECT) des données depuis Hasura.
-export function useFetchHasura(url, query) {
+export function useFetchHasura(url, query, stopFetch = false) {
   const [data, setData] = useState(null)
   const [isLoading, setLoading] = useState(true)
   const [error, setError] = useState(false)
@@ -9,9 +9,10 @@ export function useFetchHasura(url, query) {
   const reload = () => setReloadTimestamp(Date.now()) //Fonction pour déclencher un rechargement.
 
   useEffect(() => {
-    if (!url || !query) return //Aucune action si l'url ou la requête est indéfinie.
+    console.log('test1', stopFetch) //!DEBUG
+    if (!url || !query || stopFetch) return //Aucune action si l'url ou la requête est indéfinie ou si le rechargement est désactivé.
     setLoading(true) //Données en cours de chargement.
-    console.log(query) //!DEBUG
+    console.log('test0', query) //!DEBUG
 
     async function fetchData() {
       try {
@@ -47,7 +48,7 @@ export function useFetchHasura(url, query) {
       }
     }
     fetchData()
-  }, [url, query, reloadTimestamp]) //Recharge les données si l'url, la requête ou le timestamp de rechargement change.
+  }, [url, query, stopFetch]) //Recharge les données si l'url, la requête ou le timestamp de rechargement change.
 
   return { isLoading, data, error, reload }
 }
