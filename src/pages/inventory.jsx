@@ -23,14 +23,22 @@ function Inventory() {
   const column_model = 'modele'
   const column_serial_number = 'num_serie'
   const column_status = 'statut_id'
-  const column_category_id = 'categorie_id'
+  const column_category = 'categorie_id'
+  const column_date = 'date_acquisition'
+  const column_price = 'prix_achat'
+  const column_hours = 'heure_utilisation'
+  const column_comment = 'commentaire'
+  const column_location = 'localisation'
   /* FIN DES INFOS*/
 
   //Pour stocker l'ID de la catégorie sélectionnée.
   const [selectedCategoryId, setSelectedCategoryId] = useState(0)
+  //Pour savoir si c'est la première fois qu'on charge les données.
   const [firstLoading, setFirstLoading] = useState(true)
+  //Pour stocker les données filtrées.
+  const [filteredMachineryData, setFilteredMachineryData] = useState([])
 
-  //Permet de récupérer les catégories depuis Hasura.
+  //Permet de récupérer toutes les catégories depuis Hasura.
   const {
     data: category_data,
     isLoading: category_loading,
@@ -41,7 +49,7 @@ function Inventory() {
     firstLoading,
   )
 
-  //Permet de sélectionner la première catégorie par défaut et de réinitialiser l'ID sélectionné si la liste des catégories change.
+  //Permet de sélectionner la première catégorie par défaut.
   useEffect(() => {
     if (
       category_data &&
@@ -52,7 +60,7 @@ function Inventory() {
     }
   }, [category_data])
 
-  //Permet de récupérer les machines liées à la catégorie sélectionnée depuis Hasura.
+  //Permet de récupérer les données de toutes les machines depuis Hasura.
   const {
     data: machinery_data,
     isLoading: machinery_loading,
@@ -62,18 +70,36 @@ function Inventory() {
     `{
       ${table_machinery} {
         ${column_name}
+        ${column_category}
+        ${column_status}
         ${column_model}
         ${column_serial_number}
-        ${column_status}
+        ${column_date}
+        ${column_price}
+        ${column_hours}
+        ${column_comment}
+        ${column_location}
       }
     }`,
     firstLoading,
   )
 
+  //(!!!!!!!!!!!!)
   useEffect(() => {
     setFirstLoading(false)
   }, [])
 
+  //Permet de filtrer les machines (dans "machinery_data") en fonction de la catégorie sélectionnée.
+  useEffect(() => {
+    if (machinery_data && machinery_data.machinerie) {
+      const filteredData = machinery_data.machinerie.filter(
+        (machine) => machine[column_category] === selectedCategoryId,
+      )
+      setFilteredMachineryData(filteredData)
+    }
+  }, [machinery_data, selectedCategoryId])
+
+  //Affichage.
   return (
     <div>
       {/* Design pour ordinateur */}
@@ -91,12 +117,14 @@ function Inventory() {
               <div className="select">
                 <select
                   value={selectedCategoryId}
-                  onChange={(e) => setSelectedCategoryId(e.target.value)}
+                  onChange={(e) =>
+                    setSelectedCategoryId(parseInt(e.target.value))
+                  }
                 >
                   {category_data[table_category].map((category) => (
                     <option
                       key={`${category.nom}-${category.id}`}
-                      value={category.id}
+                      value={parseInt(category.id)}
                     >
                       {category.nom}
                     </option>
@@ -111,7 +139,7 @@ function Inventory() {
             ) : (
               <div>
                 {/* On fait un accordéon avec chaque machine trouvée */}
-                {machinery_data[table_machinery].map((machinery) => (
+                {filteredMachineryData.map((machinery) => (
                   <Accordion
                     key={machinery[column_id]}
                     title={`${machinery[column_name]} ${machinery[column_model]}`}
@@ -139,10 +167,15 @@ function Inventory() {
               <div className="select">
                 <select
                   value={selectedCategoryId}
-                  onChange={(e) => setSelectedCategoryId(e.target.value)}
+                  onChange={(e) =>
+                    setSelectedCategoryId(parseInt(e.target.value))
+                  }
                 >
                   {category_data[table_category].map((category) => (
-                    <option key={category.id} value={category.id}>
+                    <option
+                      key={`${category.nom}-${category.id}`}
+                      value={parseInt(category.id)}
+                    >
                       {category.nom}
                     </option>
                   ))}
@@ -156,7 +189,7 @@ function Inventory() {
             ) : (
               <div>
                 {/* On fait un accordéon avec chaque machine trouvée */}
-                {machinery_data[table_machinery].map((machinery) => (
+                {filteredMachineryData.map((machinery) => (
                   <Accordion
                     key={machinery[column_id]}
                     title={`${machinery[column_name]} ${machinery[column_model]}`}
