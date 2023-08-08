@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import '../styles/calendar.css'
+import Icon from '@mdi/react'
+import { mdiArrowLeftThick } from '@mdi/js'
+import { mdiArrowRightThick } from '@mdi/js'
 
 function Calendar() {
   // Exemple de données JSON pour les événements
@@ -7,6 +10,8 @@ function Calendar() {
     {
       id: 0,
       title: 'Securities Regulation',
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. #0',
       type: 1,
       allDay: true,
       start: new Date(2023, 7, 7), // 7 août 2023
@@ -15,6 +20,8 @@ function Calendar() {
     {
       id: 1,
       title: 'Corporate Finance',
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. #1',
       type: 2,
       start: new Date(2023, 7, 8, 15), // 8 août 2023, 15h00
       end: new Date(2023, 7, 10, 18), // 10 août 2023, 18h00
@@ -22,6 +29,8 @@ function Calendar() {
     {
       id: 2,
       title: 'Corporate Finance',
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. #2',
       type: 1,
       start: new Date(2023, 7, 7, 10), //7 août 2023, 10h00
       end: new Date(2023, 7, 7, 14), // 7 août 2023, 14h00
@@ -29,6 +38,8 @@ function Calendar() {
     {
       id: 3,
       title: 'France 2',
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. #3',
       type: 1,
       start: new Date(2023, 7, 4, 0),
       end: new Date(2023, 7, 4, 19),
@@ -69,7 +80,7 @@ function Calendar() {
   const daysOfWeek = ['lun', 'mar', 'mer', 'jeu', 'ven', 'sam', 'dim'].map(
     (day, index) => {
       const date = new Date(currentDate)
-      const dayOffset = (index - currentDate.getDay() + 1 + 7) % 7 // Correction pour considérer le lundi comme premier jour
+      const dayOffset = (index - (currentDate.getDay() || 7) + 1) % 7
       date.setDate(currentDate.getDate() + dayOffset)
 
       return {
@@ -146,6 +157,20 @@ function Calendar() {
     }
   }, [])
 
+  const [isModalOpen, setModalOpen] = useState(false) // useState pour ouvrir/fermer la modale
+  const [modalEvent, setModalEvent] = useState(null) // useState pour stocker l'événement sélectionné dans la modale
+
+  // Ouvrir la modale et stocker l'événement sélectionné
+  const openModal = (event) => {
+    setModalEvent(event)
+    setModalOpen(true)
+  }
+
+  // Fermer la modale
+  const closeModal = () => {
+    setModalOpen(false)
+  }
+
   // Obtenir le nom du mois
   const monthName = currentDate.toLocaleDateString('fr-FR', { month: 'long' })
 
@@ -154,13 +179,13 @@ function Calendar() {
       <div className="container">
         <div className="header level calendar-header">
           <button onClick={prevPeriod} className="button is-link">
-            Previous Week
+            <Icon path={mdiArrowLeftThick} size={1} />
           </button>
           <h2 className="title is-4 level-item">
             {monthName} {currentDate.getFullYear()}
           </h2>
           <button onClick={nextPeriod} className="button is-link">
-            Next Week
+            <Icon path={mdiArrowRightThick} size={1} />
           </button>
         </div>
         <div className="calendar-grid">
@@ -214,6 +239,7 @@ function Calendar() {
                           }`}
                           key={event.title}
                           style={event.style}
+                          onClick={() => openModal(event)}
                         >
                           {event.showTitle && (
                             <p className="title is-6">{event.title}</p>
@@ -231,6 +257,31 @@ function Calendar() {
           </div>
         </div>
       </div>
+      {isModalOpen && (
+        <div className="modal is-active">
+          <div className="modal-background" onClick={closeModal}></div>
+          <div className="modal-card">
+            <header className="modal-card-head">
+              <p className="modal-card-title">{modalEvent?.title}</p>
+              <button
+                className="delete"
+                aria-label="close"
+                onClick={closeModal}
+              ></button>
+            </header>
+            <section className="modal-card-body">
+              <h2>Description:</h2>
+              <p>{modalEvent?.description}</p>
+              <h3>Type:</h3>
+              <p>{eventType(modalEvent?.type)}</p>
+              <h3>Date de début:</h3>
+              <p>{modalEvent?.start.toLocaleString()}</p>
+              <h3>Date de fin:</h3>
+              <p>{modalEvent?.end.toLocaleString()}</p>
+            </section>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
