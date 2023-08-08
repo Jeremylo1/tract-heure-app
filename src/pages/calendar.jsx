@@ -36,6 +36,18 @@ function Calendar() {
     // Ajouter plus d'événements ici pour les tests
   ]
 
+  // Convert events type to string ( 1 = réservation, 2 = maintenance)
+  const eventType = (type) => {
+    switch (type) {
+      case 1:
+        return 'event-reservation'
+      case 2:
+        return 'event-maintenance'
+      default:
+        return 'event-reservation'
+    }
+  }
+
   // Obtenir la date actuelle et la stocker dans l'état
   const [currentDate, setCurrentDate] = useState(new Date())
 
@@ -83,10 +95,15 @@ function Calendar() {
             }
           })
           .map((event) => {
+            const showTitle =
+              date.getDate() === event.start.getDate() &&
+              date.getMonth() === event.start.getMonth() &&
+              date.getFullYear() === event.start.getFullYear()
             if (event.allDay) {
               // Pour les événements sur toute la journée, utilisez 0 pour l'heure de début et 23 pour l'heure de fin
               return {
                 ...event,
+                showTitle,
                 style: {
                   top: '0px',
                   bottom: '0px',
@@ -103,6 +120,7 @@ function Calendar() {
                   : event.end.getHours()
               return {
                 ...event,
+                showTitle,
                 style: {
                   top: `${startHour * 25}px`,
                   bottom: `${(24 - endHour) * 25}px`,
@@ -121,13 +139,13 @@ function Calendar() {
     <div className="calendar section">
       <div className="container">
         <div className="header level">
-          <button onClick={prevWeek} className="button is-info">
+          <button onClick={prevWeek} className="button is-link">
             Previous Week
           </button>
           <h2 className="title is-4 level-item">
             {monthName} {currentDate.getFullYear()}
           </h2>
-          <button onClick={nextWeek} className="button is-info">
+          <button onClick={nextWeek} className="button is-link">
             Next Week
           </button>
         </div>
@@ -175,16 +193,15 @@ function Calendar() {
                 <div className="events">
                   {day.events.map((event) => (
                     <div
-                      className={`box event ${event.type} ${
+                      className={`box event ${eventType(event.type)} ${
                         event.allDay ? 'allday' : ''
                       }`}
                       key={event.title}
                       style={event.style}
                     >
-                      <p className="title is-6">{event.title}</p>
-                      <p className="time subtitle is-7">
-                        {event.start.getHours()}h - {event.end.getHours()}h
-                      </p>
+                      {event.showTitle && (
+                        <p className="title is-6">{event.title}</p>
+                      )}
                     </div>
                   ))}
                 </div>

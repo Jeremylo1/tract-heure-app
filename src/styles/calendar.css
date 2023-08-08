@@ -23,11 +23,13 @@
 }
 
 .time-marker {
-    height: 25px;
-    /* 1 hour * 25px */
+    height: 30px;
+    /* 1 hour * 30px */
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    border-bottom: 1px dashed #ccc;
+    /* Tracer une ligne discontinue */
 }
 
 .days {
@@ -54,10 +56,33 @@
     /* Hauteur fixe pour la date */
 }
 
+.hour-boxes {
+    display: flex;
+    flex-direction: column;
+}
+
+.hour-box {
+    height: 40px;
+    border: 1px solid #ccc;
+}
+
+.hours {
+    display: flex;
+    flex-direction: column;
+}
+
+.hour {
+    height: 40px;
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .events {
     position: relative;
-    height: calc(600px);
-    /* 24 hours * 25px */
+    height: calc(720px);
+    /* 24 hours * 30px */
 }
 
 /* Supprimer le margin-bottom pour les événements sur toute la journée */
@@ -69,7 +94,13 @@
     position: absolute;
     left: 0;
     right: 0;
-    border: 1px solid #ccc;
     padding: 5px;
-    background-color: #e5e5e5;
+}
+
+.event-reservation {
+    background-color: gold;
+}
+
+.event-maintenance {
+    background-color: orange
 }
