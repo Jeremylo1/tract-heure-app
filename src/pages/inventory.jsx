@@ -210,7 +210,7 @@ function Inventory() {
   //Affichage.
   return (
     <div>
-      {/* Design pour ordinateur */}
+      {/* DESIGN POUR ORDINATEUR */}
       <div className="is-hidden-touch">
         <div className="columns">
           <div className="column is-8 is-offset-2">
@@ -244,22 +244,29 @@ function Inventory() {
               <div>Erreur lors du chargement de la machinerie !</div>
             ) : (
               <StyledAccordionWrapper>
-                {/* On fait un accordéon avec chaque machine trouvée */}
-                {filteredMachineryData.map((machinery) => (
-                  <Accordion
-                    key={machinery[column_id]}
-                    title={`${machinery[column_name]}`}
-                    content={panelContent(machinery)}
-                    others={''}
-                  />
-                ))}
+                {filteredMachineryData.length > 0 ? (
+                  /*S'il y a des machines à afficher, on fait un accordéon avec chaque machine trouvée.*/
+                  filteredMachineryData.map((machinery) => (
+                    <Accordion
+                      key={machinery[column_id]}
+                      title={`${machinery[column_name]}`}
+                      content={panelContent(machinery)}
+                      others={''}
+                    />
+                  ))
+                ) : (
+                  /*Si rien a afficher.*/
+                  <div>
+                    <i>Aucune machine trouvée.</i>
+                  </div>
+                )}
               </StyledAccordionWrapper>
             )}
           </div>
         </div>
       </div>
 
-      {/* Design pour mobile */}
+      {/* DESIGN POUR MOBILE */}
       <div className="is-hidden-desktop">
         <div className="columns is-mobile">
           <div className="column is-10 is-offset-1">
@@ -295,15 +302,22 @@ function Inventory() {
               <div>Erreur lors du chargement de la machinerie !</div>
             ) : (
               <StyledAccordionWrapper>
-                {/* On fait un accordéon avec chaque machine trouvée */}
-                {filteredMachineryData.map((machinery) => (
-                  <Accordion
-                    key={machinery[column_id]}
-                    title={`${machinery[column_name]}`}
-                    content={panelContent(machinery)}
-                    others={''}
-                  />
-                ))}
+                {filteredMachineryData.length > 0 ? (
+                  /*S'il y a des machines à afficher, on fait un accordéon avec chaque machine trouvée.*/
+                  filteredMachineryData.map((machinery) => (
+                    <Accordion
+                      key={machinery[column_id]}
+                      title={`${machinery[column_name]}`}
+                      content={panelContent(machinery)}
+                      others={''}
+                    />
+                  ))
+                ) : (
+                  /*Si rien a afficher.*/
+                  <div>
+                    <i>Aucune machine trouvée.</i>
+                  </div>
+                )}
               </StyledAccordionWrapper>
             )}
           </div>

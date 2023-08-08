@@ -1,17 +1,7 @@
 import { Link } from 'react-router-dom'
 /*CSS*/
-import styled from 'styled-components'
+/*import styled from 'styled-components'*/
 import 'bulma/css/bulma.min.css'
-
-const StyledLink = styled(Link)`
-  &.button {
-    background-color: #000000;
-    border-color: #00d1b2;
-  }
-  &.button:hover {
-    background-color: red;
-  }
-`
 
 function Home() {
   return (
