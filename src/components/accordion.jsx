@@ -41,7 +41,7 @@ const StyledPanel = styled.div`
 `
 
 //Composant de l'accordéon.
-function Accordion({ title, content }) {
+function Accordion({ title, content, others }) {
   //Pour savoir si le panneau est ouvert ou non.
   const [isOpen, setIsOpen] = useState(false)
   //Pour ouvrir ou fermer le panneau.
@@ -56,7 +56,8 @@ function Accordion({ title, content }) {
         <StyledIcon open={isOpen} />
       </StyledButton>
       <StyledPanel open={isOpen}>
-        <p>{content}</p>
+        <div>{content}</div>
+        <div>{others}</div>
       </StyledPanel>
     </div>
   )
