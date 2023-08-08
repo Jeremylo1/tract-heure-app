@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import { useFetchHasura } from '../utils/react/hooks'
 import Accordion from '../components/accordion'
 import styled from 'styled-components'
+import { formatDate } from '../utils/reusable/functions'
+import '../styles/inventory.css'
 
 //Style du titre.
 const StyledTitle = styled.h1`
@@ -13,6 +15,20 @@ const StyledTitle = styled.h1`
 //Style du wrapper des accordéons.
 const StyledAccordionWrapper = styled.div`
   margin-top: 20px;
+`
+
+//Style des titres de la liste.
+const StyledText = styled.span`
+  color: #2daf38;
+`
+
+//Style d'un élément de la liste.
+const StyledListButton = styled.li`
+  &::before {
+    content: '•';
+    padding-right: 8px;
+    color: grey;
+  }
 `
 
 function Inventory() {
@@ -110,7 +126,7 @@ function Inventory() {
     firstLoading,
   )
 
-  //(!!!!!!!!!!!!)
+  //(À EXPLIQUER !!!!!!!!!!!!)
   useEffect(() => {
     setFirstLoading(false)
   }, [])
@@ -125,6 +141,72 @@ function Inventory() {
     }
   }, [machinery_data, selectedCategoryId])
 
+  //Permet d'afficher le contenu d'un panneau d'accordéon (infos de la machine).
+  function panelContent(machinery) {
+    return (
+      <ul>
+        {machinery[column_model] ? (
+          <StyledListButton>
+            <StyledText>Numéro de modèle :</StyledText>{' '}
+            {`${machinery[column_model]}`}
+          </StyledListButton>
+        ) : null}
+        {machinery[column_serial_number] ? (
+          <StyledListButton>
+            <StyledText>Numéro de série :</StyledText>{' '}
+            {`${machinery[column_serial_number]}`}
+          </StyledListButton>
+        ) : null}
+        <StyledListButton>
+          {status_loading ? (
+            <i>Chargement du statut ...</i>
+          ) : status_error ? (
+            <i>Statut indisponible.</i>
+          ) : (
+            <span>
+              <StyledText>Statut :</StyledText>{' '}
+              {`${
+                status_data[table_status].find(
+                  (status) => status[column_id] === machinery[column_status],
+                )[column_name]
+              }`}
+            </span>
+          )}
+        </StyledListButton>
+        {machinery[column_hours] ? (
+          <StyledListButton>
+            <StyledText>Utilisation accumulée :</StyledText>{' '}
+            {`${machinery[column_hours]} heures`}
+          </StyledListButton>
+        ) : null}
+        {machinery[column_date] ? (
+          <StyledListButton>
+            <StyledText>Date d'acquisition :</StyledText>{' '}
+            {`${formatDate(machinery[column_date])}`}
+          </StyledListButton>
+        ) : null}
+        {machinery[column_price] ? (
+          <StyledListButton>
+            <StyledText>Prix d'achat :</StyledText>{' '}
+            {`${machinery[column_price]}$`}
+          </StyledListButton>
+        ) : null}
+        {machinery[column_comment] ? (
+          <StyledListButton>
+            <StyledText>Commentaire :</StyledText>{' '}
+            {`${machinery[column_comment]}`}
+          </StyledListButton>
+        ) : null}
+        {machinery[column_location] ? (
+          <StyledListButton>
+            <StyledText>Localisation :</StyledText>{' '}
+            {`${machinery[column_location]}`}
+          </StyledListButton>
+        ) : null}
+      </ul>
+    )
+  }
+
   //Affichage.
   return (
     <div>
@@ -132,9 +214,7 @@ function Inventory() {
       <div className="is-hidden-touch">
         <div className="columns">
           <div className="column is-8 is-offset-2">
-            <StyledTitle className="title">
-              Machinerie et équipements agricoles
-            </StyledTitle>
+            <StyledTitle className="title">Machinerie agricole</StyledTitle>
             {category_loading ? (
               <div>Chargement des catégories ...</div>
             ) : category_error ? (
@@ -168,31 +248,9 @@ function Inventory() {
                 {filteredMachineryData.map((machinery) => (
                   <Accordion
                     key={machinery[column_id]}
-                    title={`${machinery[column_name]} ${machinery[column_model]}`}
-                    content={
-                      <ul>
-                        <li>
-                          {`Numéro de série : ${machinery[column_serial_number]}`}
-                        </li>
-                        <li>
-                          {status_loading ? (
-                            <div>Chargement du statut ...</div>
-                          ) : status_error ? (
-                            <div>Statut indisponible.</div>
-                          ) : (
-                            <div>
-                              {`Statut : ${
-                                status_data[table_status].find(
-                                  (status) =>
-                                    status[column_id] ===
-                                    machinery[column_status],
-                                )[column_name]
-                              }`}
-                            </div>
-                          )}
-                        </li>
-                      </ul>
-                    }
+                    title={`${machinery[column_name]}`}
+                    content={panelContent(machinery)}
+                    others={''}
                   />
                 ))}
               </StyledAccordionWrapper>
@@ -241,8 +299,9 @@ function Inventory() {
                 {filteredMachineryData.map((machinery) => (
                   <Accordion
                     key={machinery[column_id]}
-                    title={`${machinery[column_name]} ${machinery[column_model]}`}
-                    content={`Numéro de série : ${machinery[column_serial_number]} - Statut : ${machinery[column_status]}`}
+                    title={`${machinery[column_name]}`}
+                    content={panelContent(machinery)}
+                    others={''}
                   />
                 ))}
               </StyledAccordionWrapper>
