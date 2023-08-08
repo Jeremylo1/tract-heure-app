@@ -104,3 +104,19 @@
 .event-maintenance {
     background-color: orange
 }
+
+@media only screen and (max-width: 768px) {
+
+    .timeline,
+    .days {
+        height: auto;
+    }
+
+    .day {
+        flex-basis: 100%;
+    }
+
+    .level.calendar-header {
+        display: flex;
+    }
+}
