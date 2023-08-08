@@ -51,17 +51,17 @@ function Calendar() {
   // Obtenir la date actuelle et la stocker dans l'état
   const [currentDate, setCurrentDate] = useState(new Date())
 
-  // Fonction pour passer à la semaine suivante
-  const nextWeek = () => {
+  // Fonction pour passer à la semaine/jour suivant
+  const nextPeriod = () => {
     const newDate = new Date(currentDate)
-    newDate.setDate(newDate.getDate() + 7)
+    newDate.setDate(newDate.getDate() + (isMobile ? 1 : 7))
     setCurrentDate(newDate)
   }
 
-  // Fonction pour passer à la semaine précédente
-  const prevWeek = () => {
+  // Fonction pour passer à la semaine/jour précédente
+  const prevPeriod = () => {
     const newDate = new Date(currentDate)
-    newDate.setDate(newDate.getDate() - 7)
+    newDate.setDate(newDate.getDate() - (isMobile ? 1 : 7))
     setCurrentDate(newDate)
   }
 
@@ -69,7 +69,8 @@ function Calendar() {
   const daysOfWeek = ['lun', 'mar', 'mer', 'jeu', 'ven', 'sam', 'dim'].map(
     (day, index) => {
       const date = new Date(currentDate)
-      date.setDate(currentDate.getDate() - currentDate.getDay() + (index + 1))
+      const dayOffset = (index - currentDate.getDay() + 1 + 7) % 7 // Correction pour considérer le lundi comme premier jour
+      date.setDate(currentDate.getDate() + dayOffset)
 
       return {
         day,
@@ -132,20 +133,33 @@ function Calendar() {
     },
   )
 
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
+
+  // Ecouteur pour le redimensionnement de la fenêtre
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+
   // Obtenir le nom du mois
   const monthName = currentDate.toLocaleDateString('fr-FR', { month: 'long' })
 
   return (
     <div className="calendar section">
       <div className="container">
-        <div className="header level">
-          <button onClick={prevWeek} className="button is-link">
+        <div className="header level calendar-header">
+          <button onClick={prevPeriod} className="button is-link">
             Previous Week
           </button>
           <h2 className="title is-4 level-item">
             {monthName} {currentDate.getFullYear()}
           </h2>
-          <button onClick={nextWeek} className="button is-link">
+          <button onClick={nextPeriod} className="button is-link">
             Next Week
           </button>
         </div>
@@ -184,29 +198,36 @@ function Calendar() {
             ))}
           </div>
           <div className="days">
-            {daysOfWeek.map((day) => (
-              <div className={`day column ${day.day}`} key={day.day}>
-                <div className="date has-text-centered">
-                  <p className="date-num title is-5">{day.dateNum}</p>
-                  <p className="date-day subtitle is-6">{day.dateDay}</p>
-                </div>
-                <div className="events">
-                  {day.events.map((event) => (
-                    <div
-                      className={`box event ${eventType(event.type)} ${
-                        event.allDay ? 'allday' : ''
-                      }`}
-                      key={event.title}
-                      style={event.style}
-                    >
-                      {event.showTitle && (
-                        <p className="title is-6">{event.title}</p>
-                      )}
+            {daysOfWeek.map(
+              (day, index) =>
+                (!isMobile || index === (currentDate.getDay() - 1 + 7) % 7) && (
+                  <div className={`day column ${day.day}`} key={day.day}>
+                    <div className="date has-text-centered">
+                      <p className="date-num title is-5">{day.dateNum}</p>
+                      <p className="date-day subtitle is-6">{day.dateDay}</p>
                     </div>
-                  ))}
-                </div>
-              </div>
-            ))}
+                    <div className="events">
+                      {day.events.map((event) => (
+                        <div
+                          className={`box event ${eventType(event.type)} ${
+                            event.allDay ? 'allday' : ''
+                          }`}
+                          key={event.title}
+                          style={event.style}
+                        >
+                          {event.showTitle && (
+                            <p className="title is-6">{event.title}</p>
+                          )}
+                          {/* Si c'est mobile afficher le titre pour chaque journée */}
+                          {isMobile && !event.showTitle && (
+                            <p className="title is-6">{event.title}</p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ),
+            )}
           </div>
         </div>
       </div>
