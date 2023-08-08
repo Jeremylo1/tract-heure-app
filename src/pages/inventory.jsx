@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useFetchHasura } from '../utils/react/hooks'
 import Accordion from '../components/accordion'
 import styled from 'styled-components'
+import { formatDate } from '../utils/reusable/functions'
 import '../styles/inventory.css'
 
 //Style du titre.
@@ -204,12 +205,6 @@ function Inventory() {
         ) : null}
       </ul>
     )
-  }
-
-  //Permet de formater une date. (RECULE D'UN JOUR POUR UNE RAISON INCONNUE !!!!!!!!)
-  function formatDate(dateString) {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' }
-    return new Date(dateString).toLocaleDateString(undefined, options)
   }
 
   //Affichage.
