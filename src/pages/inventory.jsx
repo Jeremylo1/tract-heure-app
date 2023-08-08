@@ -22,6 +22,7 @@ function Inventory() {
   //Nom des tables à utiliser.
   const table_category = 'machinerie_categorie'
   const table_machinery = 'machinerie'
+  const table_status = 'machinerie_statut'
   //Nom des colonnes à utiliser.
   const column_id = 'id'
   const column_name = 'nom'
@@ -43,7 +44,7 @@ function Inventory() {
   //Pour stocker les données filtrées.
   const [filteredMachineryData, setFilteredMachineryData] = useState([])
 
-  //Permet de récupérer toutes les catégories depuis Hasura.
+  //Permet de récupérer la liste des catégories depuis Hasura.
   const {
     data: category_data,
     isLoading: category_loading,
@@ -73,6 +74,17 @@ function Inventory() {
       setSelectedCategoryId(category_data[table_category][0].id)
     }
   }, [category_data])
+
+  //Permet de récupérer la liste des statuts depuis Hasura.
+  const {
+    data: status_data,
+    isLoading: status_loading,
+    error: status_error,
+  } = useFetchHasura(
+    api_url,
+    `{${table_status}{${column_id} ${column_name}}}`,
+    firstLoading,
+  )
 
   //Permet de récupérer les données de toutes les machines depuis Hasura.
   const {
@@ -157,7 +169,30 @@ function Inventory() {
                   <Accordion
                     key={machinery[column_id]}
                     title={`${machinery[column_name]} ${machinery[column_model]}`}
-                    content={`Numéro de série : ${machinery[column_serial_number]} - Statut : ${machinery[column_status]}`}
+                    content={
+                      <ul>
+                        <li>
+                          {`Numéro de série : ${machinery[column_serial_number]}`}
+                        </li>
+                        <li>
+                          {status_loading ? (
+                            <div>Chargement du statut ...</div>
+                          ) : status_error ? (
+                            <div>Statut indisponible.</div>
+                          ) : (
+                            <div>
+                              {`Statut : ${
+                                status_data[table_status].find(
+                                  (status) =>
+                                    status[column_id] ===
+                                    machinery[column_status],
+                                )[column_name]
+                              }`}
+                            </div>
+                          )}
+                        </li>
+                      </ul>
+                    }
                   />
                 ))}
               </StyledAccordionWrapper>
