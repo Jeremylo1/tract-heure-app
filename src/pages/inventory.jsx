@@ -16,8 +16,18 @@ const StyledAccordionWrapper = styled.div`
   margin-top: 20px;
 `
 
+//Style des titres de la liste.
 const StyledText = styled.span`
   color: #2daf38;
+`
+
+//Style d'un élément de la liste.
+const StyledListButton = styled.li`
+  &::before {
+    content: '•';
+    padding-right: 8px;
+    color: grey;
+  }
 `
 
 function Inventory() {
@@ -135,66 +145,62 @@ function Inventory() {
     return (
       <ul>
         {machinery[column_model] ? (
-          <li>
+          <StyledListButton>
             <StyledText>Numéro de modèle :</StyledText>{' '}
             {`${machinery[column_model]}`}
-          </li>
+          </StyledListButton>
         ) : null}
         {machinery[column_serial_number] ? (
-          <li>
+          <StyledListButton>
             <StyledText>Numéro de série :</StyledText>{' '}
             {`${machinery[column_serial_number]}`}
-          </li>
+          </StyledListButton>
         ) : null}
-        <li>
+        <StyledListButton>
           {status_loading ? (
-            <div>
-              <i>Chargement du statut ...</i>
-            </div>
+            <i>Chargement du statut ...</i>
           ) : status_error ? (
-            <div>
-              <i>Statut indisponible.</i>
-            </div>
+            <i>Statut indisponible.</i>
           ) : (
-            <div>
+            <span>
               <StyledText>Statut :</StyledText>{' '}
               {`${
                 status_data[table_status].find(
                   (status) => status[column_id] === machinery[column_status],
                 )[column_name]
               }`}
-            </div>
+            </span>
           )}
-        </li>
+        </StyledListButton>
         {machinery[column_hours] ? (
-          <li>
-            <StyledText>Temps d'utilisation accumulé :</StyledText>{' '}
+          <StyledListButton>
+            <StyledText>Utilisation accumulée :</StyledText>{' '}
             {`${machinery[column_hours]} heures`}
-          </li>
+          </StyledListButton>
         ) : null}
         {machinery[column_date] ? (
-          <li>
+          <StyledListButton>
             <StyledText>Date d'acquisition :</StyledText>{' '}
             {`${formatDate(machinery[column_date])}`}
-          </li>
+          </StyledListButton>
         ) : null}
         {machinery[column_price] ? (
-          <li>
+          <StyledListButton>
             <StyledText>Prix d'achat :</StyledText>{' '}
             {`${machinery[column_price]}$`}
-          </li>
+          </StyledListButton>
         ) : null}
         {machinery[column_comment] ? (
-          <li>
+          <StyledListButton>
             <StyledText>Commentaire :</StyledText>{' '}
             {`${machinery[column_comment]}`}
-          </li>
+          </StyledListButton>
         ) : null}
         {machinery[column_location] ? (
-          <li>
+          <StyledListButton>
             <StyledText>Localisation :</StyledText>{' '}
             {`${machinery[column_location]}`}
-          </li>
+          </StyledListButton>
         ) : null}
       </ul>
     )
@@ -213,9 +219,7 @@ function Inventory() {
       <div className="is-hidden-touch">
         <div className="columns">
           <div className="column is-8 is-offset-2">
-            <StyledTitle className="title">
-              Machinerie et équipements agricoles
-            </StyledTitle>
+            <StyledTitle className="title">Machinerie agricole</StyledTitle>
             {category_loading ? (
               <div>Chargement des catégories ...</div>
             ) : category_error ? (

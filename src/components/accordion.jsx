@@ -31,13 +31,20 @@ const StyledIcon = styled.span`
   }
 `
 
-//Style du panneau.
+//Style du panneau de l'accordéon.
 const StyledPanel = styled.div`
   padding: ${(props) => (props.open ? '18px' : '0')};
   background-color: white;
   max-height: ${(props) => (props.open ? '1000px' : '0')};
   overflow: hidden;
   transition: max-height;
+`
+
+//Style du wrapper de l'accordéon.
+const StyledWrapper = styled.div`
+  box-shadow: ${(props) =>
+    props.open ? '0px 2px 4px rgba(0, 0, 0, 0.2)' : 'none'};
+  margin-bottom: 6px;
 `
 
 //Composant de l'accordéon.
@@ -50,7 +57,7 @@ function Accordion({ title, content, others }) {
   }
 
   return (
-    <div>
+    <StyledWrapper open={isOpen}>
       <StyledButton onClick={toggleAccordion}>
         {title}
         <StyledIcon open={isOpen} />
@@ -59,7 +66,7 @@ function Accordion({ title, content, others }) {
         <div>{content}</div>
         <div>{others}</div>
       </StyledPanel>
-    </div>
+    </StyledWrapper>
   )
 }
 
