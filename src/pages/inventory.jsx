@@ -138,7 +138,66 @@ function Inventory() {
     }
   }, [machinery_data, selectedCategoryId])
 
-  //Permet d'afficher le contenu d'un panneau d'accordéon (infos de la machine).
+  //Affichage du contenu de la page.
+  function pageContent() {
+    return (
+      <div>
+        {category_loading ? (
+          <div>Chargement des catégories ...</div>
+        ) : category_error ? (
+          <div>Erreur lors du chargement des catégories !</div>
+        ) : (
+          <div className="select">
+            <select
+              value={selectedCategoryId}
+              onChange={(e) => setSelectedCategoryId(parseInt(e.target.value))}
+            >
+              {category_data[table_category].map((category) => (
+                <option
+                  key={`${category.nom}-${category.id}`}
+                  value={parseInt(category.id)}
+                >
+                  {category.nom}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+        {machinery_loading ? (
+          <div>Chargement de la machinerie ...</div>
+        ) : machinery_error ? (
+          <div>Erreur lors du chargement de la machinerie !</div>
+        ) : (
+          <StyledAccordionWrapper>
+            {filteredMachineryData.length > 0 ? (
+              /*S'il y a des machines à afficher, on fait un accordéon avec chaque machine trouvée.*/
+              filteredMachineryData.map((machinery) => (
+                <Accordion
+                  key={machinery[column_id]}
+                  title={`${machinery[column_name]}`}
+                  content={panelContent(machinery)}
+                  others={
+                    <div class="buttons">
+                      <CustomButton>Disponibilités</CustomButton>
+                      <CustomButton>Rapport</CustomButton>
+                      <CustomButton>Réserver</CustomButton>
+                    </div>
+                  }
+                />
+              ))
+            ) : (
+              /*Si rien a afficher.*/
+              <div>
+                <i>Aucune machine trouvée.</i>
+              </div>
+            )}
+          </StyledAccordionWrapper>
+        )}
+      </div>
+    )
+  }
+
+  //Affichage du contenu d'un panneau d'accordéon (infos de la machine).
   function panelContent(machinery) {
     return (
       <ul>
@@ -204,7 +263,7 @@ function Inventory() {
     )
   }
 
-  //Affichage.
+  //Affichage selon le type d'appareil.
   return (
     <div>
       {/* DESIGN POUR ORDINATEUR */}
@@ -214,59 +273,7 @@ function Inventory() {
             <StyledTitlePage className="title">
               Machinerie agricole
             </StyledTitlePage>
-            {category_loading ? (
-              <div>Chargement des catégories ...</div>
-            ) : category_error ? (
-              <div>Erreur lors du chargement des catégories !</div>
-            ) : (
-              <div className="select">
-                <select
-                  value={selectedCategoryId}
-                  onChange={(e) =>
-                    setSelectedCategoryId(parseInt(e.target.value))
-                  }
-                >
-                  {category_data[table_category].map((category) => (
-                    <option
-                      key={`${category.nom}-${category.id}`}
-                      value={parseInt(category.id)}
-                    >
-                      {category.nom}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
-            {machinery_loading ? (
-              <div>Chargement de la machinerie ...</div>
-            ) : machinery_error ? (
-              <div>Erreur lors du chargement de la machinerie !</div>
-            ) : (
-              <StyledAccordionWrapper>
-                {filteredMachineryData.length > 0 ? (
-                  /*S'il y a des machines à afficher, on fait un accordéon avec chaque machine trouvée.*/
-                  filteredMachineryData.map((machinery) => (
-                    <Accordion
-                      key={machinery[column_id]}
-                      title={`${machinery[column_name]}`}
-                      content={panelContent(machinery)}
-                      others={
-                        <div class="buttons">
-                          <CustomButton>Disponibilités</CustomButton>
-                          <CustomButton>Rapport</CustomButton>
-                          <CustomButton>Réserver</CustomButton>
-                        </div>
-                      }
-                    />
-                  ))
-                ) : (
-                  /*Si rien a afficher.*/
-                  <div>
-                    <i>Aucune machine trouvée.</i>
-                  </div>
-                )}
-              </StyledAccordionWrapper>
-            )}
+            {pageContent()}
           </div>
         </div>
       </div>
@@ -278,59 +285,7 @@ function Inventory() {
             <StyledTitlePage className="title is-5 has-text-centered">
               Machinerie agricole
             </StyledTitlePage>
-            {category_loading ? (
-              <div>Chargement des catégories ...</div>
-            ) : category_error ? (
-              <div>Erreur lors du chargement des catégories !</div>
-            ) : (
-              <div className="select">
-                <select
-                  value={selectedCategoryId}
-                  onChange={(e) =>
-                    setSelectedCategoryId(parseInt(e.target.value))
-                  }
-                >
-                  {category_data[table_category].map((category) => (
-                    <option
-                      key={`${category.nom}-${category.id}`}
-                      value={parseInt(category.id)}
-                    >
-                      {category.nom}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
-            {machinery_loading ? (
-              <div>Chargement de la machinerie ...</div>
-            ) : machinery_error ? (
-              <div>Erreur lors du chargement de la machinerie !</div>
-            ) : (
-              <StyledAccordionWrapper>
-                {filteredMachineryData.length > 0 ? (
-                  /*S'il y a des machines à afficher, on fait un accordéon avec chaque machine trouvée.*/
-                  filteredMachineryData.map((machinery) => (
-                    <Accordion
-                      key={machinery[column_id]}
-                      title={`${machinery[column_name]}`}
-                      content={panelContent(machinery)}
-                      others={
-                        <div class="buttons">
-                          <CustomButton>Disponibilités</CustomButton>
-                          <CustomButton>Rapport</CustomButton>
-                          <CustomButton>Réserver</CustomButton>
-                        </div>
-                      }
-                    />
-                  ))
-                ) : (
-                  /*Si rien a afficher.*/
-                  <div>
-                    <i>Aucune machine trouvée.</i>
-                  </div>
-                )}
-              </StyledAccordionWrapper>
-            )}
+            {pageContent()}
           </div>
         </div>
       </div>
