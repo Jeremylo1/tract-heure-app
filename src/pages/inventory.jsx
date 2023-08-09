@@ -234,7 +234,6 @@ function Inventory() {
       <div className="grouped-buttons">
         <p className="control">
           <CustomButton
-            to="/"
             color={colors.blueButton}
             hovercolor={colors.blueButtonHover}
           >

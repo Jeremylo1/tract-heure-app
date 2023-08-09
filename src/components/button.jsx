@@ -9,17 +9,19 @@ const StyledButton = styled.button`
   background-color: ${(props) => props.color};
   color: white;
   &:hover {
-    background-color: ${(props) => props.hoverColor};
+    background-color: ${(props) => props.hovercolor};
     color: white;
   }
 `
 
 //Bouton qui permet de naviguer vers une autre page.
 function CustomButton({ to, color, hovercolor, children }) {
-  //Permet de naviguer vers une autre page.
+  //Permet de naviguer vers une autre page (s'il y a une prop "to").
   const navigate = useNavigate()
   function handleClick() {
-    navigate(to)
+    if (to) {
+      navigate(to)
+    }
   }
 
   return (
@@ -37,7 +39,7 @@ function CustomButton({ to, color, hovercolor, children }) {
 
 //Définition des props du bouton.
 CustomButton.propTypes = {
-  to: PropTypes.string.isRequired,
+  to: PropTypes.string,
   color: PropTypes.string,
   children: PropTypes.node.isRequired,
 }
