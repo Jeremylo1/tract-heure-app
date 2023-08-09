@@ -3,3 +3,18 @@
     list-style-type: none;
     margin-left: 6px;
 }
+
+.grouped-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.grouped-buttons .control {
+    margin: 0 5px;
+}
+
+/* Empêcher la marge inférieure pour le dernier élément */
+.content p:not(:last-child) {
+    margin-bottom: 0;
+}

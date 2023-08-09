@@ -176,13 +176,7 @@ function Inventory() {
                   key={machinery[column_id]}
                   title={`${machinery[column_name]}`}
                   content={panelContent(machinery)}
-                  others={
-                    <div class="buttons">
-                      <CustomButton>Disponibilités</CustomButton>
-                      <CustomButton>Rapport</CustomButton>
-                      <CustomButton>Réserver</CustomButton>
-                    </div>
-                  }
+                  others={groupButtons()}
                 />
               ))
             ) : (
@@ -260,6 +254,29 @@ function Inventory() {
           </StyledListButton>
         ) : null}
       </ul>
+    )
+  }
+
+  //Affichage des boutons du bas de l'accordéon.
+  function groupButtons() {
+    return (
+      <div className="grouped-buttons">
+        <p className="control">
+          <CustomButton to="/" color="blue">
+            Disponibilités
+          </CustomButton>
+        </p>
+        <p className="control">
+          <CustomButton to="/" color="blue">
+            Rapport
+          </CustomButton>
+        </p>
+        <p className="control">
+          <CustomButton to="/" color="green">
+            Réserver
+          </CustomButton>
+        </p>
+      </div>
     )
   }
 

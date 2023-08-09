@@ -2,14 +2,12 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import 'bulma/css/bulma.min.css'
 
 //Style du bouton.
 const StyledButton = styled.button`
   background-color: ${(props) => props.color || 'red'};
   color: white;
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
 `
 
 //Bouton qui permet de naviguer vers une autre page.
@@ -21,7 +19,12 @@ function CustomButton({ to, color, children }) {
   }
 
   return (
-    <StyledButton onClick={handleClick} aria-label={children}>
+    <StyledButton
+      className="button"
+      onClick={handleClick}
+      color={color}
+      aria-label={children}
+    >
       {children}
     </StyledButton>
   )

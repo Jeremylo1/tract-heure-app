@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 
 //Style du bouton de l'accordéon.
 const StyledButton = styled.button`
@@ -68,6 +69,13 @@ function Accordion({ title, content, others }) {
       </StyledPanel>
     </StyledWrapper>
   )
+}
+
+//Définition des props de l'accordéon.
+Accordion.propTypes = {
+  title: PropTypes.string.isRequired,
+  content: PropTypes.node.isRequired,
+  others: PropTypes.node,
 }
 
 export default Accordion
