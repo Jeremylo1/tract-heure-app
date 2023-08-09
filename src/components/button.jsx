@@ -14,13 +14,16 @@ const StyledButton = styled.button`
   }
 `
 
-//Bouton qui permet de naviguer vers une autre page.
-function CustomButton({ to, color, hovercolor, children }) {
-  //Permet de naviguer vers une autre page (s'il y a une prop "to").
+//Bouton personnalisé pour naviguer vers une autre page ou exécuter une fonction.
+function CustomButton({ to, functionclick, color, hovercolor, children }) {
   const navigate = useNavigate()
   function handleClick() {
+    //Si la prop "to" est définie, naviguer vers la page correspondante.
     if (to) {
       navigate(to)
+      //Si la prop "onClick" est définie, exécuter la fonction correspondante.
+    } else if (typeof functionclick === 'function') {
+      functionclick()
     }
   }
 
@@ -40,6 +43,7 @@ function CustomButton({ to, color, hovercolor, children }) {
 //Définition des props du bouton.
 CustomButton.propTypes = {
   to: PropTypes.string,
+  functionclick: PropTypes.func,
   color: PropTypes.string,
   children: PropTypes.node.isRequired,
 }
