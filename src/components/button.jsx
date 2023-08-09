@@ -21,7 +21,7 @@ function CustomButton({ to, functionclick, color, hovercolor, children }) {
     //Si la prop "to" est définie, naviguer vers la page correspondante.
     if (to) {
       navigate(to)
-      //Si la prop "onClick" est définie, exécuter la fonction correspondante.
+      //Si la prop "functionclick" est définie, exécuter la fonction correspondante.
     } else if (typeof functionclick === 'function') {
       functionclick()
     }

@@ -257,7 +257,6 @@ function Inventory() {
           >
             Réserver
           </CustomButton>
-          {/* <button>Réserver</button> */}
         </p>
       </div>
     )
@@ -290,7 +289,7 @@ function Inventory() {
         </div>
       </div>
 
-      {/* MODAL DE RÉSERVATION */}
+      {/* MODALE DE RÉSERVATION */}
       <Modal
         title="Titre de la Modal"
         content={

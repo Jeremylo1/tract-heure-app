@@ -8,14 +8,14 @@ import Calendar from './pages/calendar'
 import Dashboard from './pages/dashboard'
 import Burger from './pages/burger'
 import Login from './pages/login'
-import Test from './pages/test'
+import Test from './trash-test/test' //! À SUPPRIMER
 /*Components*/
 import Header from './components/header'
 import Footer from './components/footer'
 import Error from './components/error'
-import ProtectedRoute from './utils/react/protectedroute'
-/*Context*/
+/*Utils*/
 import { AuthProvider } from './utils/react/context'
+import ProtectedRoute from './utils/react/protectedroute'
 /*Style*/
 import styled from 'styled-components'
 

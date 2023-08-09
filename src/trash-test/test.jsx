@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useState, useEffect } from 'react'
 import { useFetchHasura } from '../utils/react/hooks'
 import { useMutationHasura } from '../utils/react/hooks'
-import TodoList from '../components/todos'
+import TodoList from './todos'
 
 function Test() {
   //Le titre du todo à ajouter.
@@ -148,5 +148,3 @@ Test.propTypes = {
 }
 
 export default Test
-
-/* ================================================== */
