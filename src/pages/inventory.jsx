@@ -250,14 +250,14 @@ function Inventory() {
           </CustomButton>
         </p>
         <p className="control">
-          {/* <CustomButton
-            to="/"
+          <CustomButton
             color={colors.greenButton}
             hovercolor={colors.greenButtonHover}
+            onClick={() => setModalOpen(true)}
           >
             Réserver
-          </CustomButton> */}
-          <button onClick={() => setModalOpen(true)}>Réserver</button>
+          </CustomButton>
+          {/* <button>Réserver</button> */}
           <Modal
             title="Titre de la Modal"
             content={
