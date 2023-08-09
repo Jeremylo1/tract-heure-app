@@ -1,5 +1,6 @@
-import { mdiSleep } from '@mdi/js'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { AuthContext } from './context'
 
 //Permet de récupérer (SELECT) des données depuis Hasura.
 export function useFetchHasura(url, query, stopFetch = false) {
@@ -93,4 +94,19 @@ export function useMutationHasura(url) {
   }
 
   return { doMutation, error }
+}
+
+//Permet de se déconnecter, de récupérer le type d'utilisateur et de savoir si l'utilisateur est connecté.
+export function useConnexion() {
+  const { isConnected, setLogout } = useContext(AuthContext)
+  const { userType } = useContext(AuthContext)
+  const navigate = useNavigate()
+
+  //Fonction pour se déconnecter.
+  function handleLogout() {
+    setLogout()
+    navigate('/login')
+  }
+
+  return { isConnected, userType, handleLogout }
 }

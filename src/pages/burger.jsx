@@ -1,18 +1,8 @@
 import React from 'react'
-import { useContext } from 'react'
-import { AuthContext } from '../utils/react/context'
-import { useNavigate } from 'react-router-dom'
+import { useConnexion } from '../utils/react/hooks'
 
 function Burger() {
-  const { isConnected, setLogout } = useContext(AuthContext)
-
-  const navigate = useNavigate()
-
-  //Fonction pour se déconnecter (!!!!!!!!!).
-  const handleLogout = () => {
-    setLogout()
-    navigate('/login')
-  }
+  const { isConnected, handleLogout } = useConnexion()
 
   return isConnected ? (
     /*Si l'utilisateur est connecté, alors déconnexion.*/
