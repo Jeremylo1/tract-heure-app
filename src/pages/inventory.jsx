@@ -189,8 +189,7 @@ function Inventory() {
           </li>
         ) : null}
         <li className="StyledListButton">
-          <StyledText>Statut :</StyledText>{' '}
-          {`${machinery[column_status] ? machinery[column_status] : 'N/A'}`}
+          <StyledText>Statut :</StyledText> {`${machinery[column_status]}`}
         </li>
         {machinery[column_hours] ? (
           <li className="StyledListButton">
