@@ -158,6 +158,7 @@ function Calendar() {
                 date.getFullYear() === event.end.getFullYear()
                   ? event.end.getHours()
                   : 24
+              console.log('info', event)
 
               return {
                 ...event,
