@@ -6,7 +6,7 @@
 }
 
 /*Style d'un élément d'une liste.*/
-li::before {
+.StyledListButton::before {
     content: '•';
     padding-right: 8px;
     color: grey;
