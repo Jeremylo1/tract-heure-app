@@ -26,14 +26,13 @@ function Inventory() {
   const api_url = 'https://champion-tiger-15.hasura.app/v1/graphql'
   //Nom des tables à utiliser.
   const table_category = 'machinerie_categorie'
-  const table_machinery = 'machinerie'
-  const table_status = 'machinerie_statut'
+  const vue_machinery = 'machinerie_view'
   //Nom des colonnes à utiliser.
   const column_id = 'id'
   const column_name = 'nom'
   const column_model = 'modele'
   const column_serial_number = 'num_serie'
-  const column_status = 'statut_id'
+  const column_status = 'statut_nom'
   const column_category = 'categorie_id'
   const column_date = 'date_acquisition'
   const column_price = 'prix_achat'
@@ -80,17 +79,6 @@ function Inventory() {
     }
   }, [category_data])
 
-  //Permet de récupérer la liste des statuts depuis Hasura.
-  const {
-    data: status_data,
-    isLoading: status_loading,
-    error: status_error,
-  } = useFetchHasura(
-    api_url,
-    `{${table_status}{${column_id} ${column_name}}}`,
-    firstLoading,
-  )
-
   //Permet de récupérer les données de toutes les machines depuis Hasura.
   const {
     data: machinery_data,
@@ -99,7 +87,8 @@ function Inventory() {
   } = useFetchHasura(
     api_url,
     `{
-      ${table_machinery} {
+      ${vue_machinery} {
+        ${column_id}
         ${column_name}
         ${column_category}
         ${column_status}
@@ -122,8 +111,8 @@ function Inventory() {
 
   //Permet de filtrer les machines (dans "machinery_data") en fonction de la catégorie sélectionnée.
   useEffect(() => {
-    if (machinery_data && machinery_data.machinerie) {
-      const filteredData = machinery_data.machinerie.filter(
+    if (machinery_data && machinery_data[vue_machinery]) {
+      const filteredData = machinery_data[vue_machinery].filter(
         (machine) => machine[column_category] === selectedCategoryId,
       )
       setFilteredMachineryData(filteredData)
@@ -200,20 +189,8 @@ function Inventory() {
           </li>
         ) : null}
         <li className="StyledListButton">
-          {status_loading ? (
-            <i>Chargement du statut ...</i>
-          ) : status_error ? (
-            <i>Statut indisponible.</i>
-          ) : (
-            <span>
-              <StyledText>Statut :</StyledText>{' '}
-              {`${
-                status_data[table_status].find(
-                  (status) => status[column_id] === machinery[column_status],
-                )[column_name]
-              }`}
-            </span>
-          )}
+          <StyledText>Statut :</StyledText>{' '}
+          {`${machinery[column_status] ? machinery[column_status] : 'N/A'}`}
         </li>
         {machinery[column_hours] ? (
           <li className="StyledListButton">
@@ -257,7 +234,7 @@ function Inventory() {
           <CustomButton
             to="/"
             color={colors.blueButton}
-            hoverColor={colors.blueButtonHover}
+            hovercolor={colors.blueButtonHover}
           >
             Disponibilités
           </CustomButton>
@@ -266,7 +243,7 @@ function Inventory() {
           <CustomButton
             to="/"
             color={colors.blueButton}
-            hoverColor={colors.blueButtonHover}
+            hovercolor={colors.blueButtonHover}
           >
             Rapport
           </CustomButton>
@@ -275,7 +252,7 @@ function Inventory() {
           <CustomButton
             to="/"
             color={colors.greenButton}
-            hoverColor={colors.greenButtonHover}
+            hovercolor={colors.greenButtonHover}
           >
             Réserver
           </CustomButton>

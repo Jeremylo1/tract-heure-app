@@ -15,7 +15,7 @@ const StyledButton = styled.button`
 `
 
 //Bouton qui permet de naviguer vers une autre page.
-function CustomButton({ to, color, hoverColor, children }) {
+function CustomButton({ to, color, hovercolor, children }) {
   //Permet de naviguer vers une autre page.
   const navigate = useNavigate()
   function handleClick() {
@@ -27,7 +27,7 @@ function CustomButton({ to, color, hoverColor, children }) {
       className="button"
       onClick={handleClick}
       color={color}
-      hoverColor={hoverColor}
+      hovercolor={hovercolor}
       aria-label={children}
     >
       {children}

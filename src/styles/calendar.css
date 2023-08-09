@@ -85,16 +85,12 @@
     /* 24 hours * 30px */
 }
 
-/* Supprimer le margin-bottom pour les événements sur toute la journée */
-.event.allday {
-    margin-bottom: 0;
-}
-
 .event {
     position: absolute;
     left: 0;
     right: 0;
     padding: 5px;
+    margin-bottom: 0 !important;
 }
 
 .event-reservation {
