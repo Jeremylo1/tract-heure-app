@@ -88,6 +88,7 @@ function Inventory() {
     api_url,
     `{
       ${vue_machinery} {
+        ${column_id}
         ${column_name}
         ${column_category}
         ${column_status}
@@ -233,7 +234,7 @@ function Inventory() {
           <CustomButton
             to="/"
             color={colors.blueButton}
-            hoverColor={colors.blueButtonHover}
+            hovercolor={colors.blueButtonHover}
           >
             Disponibilités
           </CustomButton>
@@ -242,7 +243,7 @@ function Inventory() {
           <CustomButton
             to="/"
             color={colors.blueButton}
-            hoverColor={colors.blueButtonHover}
+            hovercolor={colors.blueButtonHover}
           >
             Rapport
           </CustomButton>
@@ -251,7 +252,7 @@ function Inventory() {
           <CustomButton
             to="/"
             color={colors.greenButton}
-            hoverColor={colors.greenButtonHover}
+            hovercolor={colors.greenButtonHover}
           >
             Réserver
           </CustomButton>
