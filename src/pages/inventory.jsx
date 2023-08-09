@@ -2,15 +2,12 @@ import React from 'react'
 /*import PropTypes from 'prop-types'*/
 import { useState, useEffect } from 'react'
 import { useFetchHasura } from '../utils/react/hooks'
-import Accordion from '../components/accordion'
-import styled from 'styled-components'
 import { formatDate } from '../utils/reusable/functions'
+import Accordion from '../components/accordion'
+import CustomButton from '../components/button'
+import styled from 'styled-components'
+import StyledTitlePage from '../utils/styles/atoms'
 import '../styles/inventory.css'
-
-//Style du titre.
-const StyledTitle = styled.h1`
-  margin-top: 20px;
-`
 
 //Style du wrapper des accordéons.
 const StyledAccordionWrapper = styled.div`
@@ -214,7 +211,9 @@ function Inventory() {
       <div className="is-hidden-touch">
         <div className="columns">
           <div className="column is-8 is-offset-2">
-            <StyledTitle className="title">Machinerie agricole</StyledTitle>
+            <StyledTitlePage className="title">
+              Machinerie agricole
+            </StyledTitlePage>
             {category_loading ? (
               <div>Chargement des catégories ...</div>
             ) : category_error ? (
@@ -251,7 +250,13 @@ function Inventory() {
                       key={machinery[column_id]}
                       title={`${machinery[column_name]}`}
                       content={panelContent(machinery)}
-                      others={''}
+                      others={
+                        <div class="buttons">
+                          <CustomButton>Disponibilités</CustomButton>
+                          <CustomButton>Rapport</CustomButton>
+                          <CustomButton>Réserver</CustomButton>
+                        </div>
+                      }
                     />
                   ))
                 ) : (
@@ -270,9 +275,9 @@ function Inventory() {
       <div className="is-hidden-desktop">
         <div className="columns is-mobile">
           <div className="column is-10 is-offset-1">
-            <StyledTitle className="title is-5 has-text-centered">
-              Machinerie et équipements agricoles
-            </StyledTitle>
+            <StyledTitlePage className="title is-5 has-text-centered">
+              Machinerie agricole
+            </StyledTitlePage>
             {category_loading ? (
               <div>Chargement des catégories ...</div>
             ) : category_error ? (
@@ -309,7 +314,13 @@ function Inventory() {
                       key={machinery[column_id]}
                       title={`${machinery[column_name]}`}
                       content={panelContent(machinery)}
-                      others={''}
+                      others={
+                        <div class="buttons">
+                          <CustomButton>Disponibilités</CustomButton>
+                          <CustomButton>Rapport</CustomButton>
+                          <CustomButton>Réserver</CustomButton>
+                        </div>
+                      }
                     />
                   ))
                 ) : (

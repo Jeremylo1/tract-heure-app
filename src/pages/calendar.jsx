@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import '../styles/calendar.css'
+import StyledTitlePage from '../utils/styles/atoms'
+/*Importation des icônes*/
 import Icon from '@mdi/react'
 import { mdiArrowLeftThick } from '@mdi/js'
 import { mdiArrowRightThick } from '@mdi/js'

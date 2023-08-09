@@ -1,7 +1,9 @@
+import StyledTitlePage from '../utils/styles/atoms'
+
 function Dashboard() {
   return (
     <div>
-      <h1>Dashboard pour admin</h1>
+      <StyledTitlePage>Dashboard pour admin</StyledTitlePage>
     </div>
   )
 }

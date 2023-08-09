@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 /*CSS*/
+/*import StyledTitlePage from '../utils/styles/atoms'*/
 /*import styled from 'styled-components'*/
 import 'bulma/css/bulma.min.css'
 

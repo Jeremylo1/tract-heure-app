@@ -49,7 +49,7 @@ function Header() {
   //Affichage selon le type d'appareil.
   return (
     <div>
-      {/* Design pour mobile */}
+      {/* DESIGN POUR MOBILE */}
       <div className="is-hidden-desktop">
         <div>
           <StyledLogoTouch src={LogoTxt} alt="Logo" />
@@ -81,7 +81,7 @@ function Header() {
               </Link>
             </li>
             {userType === 'admin' ? (
-              //Si admin, on affiche l'onglet "dashboard".
+              /*Si admin, on affiche l'onglet "dashboard".*/
               <li
                 className={activeTab === 'dashboard' ? 'is-active' : ''}
                 onClick={() => handleTabClick('dashboard')}
@@ -102,7 +102,7 @@ function Header() {
           </ul>
         </div>
       </div>
-      {/* Design pour ordinateur */}
+      {/* DESIGN POUR ORDINATEUR */}
       <div className="is-hidden-touch">
         <nav
           className="navbar is-light"
@@ -125,7 +125,7 @@ function Header() {
               Calendrier
             </Link>
             {userType === 'admin' ? (
-              //Si admin, on affiche l'onglet "dashboard".
+              /*Si admin, on affiche l'onglet "dashboard".*/
               <Link to="/admin" className="navbar-item">
                 Administrateur
               </Link>
@@ -151,7 +151,7 @@ function Header() {
             </div>
             <div className="navbar-item">
               {isConnected ? (
-                //Si l'utilisateur est connecté, alors déconnexion.
+                /*Si l'utilisateur est connecté, alors déconnexion.*/
                 <div>
                   <button onClick={handleLogout} className="button is-info">
                     <strong>Déconnexion</strong>
