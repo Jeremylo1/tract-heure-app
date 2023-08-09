@@ -99,10 +99,10 @@ export function useMutationHasura(url) {
 //Permet de se déconnecter, de récupérer le type d'utilisateur et de savoir si l'utilisateur est connecté.
 export function useConnexion() {
   const { isConnected, setLogout } = useContext(AuthContext)
-  const { userType } = useContext(AuthContext)
+  const { userType } = useContext(AuthContext) //TEMPORAIRE.
   const navigate = useNavigate()
 
-  //Fonction pour se déconnecter.
+  //Déconnexion et redirection.
   function handleLogout() {
     setLogout()
     navigate('/login')
