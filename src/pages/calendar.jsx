@@ -158,8 +158,11 @@ function Calendar() {
         dateDay: day.charAt(0).toUpperCase() + day.slice(1),
         events: eventsJSON
           .filter((event) => {
-            const startDay = event.start
+            const startDay = new Date(event.start)
+            console.log('startDay', startDay)
+            startDay.setHours(0, 0, 0, 0) // Définit le début de la journée pour l'événement
             const endDay = new Date(event.end)
+            console.log('endDay', endDay)
             endDay.setHours(23, 59, 59, 999) // Inclut la fin de la journée dans l'événement
 
             return date >= startDay && date <= endDay
