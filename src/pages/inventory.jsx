@@ -123,7 +123,7 @@ function Inventory() {
     firstLoading,
   )
 
-  //(À EXPLIQUER !!!!!!!!!!!!)
+  //Permet de définir si c'est la première fois qu'on charge la page.
   useEffect(() => {
     setFirstLoading(false)
   }, [])

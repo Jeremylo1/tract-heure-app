@@ -1,3 +1,4 @@
+import { mdiSleep } from '@mdi/js'
 import { useState, useEffect } from 'react'
 
 //Permet de récupérer (SELECT) des données depuis Hasura.

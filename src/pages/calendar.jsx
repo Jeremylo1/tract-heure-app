@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import '../styles/calendar.css'
+import { useFetchHasura } from '../utils/react/hooks'
+import { formatDate } from '../utils/reusable/functions'
 import StyledTitlePage from '../utils/styles/atoms'
 /*Importation des icônes*/
 import Icon from '@mdi/react'
@@ -7,59 +9,124 @@ import { mdiArrowLeftThick } from '@mdi/js'
 import { mdiArrowRightThick } from '@mdi/js'
 
 function Calendar() {
-  // Exemple de données JSON pour les événements
-  const eventsJSON = [
-    {
-      id: 0,
-      title: 'Securities Regulation',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. #0',
-      type: 1,
-      allDay: true,
-      start: new Date(2023, 7, 7), // 7 août 2023
-      end: new Date(2023, 7, 7),
-    },
-    {
-      id: 1,
-      title: 'Corporate Finance',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. #1',
-      type: 2,
-      start: new Date(2023, 7, 8, 15), // 8 août 2023, 15h00
-      end: new Date(2023, 7, 10, 18), // 10 août 2023, 18h00
-    },
-    {
-      id: 2,
-      title: 'Corporate Finance',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. #2',
-      type: 1,
-      start: new Date(2023, 7, 7, 10), //7 août 2023, 10h00
-      end: new Date(2023, 7, 7, 14), // 7 août 2023, 14h00
-    },
-    {
-      id: 3,
-      title: 'France 2',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. #3',
-      type: 1,
-      start: new Date(2023, 7, 4, 0),
-      end: new Date(2023, 7, 4, 19),
-    },
-    // Ajouter plus d'événements ici pour les tests
-  ]
+  /*INFOS SUR LA BASE DE DONNÉES (À MODIFIER AU BESOIN)*/
+  //Lien de l'API GraphQL à utiliser.
+  const api_url = 'https://champion-tiger-15.hasura.app/v1/graphql'
+  //Nom des tables à utiliser.
+  const table_machinerie = 'machinerie'
+  const table_reservation = 'machinerie_reservation'
+  //Nom des colonnes à utiliser.
+  const column_id = 'id'
+  const column_id_machinerie = 'machinerie_id'
+  const column_date_debut = 'date_debut'
+  const column_date_fin = 'date_fin'
+  const column_type = 'type'
+  const column_description = 'description'
+  /*FIN DES INFOS*/
+
+  //Pour savoir si c'est la première fois qu'on charge les données.
+  const [firstLoading, setFirstLoading] = useState(true)
+
+  //Permet de récupérer la liste des réservations.
+  const {
+    data: reservation_data,
+    isLoading: reservation_loading,
+    error: reservation_error,
+  } = useFetchHasura(
+    api_url,
+    `{${table_reservation}{${column_id} ${column_id_machinerie} ${column_date_debut} ${column_date_fin} ${column_type} ${column_description}}}`,
+    firstLoading,
+  )
+
+  //Permet de définir si c'est la première fois qu'on charge la page.
+  useEffect(() => {
+    setFirstLoading(false)
+  }, [])
 
   // Convert events type to string ( 1 = réservation, 2 = maintenance)
-  const eventType = (type) => {
-    switch (type) {
-      case 1:
-        return 'event-reservation'
-      case 2:
-        return 'event-maintenance'
-      default:
-        return 'event-reservation'
+  const eventType = (type, mode) => {
+    if (mode === 'class') {
+      switch (type) {
+        case 1:
+          return 'event-reservation'
+        case 2:
+          return 'event-maintenance'
+        default:
+          return 'event-reservation'
+      }
+    } else {
+      switch (type) {
+        case 1:
+          return 'Réservation'
+        case 2:
+          return 'Maintenance'
+        default:
+          return 'Réservation'
+      }
     }
   }
+
+  const formatEvents = (data) => {
+    if (!data || !data[table_reservation]) return []
+
+    return data[table_reservation].map((event) => {
+      return {
+        id: event[column_id],
+        // title = eventType + nom de la machinerie : "event-reservation - Tracteur 1"
+        title: `${eventType(event[column_type], 'string')} - ${
+          event[column_id_machinerie]
+        }`,
+        description: event[column_description].join(', '),
+        type: event[column_type],
+        start: new Date(event[column_date_debut]),
+        end: new Date(event[column_date_fin]),
+      }
+    })
+  }
+
+  const eventsJSON = formatEvents(reservation_data)
+
+  // Exemple de données JSON pour les événements (POUR LES TESTS)
+  // const eventsJSON = [
+  //   {
+  //     id: 0,
+  //     title: 'Securities Regulation',
+  //     description:
+  //       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. #0',
+  //     type: 1,
+  //     allDay: true,
+  //     start: new Date(2023, 7, 7), // 7 août 2023
+  //     end: new Date(2023, 7, 7),
+  //   },
+  //   {
+  //     id: 1,
+  //     title: 'Corporate Finance',
+  //     description:
+  //       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. #1',
+  //     type: 2,
+  //     start: new Date(2023, 7, 8, 20), // 8 août 2023, 15h00
+  //     end: new Date(2023, 7, 10, 18), // 10 août 2023, 18h00
+  //   },
+  //   {
+  //     id: 2,
+  //     title: 'Corporate Finance',
+  //     description:
+  //       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. #2',
+  //     type: 1,
+  //     start: new Date(2023, 7, 7, 10), //7 août 2023, 10h00
+  //     end: new Date(2023, 7, 7, 14), // 7 août 2023, 14h00
+  //   },
+  //   {
+  //     id: 3,
+  //     title: 'France 2',
+  //     description:
+  //       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. #3',
+  //     type: 1,
+  //     start: new Date(2023, 7, 4, 0),
+  //     end: new Date(2023, 7, 4, 19),
+  //   },
+  //   // Ajouter plus d'événements ici pour les tests
+  // ]
 
   // Obtenir la date actuelle et la stocker dans l'état
   const [currentDate, setCurrentDate] = useState(new Date())
@@ -91,22 +158,11 @@ function Calendar() {
         dateDay: day.charAt(0).toUpperCase() + day.slice(1),
         events: eventsJSON
           .filter((event) => {
-            if (event.allDay) {
-              // Si l'événement dure toute la journée, vérifiez si la date du jour est égale à celle de l'événement
-              return (
-                date.getFullYear() === event.start.getFullYear() &&
-                date.getMonth() === event.start.getMonth() &&
-                date.getDate() === event.start.getDate()
-              )
-            } else {
-              const eventDate = new Date(date)
-              eventDate.setHours(event.start.getHours())
-              eventDate.setMinutes(event.start.getMinutes())
-              return (
-                (date >= event.start && date <= event.end) ||
-                (eventDate >= event.start && eventDate <= event.end)
-              )
-            }
+            const startDay = event.start
+            const endDay = new Date(event.end)
+            endDay.setHours(23, 59, 59, 999) // Inclut la fin de la journée dans l'événement
+
+            return date >= startDay && date <= endDay
           })
           .map((event) => {
             const showTitle =
@@ -125,19 +181,24 @@ function Calendar() {
               }
             } else {
               const startHour =
-                date.getDate() !== event.start.getDate()
-                  ? 0
-                  : event.start.getHours()
+                date.getDate() === event.start.getDate() &&
+                date.getMonth() === event.start.getMonth() &&
+                date.getFullYear() === event.start.getFullYear()
+                  ? event.start.getHours()
+                  : 0
               const endHour =
-                date.getDate() !== event.end.getDate()
-                  ? 24
-                  : event.end.getHours()
+                date.getDate() === event.end.getDate() &&
+                date.getMonth() === event.end.getMonth() &&
+                date.getFullYear() === event.end.getFullYear()
+                  ? event.end.getHours()
+                  : 24
+
               return {
                 ...event,
                 showTitle,
                 style: {
-                  top: `${startHour * 25}px`,
-                  bottom: `${(24 - endHour) * 25}px`,
+                  top: `${startHour * 30}px`,
+                  bottom: `${(24 - endHour) * 30}px`,
                 },
               }
             }
@@ -234,24 +295,33 @@ function Calendar() {
                       <p className="date-day subtitle is-6">{day.dateDay}</p>
                     </div>
                     <div className="events">
-                      {day.events.map((event) => (
-                        <div
-                          className={`box event ${eventType(event.type)} ${
-                            event.allDay ? 'allday' : ''
-                          }`}
-                          key={event.title}
-                          style={event.style}
-                          onClick={() => openModal(event)}
-                        >
-                          {event.showTitle && (
-                            <p className="title is-6">{event.title}</p>
-                          )}
-                          {/* Si c'est mobile afficher le titre pour chaque journée */}
-                          {isMobile && !event.showTitle && (
-                            <p className="title is-6">{event.title}</p>
-                          )}
-                        </div>
-                      ))}
+                      {reservation_loading ? (
+                        <div>Chargement des réservations...</div>
+                      ) : reservation_error ? (
+                        <div>Erreur lors du chargement des réservations !</div>
+                      ) : (
+                        <>
+                          {day.events.map((event) => (
+                            <div
+                              className={`box event ${eventType(
+                                event.type,
+                                'class',
+                              )} ${event.allDay ? 'allday' : ''}`}
+                              key={event.title}
+                              style={event.style}
+                              onClick={() => openModal(event)}
+                            >
+                              {event.showTitle && (
+                                <p className="title is-6">{event.title}</p>
+                              )}
+                              {/* Si c'est mobile afficher le titre pour chaque journée */}
+                              {isMobile && !event.showTitle && (
+                                <p className="title is-6">{event.title}</p>
+                              )}
+                            </div>
+                          ))}
+                        </>
+                      )}
                     </div>
                   </div>
                 ),
@@ -275,7 +345,7 @@ function Calendar() {
               <h2>Description:</h2>
               <p>{modalEvent?.description}</p>
               <h3>Type:</h3>
-              <p>{eventType(modalEvent?.type)}</p>
+              <p>{eventType(modalEvent?.type, 'string')}</p>
               <h3>Date de début:</h3>
               <p>{modalEvent?.start.toLocaleString()}</p>
               <h3>Date de fin:</h3>
