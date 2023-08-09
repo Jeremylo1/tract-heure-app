@@ -3,6 +3,7 @@ import '../styles/calendar.css'
 import { useFetchHasura } from '../utils/react/hooks'
 import { formatDate } from '../utils/reusable/functions'
 import StyledTitlePage from '../utils/styles/atoms'
+import Modal from '../components/modal'
 /*Importation des icônes*/
 import Icon from '@mdi/react'
 import { mdiArrowLeftThick } from '@mdi/js'
@@ -25,6 +26,14 @@ function Calendar() {
 
   //Pour savoir si c'est la première fois qu'on charge les données.
   const [firstLoading, setFirstLoading] = useState(true)
+  // Obtenir la date actuelle et la stocker dans l'état
+  const [currentDate, setCurrentDate] = useState(new Date())
+  // useState pour définir si l'écran est mobile ou non
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
+  // useState pour ouvrir/fermer la modale
+  const [isModalOpen, setModalOpen] = useState(false)
+  // useState pour stocker l'événement sélectionné dans la modale
+  const [modalEvent, setModalEvent] = useState(null)
 
   //Permet de récupérer la liste des réservations.
   const {
@@ -65,13 +74,13 @@ function Calendar() {
     }
   }
 
+  // Permet de formater les données pour l'affichage des événements dans le calendrier
   const formatEvents = (data) => {
     if (!data || !data[vue_reservation]) return []
 
     return data[vue_reservation].map((event) => {
       return {
         id: event[column_id],
-        // title = eventType + nom de la machinerie : "event-reservation - Tracteur 1"
         title: `${eventType(event[column_type], 'string')} - ${
           event[column_nom_machinerie]
         }`,
@@ -84,51 +93,6 @@ function Calendar() {
   }
 
   const eventsJSON = formatEvents(reservation_data)
-
-  // Exemple de données JSON pour les événements (POUR LES TESTS)
-  // const eventsJSON = [
-  //   {
-  //     id: 0,
-  //     title: 'Securities Regulation',
-  //     description:
-  //       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. #0',
-  //     type: 1,
-  //     allDay: true,
-  //     start: new Date(2023, 7, 7), // 7 août 2023
-  //     end: new Date(2023, 7, 7),
-  //   },
-  //   {
-  //     id: 1,
-  //     title: 'Corporate Finance',
-  //     description:
-  //       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. #1',
-  //     type: 2,
-  //     start: new Date(2023, 7, 8, 20), // 8 août 2023, 15h00
-  //     end: new Date(2023, 7, 10, 18), // 10 août 2023, 18h00
-  //   },
-  //   {
-  //     id: 2,
-  //     title: 'Corporate Finance',
-  //     description:
-  //       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. #2',
-  //     type: 1,
-  //     start: new Date(2023, 7, 7, 10), //7 août 2023, 10h00
-  //     end: new Date(2023, 7, 7, 14), // 7 août 2023, 14h00
-  //   },
-  //   {
-  //     id: 3,
-  //     title: 'France 2',
-  //     description:
-  //       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. #3',
-  //     type: 1,
-  //     start: new Date(2023, 7, 4, 0),
-  //     end: new Date(2023, 7, 4, 19),
-  //   },
-  //   // Ajouter plus d'événements ici pour les tests
-  // ]
-
-  // Obtenir la date actuelle et la stocker dans l'état
-  const [currentDate, setCurrentDate] = useState(new Date())
 
   // Fonction pour passer à la semaine/jour suivant
   const nextPeriod = () => {
@@ -155,7 +119,8 @@ function Calendar() {
         day,
         dateNum: date.getDate(),
         dateDay: day.charAt(0).toUpperCase() + day.slice(1),
-        events: eventsJSON
+        events: eventsJSON // Récupère les événements de la journée
+          // Filtre les événements pour n'afficher que ceux de la journée
           .filter((event) => {
             const startDay = new Date(event.start)
             console.log('startDay', startDay)
@@ -172,7 +137,6 @@ function Calendar() {
               date.getMonth() === event.start.getMonth() &&
               date.getFullYear() === event.start.getFullYear()
             if (event.allDay) {
-              // Pour les événements sur toute la journée, utilisez 0 pour l'heure de début et 23 pour l'heure de fin
               return {
                 ...event,
                 showTitle,
@@ -209,8 +173,6 @@ function Calendar() {
     },
   )
 
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
-
   // Ecouteur pour le redimensionnement de la fenêtre
   useEffect(() => {
     const handleResize = () => {
@@ -221,9 +183,6 @@ function Calendar() {
       window.removeEventListener('resize', handleResize)
     }
   }, [])
-
-  const [isModalOpen, setModalOpen] = useState(false) // useState pour ouvrir/fermer la modale
-  const [modalEvent, setModalEvent] = useState(null) // useState pour stocker l'événement sélectionné dans la modale
 
   // Ouvrir la modale et stocker l'événement sélectionné
   const openModal = (event) => {
@@ -331,31 +290,24 @@ function Calendar() {
           </div>
         </div>
       </div>
-      {isModalOpen && (
-        <div className="modal is-active">
-          <div className="modal-background" onClick={closeModal}></div>
-          <div className="modal-card">
-            <header className="modal-card-head">
-              <p className="modal-card-title">{modalEvent?.title}</p>
-              <button
-                className="delete"
-                aria-label="close"
-                onClick={closeModal}
-              ></button>
-            </header>
-            <section className="modal-card-body">
-              <h2>Description:</h2>
-              <p>{modalEvent?.description}</p>
-              <h3>Type:</h3>
-              <p>{eventType(modalEvent?.type, 'string')}</p>
-              <h3>Date de début:</h3>
-              <p>{modalEvent?.start.toLocaleString()}</p>
-              <h3>Date de fin:</h3>
-              <p>{modalEvent?.end.toLocaleString()}</p>
-            </section>
-          </div>
-        </div>
-      )}
+
+      <Modal
+        title={modalEvent?.title || "Détails de l'événement"}
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        content={
+          <>
+            <h2>Description:</h2>
+            <p>{modalEvent?.description}</p>
+            <h3>Type:</h3>
+            <p>{eventType(modalEvent?.type, 'string')}</p>
+            <h3>Date de début:</h3>
+            <p>{modalEvent?.start.toLocaleString()}</p>
+            <h3>Date de fin:</h3>
+            <p>{modalEvent?.end.toLocaleString()}</p>
+          </>
+        }
+      />
     </div>
   )
 }

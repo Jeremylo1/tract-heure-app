@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useFetchHasura } from '../utils/react/hooks'
 import { formatDate } from '../utils/reusable/functions'
 import Accordion from '../components/accordion'
+import Modal from '../components/modal'
 import CustomButton from '../components/button'
 import styled from 'styled-components'
 import StyledTitlePage from '../utils/styles/atoms'
@@ -47,6 +48,8 @@ function Inventory() {
   const [firstLoading, setFirstLoading] = useState(true)
   //Pour stocker les données filtrées.
   const [filteredMachineryData, setFilteredMachineryData] = useState([])
+  //Hook pour la gestion de la modale.
+  const [isModalOpen, setModalOpen] = useState(false)
 
   //Permet de récupérer la liste des catégories depuis Hasura.
   const {
@@ -248,13 +251,25 @@ function Inventory() {
           </CustomButton>
         </p>
         <p className="control">
-          <CustomButton
+          {/* <CustomButton
             to="/"
             color={colors.greenButton}
             hovercolor={colors.greenButtonHover}
           >
             Réserver
-          </CustomButton>
+          </CustomButton> */}
+          <button onClick={() => setModalOpen(true)}>Réserver</button>
+          <Modal
+            title="Titre de la Modal"
+            content={
+              <div>
+                Contenu de la modal. Vous pouvez mettre ici du texte, des
+                images, des composants, etc.
+              </div>
+            }
+            isOpen={isModalOpen}
+            onClose={() => setModalOpen(false)}
+          />
         </p>
       </div>
     )
@@ -286,6 +301,9 @@ function Inventory() {
           </div>
         </div>
       </div>
+
+      {/* MODAL DE RÉSERVATION */}
+      <Modal content={<div></div>} />
     </div>
   )
 }
