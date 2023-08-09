@@ -7,6 +7,7 @@ import Accordion from '../components/accordion'
 import CustomButton from '../components/button'
 import styled from 'styled-components'
 import StyledTitlePage from '../utils/styles/atoms'
+import colors from '../utils/styles/color'
 import '../styles/inventory.css'
 
 //Style du wrapper des accordéons.
@@ -16,16 +17,7 @@ const StyledAccordionWrapper = styled.div`
 
 //Style des titres de la liste.
 const StyledText = styled.span`
-  color: #2daf38;
-`
-
-//Style d'un élément de la liste.
-const StyledListButton = styled.li`
-  &::before {
-    content: '•';
-    padding-right: 8px;
-    color: grey;
-  }
+  color: ${colors.panelTitle};
 `
 
 function Inventory() {
@@ -196,18 +188,18 @@ function Inventory() {
     return (
       <ul>
         {machinery[column_model] ? (
-          <StyledListButton>
+          <li className="StyledListButton">
             <StyledText>Numéro de modèle :</StyledText>{' '}
             {`${machinery[column_model]}`}
-          </StyledListButton>
+          </li>
         ) : null}
         {machinery[column_serial_number] ? (
-          <StyledListButton>
+          <li className="StyledListButton">
             <StyledText>Numéro de série :</StyledText>{' '}
             {`${machinery[column_serial_number]}`}
-          </StyledListButton>
+          </li>
         ) : null}
-        <StyledListButton>
+        <li className="StyledListButton">
           {status_loading ? (
             <i>Chargement du statut ...</i>
           ) : status_error ? (
@@ -222,36 +214,36 @@ function Inventory() {
               }`}
             </span>
           )}
-        </StyledListButton>
+        </li>
         {machinery[column_hours] ? (
-          <StyledListButton>
+          <li className="StyledListButton">
             <StyledText>Utilisation accumulée :</StyledText>{' '}
             {`${machinery[column_hours]} heures`}
-          </StyledListButton>
+          </li>
         ) : null}
         {machinery[column_date] ? (
-          <StyledListButton>
+          <li className="StyledListButton">
             <StyledText>Date d'acquisition :</StyledText>{' '}
             {`${formatDate(machinery[column_date])}`}
-          </StyledListButton>
+          </li>
         ) : null}
         {machinery[column_price] ? (
-          <StyledListButton>
+          <li className="StyledListButton">
             <StyledText>Prix d'achat :</StyledText>{' '}
             {`${machinery[column_price]}$`}
-          </StyledListButton>
+          </li>
         ) : null}
         {machinery[column_comment] ? (
-          <StyledListButton>
+          <li className="StyledListButton">
             <StyledText>Commentaire :</StyledText>{' '}
             {`${machinery[column_comment]}`}
-          </StyledListButton>
+          </li>
         ) : null}
         {machinery[column_location] ? (
-          <StyledListButton>
+          <li className="StyledListButton">
             <StyledText>Localisation :</StyledText>{' '}
             {`${machinery[column_location]}`}
-          </StyledListButton>
+          </li>
         ) : null}
       </ul>
     )
@@ -262,17 +254,29 @@ function Inventory() {
     return (
       <div className="grouped-buttons">
         <p className="control">
-          <CustomButton to="/" color="blue">
+          <CustomButton
+            to="/"
+            color={colors.blueButton}
+            hoverColor={colors.blueButtonHover}
+          >
             Disponibilités
           </CustomButton>
         </p>
         <p className="control">
-          <CustomButton to="/" color="blue">
+          <CustomButton
+            to="/"
+            color={colors.blueButton}
+            hoverColor={colors.blueButtonHover}
+          >
             Rapport
           </CustomButton>
         </p>
         <p className="control">
-          <CustomButton to="/" color="green">
+          <CustomButton
+            to="/"
+            color={colors.greenButton}
+            hoverColor={colors.greenButtonHover}
+          >
             Réserver
           </CustomButton>
         </p>

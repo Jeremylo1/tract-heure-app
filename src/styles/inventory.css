@@ -1,7 +1,15 @@
+/*Pour enlever la marge et les puces par défaut.*/
 .content ul {
     margin-top: 0;
     list-style-type: none;
     margin-left: 6px;
+}
+
+/*Style d'un élément d'une liste.*/
+.StyledListButton::before {
+    content: '•';
+    padding-right: 8px;
+    color: grey;
 }
 
 .grouped-buttons {

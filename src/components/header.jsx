@@ -1,10 +1,10 @@
 import React from 'react'
-import { useState, useEffect, useContext } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import LogoTxt from '../assets/logo-texte.png'
 import styled from 'styled-components'
 import 'bulma/css/bulma.min.css'
-import { AuthContext } from '../utils/react/context'
+import { useConnexion } from '../utils/react/hooks'
 /*Importation des icônes*/
 import Icon from '@mdi/react'
 import { mdiHome } from '@mdi/js'
@@ -29,21 +29,12 @@ const StyledLogoDesktop = styled.img`
 
 //Entête pour naviguer entre les pages selon le type d'appareil.
 function Header() {
-  const { isConnected, setLogout } = useContext(AuthContext)
-  const { userType } = useContext(AuthContext)
+  const { isConnected, userType, handleLogout } = useConnexion()
 
   //Fonction pour changer d'onglet.
   const [activeTab, setActiveTab] = useState('accueil')
   const handleTabClick = (tabId) => {
     setActiveTab(tabId)
-  }
-
-  const navigate = useNavigate()
-
-  //Fonction pour se déconnecter (!!!!!!!!!).
-  const handleLogout = () => {
-    setLogout()
-    navigate('/login')
   }
 
   //Affichage selon le type d'appareil.

@@ -1,9 +1,17 @@
+import React from 'react'
+import { useConnexion } from '../utils/react/hooks'
+
 function Burger() {
-  return (
+  const { isConnected, handleLogout } = useConnexion()
+
+  return isConnected ? (
+    /*Si l'utilisateur est connecté, alors déconnexion.*/
     <div>
-      <h1>Menu Burger</h1>
+      <button onClick={handleLogout} className="button is-info">
+        <strong>Déconnexion</strong>
+      </button>
     </div>
-  )
+  ) : null
 }
 
 export default Burger
