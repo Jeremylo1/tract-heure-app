@@ -12,9 +12,10 @@
 
 .grouped-buttons .control {
     margin: 0 5px;
+    margin-bottom: 0 !important;
 }
 
 /* Empêcher la marge inférieure pour le dernier élément */
-.content p:not(:last-child) {
+/* .content p:not(:last-child) {
     margin-bottom: 0;
-}
+} */
