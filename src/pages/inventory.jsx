@@ -17,16 +17,7 @@ const StyledAccordionWrapper = styled.div`
 
 //Style des titres de la liste.
 const StyledText = styled.span`
-  color: #2daf38;
-`
-
-//Style d'un élément de la liste.
-const StyledListButton = styled.li`
-  &::before {
-    content: '•';
-    padding-right: 8px;
-    color: grey;
-  }
+  color: ${colors.panelTitle};
 `
 
 function Inventory() {
@@ -197,18 +188,18 @@ function Inventory() {
     return (
       <ul>
         {machinery[column_model] ? (
-          <StyledListButton>
+          <li>
             <StyledText>Numéro de modèle :</StyledText>{' '}
             {`${machinery[column_model]}`}
-          </StyledListButton>
+          </li>
         ) : null}
         {machinery[column_serial_number] ? (
-          <StyledListButton>
+          <li>
             <StyledText>Numéro de série :</StyledText>{' '}
             {`${machinery[column_serial_number]}`}
-          </StyledListButton>
+          </li>
         ) : null}
-        <StyledListButton>
+        <li>
           {status_loading ? (
             <i>Chargement du statut ...</i>
           ) : status_error ? (
@@ -223,36 +214,36 @@ function Inventory() {
               }`}
             </span>
           )}
-        </StyledListButton>
+        </li>
         {machinery[column_hours] ? (
-          <StyledListButton>
+          <li>
             <StyledText>Utilisation accumulée :</StyledText>{' '}
             {`${machinery[column_hours]} heures`}
-          </StyledListButton>
+          </li>
         ) : null}
         {machinery[column_date] ? (
-          <StyledListButton>
+          <li>
             <StyledText>Date d'acquisition :</StyledText>{' '}
             {`${formatDate(machinery[column_date])}`}
-          </StyledListButton>
+          </li>
         ) : null}
         {machinery[column_price] ? (
-          <StyledListButton>
+          <li>
             <StyledText>Prix d'achat :</StyledText>{' '}
             {`${machinery[column_price]}$`}
-          </StyledListButton>
+          </li>
         ) : null}
         {machinery[column_comment] ? (
-          <StyledListButton>
+          <li>
             <StyledText>Commentaire :</StyledText>{' '}
             {`${machinery[column_comment]}`}
-          </StyledListButton>
+          </li>
         ) : null}
         {machinery[column_location] ? (
-          <StyledListButton>
+          <li>
             <StyledText>Localisation :</StyledText>{' '}
             {`${machinery[column_location]}`}
-          </StyledListButton>
+          </li>
         ) : null}
       </ul>
     )
