@@ -13,11 +13,10 @@ function Calendar() {
   //Lien de l'API GraphQL à utiliser.
   const api_url = 'https://champion-tiger-15.hasura.app/v1/graphql'
   //Nom des tables à utiliser.
-  const table_machinerie = 'machinerie'
-  const table_reservation = 'machinerie_reservation'
+  const vue_reservation = 'machinerie_reservations_view'
   //Nom des colonnes à utiliser.
   const column_id = 'id'
-  const column_id_machinerie = 'machinerie_id'
+  const column_nom_machinerie = 'nom'
   const column_date_debut = 'date_debut'
   const column_date_fin = 'date_fin'
   const column_type = 'type'
@@ -34,7 +33,7 @@ function Calendar() {
     error: reservation_error,
   } = useFetchHasura(
     api_url,
-    `{${table_reservation}{${column_id} ${column_id_machinerie} ${column_date_debut} ${column_date_fin} ${column_type} ${column_description}}}`,
+    `{${vue_reservation}{${column_id} ${column_nom_machinerie} ${column_date_debut} ${column_date_fin} ${column_type} ${column_description}}}`,
     firstLoading,
   )
 
@@ -67,14 +66,14 @@ function Calendar() {
   }
 
   const formatEvents = (data) => {
-    if (!data || !data[table_reservation]) return []
+    if (!data || !data[vue_reservation]) return []
 
-    return data[table_reservation].map((event) => {
+    return data[vue_reservation].map((event) => {
       return {
         id: event[column_id],
         // title = eventType + nom de la machinerie : "event-reservation - Tracteur 1"
         title: `${eventType(event[column_type], 'string')} - ${
-          event[column_id_machinerie]
+          event[column_nom_machinerie]
         }`,
         description: event[column_description].join(', '),
         type: event[column_type],
