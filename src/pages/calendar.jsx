@@ -159,7 +159,6 @@ function Calendar() {
                   ? event.end.getHours()
                   : 24
               console.log('info', event)
-              //Si endHour = 23h59 et 59 secondes alors bottom = 0px
 
               return {
                 ...event,

@@ -253,22 +253,11 @@ function Inventory() {
           <CustomButton
             color={colors.greenButton}
             hovercolor={colors.greenButtonHover}
-            onClick={() => setModalOpen(true)}
+            functionclick={() => setModalOpen(true)}
           >
             Réserver
           </CustomButton>
           {/* <button>Réserver</button> */}
-          <Modal
-            title="Titre de la Modal"
-            content={
-              <div>
-                Contenu de la modal. Vous pouvez mettre ici du texte, des
-                images, des composants, etc.
-              </div>
-            }
-            isOpen={isModalOpen}
-            onClose={() => setModalOpen(false)}
-          />
         </p>
       </div>
     )
@@ -302,7 +291,17 @@ function Inventory() {
       </div>
 
       {/* MODAL DE RÉSERVATION */}
-      <Modal content={<div></div>} />
+      <Modal
+        title="Titre de la Modal"
+        content={
+          <div>
+            Contenu de la modal. Vous pouvez mettre ici du texte, des images,
+            des composants, etc.
+          </div>
+        }
+        isOpen={isModalOpen}
+        onClose={() => setModalOpen(false)}
+      />
     </div>
   )
 }

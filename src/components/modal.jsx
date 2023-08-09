@@ -17,9 +17,7 @@ function Modal({ content, title, isOpen, onClose }) {
                 onClick={onClose}
               ></button>
             </header>
-            <section className="modal-card-body">
-              <div>{content}</div>
-            </section>
+            <section className="modal-card-body">{content}</section>
           </div>
         </div>
       ) : null}
@@ -29,10 +27,10 @@ function Modal({ content, title, isOpen, onClose }) {
 
 //Définition des props de la modale.
 Modal.propTypes = {
-  content: PropTypes.node.isRequired,
-  title: PropTypes.string.isRequired,
-  isOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
+  content: PropTypes.node,
+  title: PropTypes.string,
+  isOpen: PropTypes.bool,
+  onClose: PropTypes.func,
 }
 
 export default Modal
