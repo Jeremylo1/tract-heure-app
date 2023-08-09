@@ -7,6 +7,7 @@ import Accordion from '../components/accordion'
 import CustomButton from '../components/button'
 import styled from 'styled-components'
 import StyledTitlePage from '../utils/styles/atoms'
+import colors from '../utils/styles/color'
 import '../styles/inventory.css'
 
 //Style du wrapper des accordéons.
@@ -262,17 +263,29 @@ function Inventory() {
     return (
       <div className="grouped-buttons">
         <p className="control">
-          <CustomButton to="/" color="blue">
+          <CustomButton
+            to="/"
+            color={colors.blueButton}
+            hoverColor={colors.blueButtonHover}
+          >
             Disponibilités
           </CustomButton>
         </p>
         <p className="control">
-          <CustomButton to="/" color="blue">
+          <CustomButton
+            to="/"
+            color={colors.blueButton}
+            hoverColor={colors.blueButtonHover}
+          >
             Rapport
           </CustomButton>
         </p>
         <p className="control">
-          <CustomButton to="/" color="green">
+          <CustomButton
+            to="/"
+            color={colors.greenButton}
+            hoverColor={colors.greenButtonHover}
+          >
             Réserver
           </CustomButton>
         </p>
