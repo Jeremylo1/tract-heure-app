@@ -86,7 +86,8 @@ function Calendar() {
         title: `${eventType(event[column_type], 'string')} - ${
           event[column_nom_machinerie]
         }`,
-        description: event[column_description].join(', '),
+        //description can be null
+        description: event[column_description] || '',
         type: event[column_type],
         start: new Date(event[column_date_debut]),
         end: new Date(event[column_date_fin]),

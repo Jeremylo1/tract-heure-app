@@ -1,8 +1,10 @@
 import React, { useEffect, useState, useContext } from 'react'
+import { useMutationHasura } from '../utils/react/hooks'
 import Modal from '../components/modal'
 import CustomButton from '../components/button'
 import ShowMachinery from '../components/showmachinery'
 import { ScreenContext } from '../utils/react/context'
+import { toISODateTime } from '../utils/reusable/functions'
 /*Style*/
 import '../styles/inventory.css'
 import colors from '../utils/styles/color'
@@ -15,6 +17,11 @@ function Inventory() {
   const [selectedMachinery, setSelectedMachinery] = useState(null)
   //Pour savoir si c'est un appareil mobile.
   const { isMobile } = useContext(ScreenContext)
+  //Pour stocker les dates et heures de réservation.
+  const [startDate, setStartDate] = useState(new Date())
+  const [startTime, setStartTime] = useState(new Date())
+  const [endDate, setEndDate] = useState(new Date())
+  const [endTime, setEndTime] = useState(new Date())
 
   //Affichage des boutons du bas de l'accordéon.
   function groupButtons(machinery) {
@@ -54,11 +61,49 @@ function Inventory() {
     )
   }
 
-  const [startDate, setStartDate] = useState(null)
-  const [startTime, setStartTime] = useState(null)
-  const [endDate, setEndDate] = useState(null)
-  const [endTime, setEndTime] = useState(null)
+  //Permet d'envoyer une requête de mutation (INSERT, UPDATE, DELETE) à Hasura.
+  const { doMutation, error_mutation } = useMutationHasura(
+    'https://champion-tiger-15.hasura.app/v1/graphql',
+  )
 
+  /*Permet d'ajouter un todo à la base de données. 
+  Le titre du todo est récupéré depuis le state `title`.*/
+  const addReservation = async () => {
+    const mutation = `
+      mutation InsertMachinerieReservation($machineryId: Int!, $userId: String!, $startDate: timestamptz!, $endDate: timestamptz!) {
+        insert_machinerie_reservation(objects:[{machinerie_id:$machineryId, utilisateur_id:$userId, date_debut: $startDate, date_fin: $endDate}]) {
+          affected_rows
+        }
+      }
+    `
+
+    try {
+      const responseDataMutation = await doMutation(mutation, {
+        machineryId: selectedMachinery.id,
+        userId: '1', // TODO: Remplacer par l'ID de l'utilisateur connecté
+        // Convertir les dates et heures en objets Date format ISO pour faciliter la comparaison avec " "
+        startDate: toISODateTime(startDate, startTime),
+        endDate: toISODateTime(endDate, endTime),
+      })
+      if (responseDataMutation) {
+        // Réinitialise les valeurs après la soumission
+        setStartDate(null)
+        setStartTime(null)
+        setEndDate(null)
+        setEndTime(null)
+
+        // Ferme la modale
+        setModalOpen(false)
+      }
+    } catch (err) {
+      console.error(err)
+      alert(
+        "Une erreur s'est produite lors de l'enregistrement de la réservation.",
+      )
+    }
+  }
+
+  // Gestion de réservation de la machinerie
   function handleReservation(e) {
     e.preventDefault()
 
@@ -91,11 +136,7 @@ function Inventory() {
 
     // Ferme la modale
     setModalOpen(false)
-    console.log('Réservation effectuée !')
-    console.log('Date de début : ' + startDate)
-    console.log('Heure de début : ' + startTime)
-    console.log('Date de fin : ' + endDate)
-    console.log('Heure de fin : ' + endTime)
+    addReservation()
   }
 
   //Affichage selon le type d'appareil.

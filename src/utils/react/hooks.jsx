@@ -11,10 +11,9 @@ export function useFetchHasura(url, query, stopFetch = false) {
   const reload = () => setReloadTimestamp(Date.now()) //Fonction pour déclencher un rechargement.
 
   useEffect(() => {
-    console.log('test1', stopFetch) //!DEBUG
     if (!url || !query || stopFetch) return //Aucune action si l'url ou la requête est indéfinie ou si le rechargement est désactivé.
     setLoading(true) //Données en cours de chargement.
-    console.log('test0', query) //!DEBUG
+    console.log('query', query) //!DEBUG
 
     async function fetchData() {
       try {
@@ -43,7 +42,6 @@ export function useFetchHasura(url, query, stopFetch = false) {
 
         setData(responseData.data)
       } catch (err) {
-        console.error(err)
         setError(true)
       } finally {
         setLoading(false) //Données plus en cours de chargement.
@@ -63,6 +61,7 @@ export function useMutationHasura(url) {
 
   async function doMutation(mutation, variables) {
     try {
+      console.log('mutation', mutation, variables) //!DEBUG
       const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -88,7 +87,6 @@ export function useMutationHasura(url) {
 
       return responseData.data
     } catch (err) {
-      console.error(err)
       setError(true)
     }
   }

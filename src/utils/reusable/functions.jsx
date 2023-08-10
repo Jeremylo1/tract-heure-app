@@ -23,3 +23,15 @@ function formatDate(dateString) {
 }
 
 export { formatDate }
+
+//Permet de transformer une date + heure au format ISO.
+//Par exemple: 2023-08-03 16:05 => 2023-08-03T16:05:00.000Z.
+function toISODateTime(dateString, timeString) {
+  const date = new Date(dateString + ' ' + timeString)
+  const isoDateTime = date.toISOString()
+  console.log(isoDateTime)
+  console.log(isoDateTime.slice(0, -1))
+  return isoDateTime.slice(0, -1)
+}
+
+export { toISODateTime }
