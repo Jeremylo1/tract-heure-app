@@ -160,7 +160,7 @@ function Inventory() {
                   key={machinery[column_id]}
                   title={`${machinery[column_name]}`}
                   content={panelContent(machinery)}
-                  others={groupButtons()}
+                  others={groupButtons(machinery)}
                 />
               ))
             ) : (
@@ -227,9 +227,9 @@ function Inventory() {
       </ul>
     )
   }
-
+  const [selectedMachinery, setSelectedMachinery] = useState(null)
   //Affichage des boutons du bas de l'accordéon.
-  function groupButtons() {
+  function groupButtons(machinery) {
     return (
       <div className="grouped-buttons">
         <p className="control">
@@ -253,7 +253,10 @@ function Inventory() {
           <CustomButton
             color={colors.greenButton}
             hovercolor={colors.greenButtonHover}
-            functionclick={() => setModalOpen(true)}
+            functionclick={() => {
+              setSelectedMachinery(machinery)
+              setModalOpen(true)
+            }}
           >
             Réserver
           </CustomButton>
@@ -276,7 +279,6 @@ function Inventory() {
           </div>
         </div>
       </div>
-
       {/* DESIGN POUR MOBILE */}
       <div className="is-hidden-desktop">
         <div className="columns is-mobile">
@@ -288,18 +290,26 @@ function Inventory() {
           </div>
         </div>
       </div>
-
       {/* MODALE DE RÉSERVATION */}
       <Modal
-        title="Titre de la Modal"
+        title={`Détails de la machine: ${
+          selectedMachinery?.[column_name] || 'Non sélectionné'
+        }`}
         content={
-          <div>
-            Contenu de la modal. Vous pouvez mettre ici du texte, des images,
-            des composants, etc.
-          </div>
+          <>
+            <div>Modèle: {selectedMachinery?.[column_model]}</div>
+            <div>
+              Numéro de série: {selectedMachinery?.[column_serial_number]}
+            </div>
+            <div>Statut: {selectedMachinery?.[column_status]}</div>
+            {/* Ajoutez d'autres champs ici selon vos besoins */}
+          </>
         }
         isOpen={isModalOpen}
-        onClose={() => setModalOpen(false)}
+        onClose={() => {
+          setModalOpen(false)
+          setSelectedMachinery(null) // Réinitialise la machinerie sélectionnée
+        }}
       />
     </div>
   )
