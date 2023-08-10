@@ -27,11 +27,11 @@ function Calendar() {
 
   //Pour savoir si c'est la première fois qu'on charge les données.
   const [firstLoading, setFirstLoading] = useState(true)
-  // Obtenir la date actuelle et la stocker dans l'état
+  //Obtenir la date actuelle et la stocker dans l'état.
   const [currentDate, setCurrentDate] = useState(new Date())
-  // useState pour ouvrir/fermer la modale
+  //useState pour ouvrir/fermer la modale.
   const [isModalOpen, setModalOpen] = useState(false)
-  // useState pour stocker l'événement sélectionné dans la modale
+  //useState pour stocker l'événement sélectionné dans la modale.
   const [modalEvent, setModalEvent] = useState(null)
   //Pour savoir si c'est un appareil mobile.
   const { isMobile } = useContext(ScreenContext)
@@ -52,7 +52,7 @@ function Calendar() {
     setFirstLoading(false)
   }, [])
 
-  // Convert events type to string ( 1 = réservation, 2 = maintenance)
+  // Convert events type to string ( 1 = réservation, 2 = maintenance) !!! À TRADUIRE !!!
   const eventType = (type, mode) => {
     if (mode === 'class') {
       switch (type) {
@@ -75,7 +75,7 @@ function Calendar() {
     }
   }
 
-  // Permet de formater les données pour l'affichage des événements dans le calendrier
+  //Permet de formater les données pour l'affichage des événements dans le calendrier.
   const formatEvents = (data) => {
     if (!data || !data[vue_reservation]) return []
 
@@ -95,21 +95,21 @@ function Calendar() {
 
   const eventsJSON = formatEvents(reservation_data)
 
-  // Fonction pour passer à la semaine/jour suivant
+  //Fonction pour passer à la semaine/jour suivant(e).
   const nextPeriod = () => {
     const newDate = new Date(currentDate)
     newDate.setDate(newDate.getDate() + (isMobile ? 1 : 7))
     setCurrentDate(newDate)
   }
 
-  // Fonction pour passer à la semaine/jour précédente
+  //Fonction pour passer à la semaine/jour précédent(e).
   const prevPeriod = () => {
     const newDate = new Date(currentDate)
     newDate.setDate(newDate.getDate() - (isMobile ? 1 : 7))
     setCurrentDate(newDate)
   }
 
-  // Créer un tableau pour stocker les jours de la semaine
+  //Créer un tableau pour stocker les jours de la semaine.
   const daysOfWeek = ['lun', 'mar', 'mer', 'jeu', 'ven', 'sam', 'dim'].map(
     (day, index) => {
       const date = new Date(currentDate)
@@ -120,15 +120,15 @@ function Calendar() {
         day,
         dateNum: date.getDate(),
         dateDay: day.charAt(0).toUpperCase() + day.slice(1),
-        events: eventsJSON // Récupère les événements de la journée
-          // Filtre les événements pour n'afficher que ceux de la journée
+        events: eventsJSON //Récupère les événements de la journée.
+          //Filtre les événements pour n'afficher que ceux de la journée.
           .filter((event) => {
             const startDay = new Date(event.start)
             console.log('startDay', startDay)
-            startDay.setHours(0, 0, 0, 0) // Définit le début de la journée pour l'événement
+            startDay.setHours(0, 0, 0, 0) //Définit le début de la journée pour l'événement.
             const endDay = new Date(event.end)
             console.log('endDay', endDay)
-            endDay.setHours(23, 59, 59, 999) // Inclut la fin de la journée dans l'événement
+            endDay.setHours(23, 59, 59, 999) //Inclut la fin de la journée dans l'événement.
 
             return date >= startDay && date <= endDay
           })
@@ -138,7 +138,7 @@ function Calendar() {
               date.getMonth() === event.start.getMonth() &&
               date.getFullYear() === event.start.getFullYear()
 
-            // Vérifie si l'événement est sur toute la journée
+            //Vérifie si l'événement dure toute la journée.
             const allDay =
               event.start.getDay() === event.end.getDay() &&
               event.start.getMonth() === event.end.getMonth() &&
