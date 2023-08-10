@@ -136,7 +136,19 @@ function Calendar() {
               date.getDate() === event.start.getDate() &&
               date.getMonth() === event.start.getMonth() &&
               date.getFullYear() === event.start.getFullYear()
-            if (event.allDay) {
+
+            // Vérifie si l'événement est sur toute la journée
+            const allDay =
+              event.start.getDay() === event.end.getDay() &&
+              event.start.getMonth() === event.end.getMonth() &&
+              event.start.getFullYear() === event.end.getFullYear() &&
+              event.start.getHours() === 0 &&
+              event.start.getMinutes() === 0 &&
+              event.start.getSeconds() === 0 &&
+              event.end.getHours() === 23 &&
+              event.end.getMinutes() === 59 &&
+              event.end.getSeconds() === 59
+            if (allDay) {
               return {
                 ...event,
                 showTitle,
