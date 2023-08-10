@@ -207,7 +207,7 @@ function ShowMachinery({ functionButtons }) {
                 key={machinery[column_id]}
                 title={`${machinery[column_name]}`}
                 content={panelContent(machinery)}
-                others={functionButtons()}
+                others={functionButtons(machinery)}
               />
             ))
           ) : (

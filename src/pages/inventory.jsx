@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import Modal from '../components/modal'
 import CustomButton from '../components/button'
@@ -10,6 +10,7 @@ import '../styles/inventory.css'
 function Inventory() {
   //Hook pour la gestion de la modale.
   const [isModalOpen, setModalOpen] = useState(false)
+  //Hook pour la gestion de la machinerie sélectionnée.
   const [selectedMachinery, setSelectedMachinery] = useState(null)
 
   //Affichage des boutons du bas de l'accordéon.
@@ -108,6 +109,7 @@ function Inventory() {
           </div>
         </div>
       </div>
+
       {/* DESIGN POUR MOBILE */}
       <div className="is-hidden-desktop">
         <div className="columns is-mobile">
@@ -119,12 +121,10 @@ function Inventory() {
           </div>
         </div>
       </div>
-      {/* MODALE DE RÉSERVATION */}
 
+      {/* MODALE DE RÉSERVATION */}
       <Modal
-        title={`Réserver : ${
-          selectedMachinery?.[column_name] || 'Non sélectionné'
-        }`}
+        title={`Réserver : ${selectedMachinery?.nom || 'Non sélectionné'}`}
         content={
           <>
             <form onSubmit={handleReservation}>
@@ -169,7 +169,7 @@ function Inventory() {
         isOpen={isModalOpen}
         onClose={() => {
           setModalOpen(false)
-          setSelectedMachinery(null) // Réinitialise la machinerie sélectionnée
+          setSelectedMachinery(null) //Réinitialise la machinerie sélectionnée.
         }}
       />
     </div>
