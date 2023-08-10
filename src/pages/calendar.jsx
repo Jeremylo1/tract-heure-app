@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react'
-import '../styles/calendar.css'
 import { useFetchHasura } from '../utils/react/hooks'
 import { formatDate } from '../utils/reusable/functions'
 import { ScreenContext } from '../utils/react/context'
-import StyledTitlePage from '../utils/styles/atoms'
 import Modal from '../components/modal'
+/*Style*/
+import StyledTitlePage from '../utils/styles/atoms'
+import '../styles/calendar.css'
 /*Importation des icônes*/
 import Icon from '@mdi/react'
 import { mdiArrowLeftThick } from '@mdi/js'

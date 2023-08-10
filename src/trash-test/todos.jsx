@@ -70,3 +70,71 @@ function TodoList({ todos, showJSON }) {
 }
 
 export default TodoList
+
+/*POURRAIT SERVIR PLUS TARD (NAVBAR) :
+
+  //Fonction pour ouvrir le menu burger.
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const handleMenuToggle = () => {
+    setIsMenuOpen(!isMenuOpen)
+  }
+
+  //Navbar avec menu burger pour téléphone.
+<div className="is-hidden-desktop">
+        <div>
+          <img src={LogoTxt} alt="Logo" width="150px" />
+        </div>
+        <nav
+          id="navbar"
+          className="bd-navbar navbar"
+          role="navigation"
+          aria-label="main navigation"
+        >
+          <div className="navbar-brand">
+            <Link to="/" className="navbar-item">
+              <Icon path={mdiHome} size={2} color="black" />
+            </Link>
+            <Link to="/inventory" className="navbar-item">
+              <Icon path={mdiTractorVariant} size={2} color="black" />
+            </Link>
+            <Link to="/calendar" className="navbar-item">
+              <Icon path={mdiCalendarMonth} size={2} color="black" />
+            </Link>
+            <button
+              className={`navbar-burger ${isMenuOpen ? 'is-active' : ''}`}
+              aria-label="menu"
+              aria-expanded={isMenuOpen}
+              onClick={handleMenuToggle}
+              data-target="navMenuBurger"
+            >
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+          </div>
+
+          <div
+            id="navMenuBurger"
+            className={`navbar-menu ${isMenuOpen ? 'is-active' : ''}`}
+          >
+            <div className="navbar-start">
+              <Link to="/" className="navbar-item">
+                Profil
+              </Link>
+              <Link to="/" className="navbar-item">
+                Historique
+              </Link>
+              <Link to="/" className="navbar-item">
+                Crédits
+              </Link>
+            </div>
+            <div className="navbar-end">
+              <div className="navbar-item">
+                <div className="button is-primary">
+                  <strong>Se déconnecter</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>*/

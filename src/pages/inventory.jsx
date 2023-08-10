@@ -1,17 +1,20 @@
-import React, { useEffect } from 'react'
-import { useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import Modal from '../components/modal'
 import CustomButton from '../components/button'
-import StyledTitlePage from '../utils/styles/atoms'
-import colors from '../utils/styles/color'
 import ShowMachinery from '../components/showmachinery'
+import { ScreenContext } from '../utils/react/context'
+/*Style*/
 import '../styles/inventory.css'
+import colors from '../utils/styles/color'
+import StyledTitlePage from '../utils/styles/atoms'
 
 function Inventory() {
   //Hook pour la gestion de la modale.
   const [isModalOpen, setModalOpen] = useState(false)
   //Hook pour la gestion de la machinerie sélectionnée.
   const [selectedMachinery, setSelectedMachinery] = useState(null)
+  //Pour savoir si c'est un appareil mobile.
+  const { isMobile } = useContext(ScreenContext)
 
   //Affichage des boutons du bas de l'accordéon.
   function groupButtons(machinery) {

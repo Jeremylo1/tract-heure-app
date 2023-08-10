@@ -46,10 +46,14 @@ export const ScreenContext = createContext()
 //Fonction pour gérer la taille de l'écran.
 export function ScreenProvider({ children }) {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
+  const [isMobileTablet, setIsTabletMobile] = useState(
+    window.innerWidth <= 1023,
+  )
 
   //Fonction pour savoir si c'est un appareil mobile.
   const handleResize = () => {
     setIsMobile(window.innerWidth <= 768)
+    setIsTabletMobile(window.innerWidth <= 1023)
   }
 
   //Ajoute un écouteur d'évènement pour savoir si la taille de l'écran change.
@@ -59,7 +63,7 @@ export function ScreenProvider({ children }) {
   }, [])
 
   return (
-    <ScreenContext.Provider value={{ isMobile }}>
+    <ScreenContext.Provider value={{ isMobile, isMobileTablet }}>
       {children}
     </ScreenContext.Provider>
   )
