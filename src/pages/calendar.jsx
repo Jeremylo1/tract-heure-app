@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import '../styles/calendar.css'
+import React, { useState, useEffect, useContext } from 'react'
 import { useFetchHasura } from '../utils/react/hooks'
 import { formatDate } from '../utils/reusable/functions'
-import StyledTitlePage from '../utils/styles/atoms'
+import { ScreenContext } from '../utils/react/context'
 import Modal from '../components/modal'
+/*Style*/
+import StyledTitlePage from '../utils/styles/atoms'
+import '../styles/calendar.css'
 /*Importation des icônes*/
 import Icon from '@mdi/react'
 import { mdiArrowLeftThick } from '@mdi/js'
@@ -26,14 +28,14 @@ function Calendar() {
 
   //Pour savoir si c'est la première fois qu'on charge les données.
   const [firstLoading, setFirstLoading] = useState(true)
-  // Obtenir la date actuelle et la stocker dans l'état
+  //Obtenir la date actuelle et la stocker dans l'état.
   const [currentDate, setCurrentDate] = useState(new Date())
-  // useState pour définir si l'écran est mobile ou non
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
-  // useState pour ouvrir/fermer la modale
+  //useState pour ouvrir/fermer la modale.
   const [isModalOpen, setModalOpen] = useState(false)
-  // useState pour stocker l'événement sélectionné dans la modale
+  //useState pour stocker l'événement sélectionné dans la modale.
   const [modalEvent, setModalEvent] = useState(null)
+  //Pour savoir si c'est un appareil mobile.
+  const { isMobile } = useContext(ScreenContext)
 
   //Permet de récupérer la liste des réservations.
   const {
@@ -51,7 +53,7 @@ function Calendar() {
     setFirstLoading(false)
   }, [])
 
-  // Convert events type to string ( 1 = réservation, 2 = maintenance)
+  // Convert events type to string ( 1 = réservation, 2 = maintenance) !!! À TRADUIRE !!!
   const eventType = (type, mode) => {
     if (mode === 'class') {
       switch (type) {
@@ -74,7 +76,7 @@ function Calendar() {
     }
   }
 
-  // Permet de formater les données pour l'affichage des événements dans le calendrier
+  //Permet de formater les données pour l'affichage des événements dans le calendrier.
   const formatEvents = (data) => {
     if (!data || !data[vue_reservation]) return []
 
@@ -95,21 +97,21 @@ function Calendar() {
 
   const eventsJSON = formatEvents(reservation_data)
 
-  // Fonction pour passer à la semaine/jour suivant
+  //Fonction pour passer à la semaine/jour suivant(e).
   const nextPeriod = () => {
     const newDate = new Date(currentDate)
     newDate.setDate(newDate.getDate() + (isMobile ? 1 : 7))
     setCurrentDate(newDate)
   }
 
-  // Fonction pour passer à la semaine/jour précédente
+  //Fonction pour passer à la semaine/jour précédent(e).
   const prevPeriod = () => {
     const newDate = new Date(currentDate)
     newDate.setDate(newDate.getDate() - (isMobile ? 1 : 7))
     setCurrentDate(newDate)
   }
 
-  // Créer un tableau pour stocker les jours de la semaine
+  //Créer un tableau pour stocker les jours de la semaine.
   const daysOfWeek = ['lun', 'mar', 'mer', 'jeu', 'ven', 'sam', 'dim'].map(
     (day, index) => {
       const date = new Date(currentDate)
@@ -120,15 +122,15 @@ function Calendar() {
         day,
         dateNum: date.getDate(),
         dateDay: day.charAt(0).toUpperCase() + day.slice(1),
-        events: eventsJSON // Récupère les événements de la journée
-          // Filtre les événements pour n'afficher que ceux de la journée
+        events: eventsJSON //Récupère les événements de la journée.
+          //Filtre les événements pour n'afficher que ceux de la journée.
           .filter((event) => {
             const startDay = new Date(event.start)
             console.log('startDay', startDay)
-            startDay.setHours(0, 0, 0, 0) // Définit le début de la journée pour l'événement
+            startDay.setHours(0, 0, 0, 0) //Définit le début de la journée pour l'événement.
             const endDay = new Date(event.end)
             console.log('endDay', endDay)
-            endDay.setHours(23, 59, 59, 999) // Inclut la fin de la journée dans l'événement
+            endDay.setHours(23, 59, 59, 999) //Inclut la fin de la journée dans l'événement.
 
             return date >= startDay && date <= endDay
           })
@@ -138,7 +140,7 @@ function Calendar() {
               date.getMonth() === event.start.getMonth() &&
               date.getFullYear() === event.start.getFullYear()
 
-            // Vérifie si l'événement est sur toute la journée
+            //Vérifie si l'événement dure toute la journée.
             const allDay =
               event.start.getDay() === event.end.getDay() &&
               event.start.getMonth() === event.end.getMonth() &&
@@ -187,29 +189,18 @@ function Calendar() {
     },
   )
 
-  // Ecouteur pour le redimensionnement de la fenêtre
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768)
-    }
-    window.addEventListener('resize', handleResize)
-    return () => {
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [])
-
-  // Ouvrir la modale et stocker l'événement sélectionné
+  //Ouvrir la modale et stocker l'événement sélectionné.
   const openModal = (event) => {
     setModalEvent(event)
     setModalOpen(true)
   }
 
-  // Fermer la modale
+  //Fermer la modale.
   const closeModal = () => {
     setModalOpen(false)
   }
 
-  // Obtenir le nom du mois
+  //Obtenir le nom du mois.
   const monthName = currentDate.toLocaleDateString('fr-FR', { month: 'long' })
 
   return (

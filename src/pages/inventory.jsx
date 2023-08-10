@@ -1,24 +1,28 @@
-import React, { useEffect } from 'react'
-import { useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { useMutationHasura } from '../utils/react/hooks'
 import Modal from '../components/modal'
 import CustomButton from '../components/button'
-import StyledTitlePage from '../utils/styles/atoms'
-import colors from '../utils/styles/color'
 import ShowMachinery from '../components/showmachinery'
+import { ScreenContext } from '../utils/react/context'
+import { useMutationHasura } from '../utils/react/hooks'
 import { toISODateTime } from '../utils/reusable/functions'
+/*Style*/
 import '../styles/inventory.css'
+import colors from '../utils/styles/color'
+import StyledTitlePage from '../utils/styles/atoms'
 
 function Inventory() {
   //Hook pour la gestion de la modale.
   const [isModalOpen, setModalOpen] = useState(false)
   //Hook pour la gestion de la machinerie sélectionnée.
   const [selectedMachinery, setSelectedMachinery] = useState(null)
-  // Hook pour la gestion des dates et heures de la réservation
-  const [startDate, setStartDate] = useState(null)
-  const [startTime, setStartTime] = useState(null)
-  const [endDate, setEndDate] = useState(null)
-  const [endTime, setEndTime] = useState(null)
+  //Pour savoir si c'est un appareil mobile.
+  const { isMobile } = useContext(ScreenContext)
+  //Pour stocker les dates et heures de réservation.
+  const [startDate, setStartDate] = useState(new Date())
+  const [startTime, setStartTime] = useState(new Date())
+  const [endDate, setEndDate] = useState(new Date())
+  const [endTime, setEndTime] = useState(new Date())
 
   //Affichage des boutons du bas de l'accordéon.
   function groupButtons(machinery) {

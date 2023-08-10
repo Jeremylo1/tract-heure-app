@@ -1,10 +1,11 @@
-import React from 'react'
-import { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
+import { useConnexion } from '../utils/react/hooks'
+import { ScreenContext } from '../utils/react/context'
+/*Style*/
 import LogoTxt from '../assets/logo-texte.png'
 import styled from 'styled-components'
 import 'bulma/css/bulma.min.css'
-import { useConnexion } from '../utils/react/hooks'
 /*Importation des icônes*/
 import Icon from '@mdi/react'
 import { mdiHome } from '@mdi/js'
@@ -29,7 +30,10 @@ const StyledLogoDesktop = styled.img`
 
 //Entête pour naviguer entre les pages selon le type d'appareil.
 function Header() {
+  //Pour savoir si l'utilisateur est connecté et son type.
   const { isConnected, userType, handleLogout } = useConnexion()
+  //Pour savoir si c'est un appareil mobile ou une tablette.
+  const { isMobileTablet } = useContext(ScreenContext)
 
   //Fonction pour changer d'onglet.
   const [activeTab, setActiveTab] = useState('accueil')
@@ -40,61 +44,62 @@ function Header() {
   //Affichage selon le type d'appareil.
   return (
     <div>
-      {/* DESIGN POUR MOBILE */}
-      <div className="is-hidden-desktop">
+      {isMobileTablet ? (
+        /* DESIGN POUR MOBILE */
         <div>
-          <StyledLogoTouch src={LogoTxt} alt="Logo" />
-        </div>
-        <div className="tabs is-centered">
-          <ul>
-            <li
-              className={activeTab === 'accueil' ? 'is-active' : ''}
-              onClick={() => handleTabClick('accueil')}
-            >
-              <Link to="/" className="navbar-item">
-                <Icon path={mdiHome} size={1.5} color="black" />
-              </Link>
-            </li>
-            <li
-              className={activeTab === 'catalogue' ? 'is-active' : ''}
-              onClick={() => handleTabClick('catalogue')}
-            >
-              <Link to="/inventory" className="navbar-item">
-                <Icon path={mdiTractorVariant} size={1.5} color="black" />
-              </Link>
-            </li>
-            <li
-              className={activeTab === 'calendrier' ? 'is-active' : ''}
-              onClick={() => handleTabClick('calendrier')}
-            >
-              <Link to="/calendar" className="navbar-item">
-                <Icon path={mdiCalendarMonth} size={1.5} color="black" />
-              </Link>
-            </li>
-            {userType === 'admin' ? (
-              /*Si admin, on affiche l'onglet "dashboard".*/
+          <div>
+            <StyledLogoTouch src={LogoTxt} alt="Logo" />
+          </div>
+          <div className="tabs is-centered">
+            <ul>
               <li
-                className={activeTab === 'dashboard' ? 'is-active' : ''}
-                onClick={() => handleTabClick('dashboard')}
+                className={activeTab === 'accueil' ? 'is-active' : ''}
+                onClick={() => handleTabClick('accueil')}
               >
-                <Link to="/admin" className="navbar-item">
-                  <Icon path={mdiFileEditOutline} size={1.5} color="black" />
+                <Link to="/" className="navbar-item">
+                  <Icon path={mdiHome} size={1.5} color="black" />
                 </Link>
               </li>
-            ) : null}
-            <li
-              className={activeTab === 'burger' ? 'is-active' : ''}
-              onClick={() => handleTabClick('burger')}
-            >
-              <Link to="/others" className="navbar-item">
-                <Icon path={mdiMenu} size={1.5} color="black" />
-              </Link>
-            </li>
-          </ul>
+              <li
+                className={activeTab === 'catalogue' ? 'is-active' : ''}
+                onClick={() => handleTabClick('catalogue')}
+              >
+                <Link to="/inventory" className="navbar-item">
+                  <Icon path={mdiTractorVariant} size={1.5} color="black" />
+                </Link>
+              </li>
+              <li
+                className={activeTab === 'calendrier' ? 'is-active' : ''}
+                onClick={() => handleTabClick('calendrier')}
+              >
+                <Link to="/calendar" className="navbar-item">
+                  <Icon path={mdiCalendarMonth} size={1.5} color="black" />
+                </Link>
+              </li>
+              {userType === 'admin' ? (
+                /*Si admin, on affiche l'onglet "dashboard".*/
+                <li
+                  className={activeTab === 'dashboard' ? 'is-active' : ''}
+                  onClick={() => handleTabClick('dashboard')}
+                >
+                  <Link to="/admin" className="navbar-item">
+                    <Icon path={mdiFileEditOutline} size={1.5} color="black" />
+                  </Link>
+                </li>
+              ) : null}
+              <li
+                className={activeTab === 'burger' ? 'is-active' : ''}
+                onClick={() => handleTabClick('burger')}
+              >
+                <Link to="/others" className="navbar-item">
+                  <Icon path={mdiMenu} size={1.5} color="black" />
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-      {/* DESIGN POUR ORDINATEUR */}
-      <div className="is-hidden-touch">
+      ) : (
+        /* DESIGN POUR ORDINATEUR */
         <nav
           className="navbar is-light"
           role="navigation"
@@ -152,77 +157,9 @@ function Header() {
             </div>
           </div>
         </nav>
-      </div>
+      )}
     </div>
   )
 }
 
 export default Header
-
-/*POURRAIT SERVIR PLUS TARD :
-
-  //Fonction pour ouvrir le menu burger.
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const handleMenuToggle = () => {
-    setIsMenuOpen(!isMenuOpen)
-  }
-
-  //Navbar avec menu burger pour téléphone.
-<div className="is-hidden-desktop">
-        <div>
-          <img src={LogoTxt} alt="Logo" width="150px" />
-        </div>
-        <nav
-          id="navbar"
-          className="bd-navbar navbar"
-          role="navigation"
-          aria-label="main navigation"
-        >
-          <div className="navbar-brand">
-            <Link to="/" className="navbar-item">
-              <Icon path={mdiHome} size={2} color="black" />
-            </Link>
-            <Link to="/inventory" className="navbar-item">
-              <Icon path={mdiTractorVariant} size={2} color="black" />
-            </Link>
-            <Link to="/calendar" className="navbar-item">
-              <Icon path={mdiCalendarMonth} size={2} color="black" />
-            </Link>
-            <button
-              className={`navbar-burger ${isMenuOpen ? 'is-active' : ''}`}
-              aria-label="menu"
-              aria-expanded={isMenuOpen}
-              onClick={handleMenuToggle}
-              data-target="navMenuBurger"
-            >
-              <span></span>
-              <span></span>
-              <span></span>
-            </button>
-          </div>
-
-          <div
-            id="navMenuBurger"
-            className={`navbar-menu ${isMenuOpen ? 'is-active' : ''}`}
-          >
-            <div className="navbar-start">
-              <Link to="/" className="navbar-item">
-                Profil
-              </Link>
-              <Link to="/" className="navbar-item">
-                Historique
-              </Link>
-              <Link to="/" className="navbar-item">
-                Crédits
-              </Link>
-            </div>
-            <div className="navbar-end">
-              <div className="navbar-item">
-                <div className="button is-primary">
-                  <strong>Se déconnecter</strong>
-                </div>
-              </div>
-            </div>
-          </div>
-        </nav>
-      </div>*/
