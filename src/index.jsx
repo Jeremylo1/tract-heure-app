@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Home from './pages/home'
 import Inventory from './pages/inventory'
 import Calendar from './pages/calendar'
-import Dashboard from './pages/dashboard'
+import Dashboard from './pages/admin_dashboard'
 import Burger from './pages/burger'
 import Login from './pages/login'
 import Test from './trash-test/test' //! À SUPPRIMER
