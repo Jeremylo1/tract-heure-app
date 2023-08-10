@@ -4,7 +4,6 @@ import Modal from '../components/modal'
 import CustomButton from '../components/button'
 import ShowMachinery from '../components/showmachinery'
 import { ScreenContext } from '../utils/react/context'
-import { useMutationHasura } from '../utils/react/hooks'
 import { toISODateTime } from '../utils/reusable/functions'
 /*Style*/
 import '../styles/inventory.css'
