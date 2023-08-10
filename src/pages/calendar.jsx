@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import '../styles/calendar.css'
 import { useFetchHasura } from '../utils/react/hooks'
 import { formatDate } from '../utils/reusable/functions'
+import { ScreenContext } from '../utils/react/context'
 import StyledTitlePage from '../utils/styles/atoms'
 import Modal from '../components/modal'
 /*Importation des icônes*/
@@ -28,12 +29,12 @@ function Calendar() {
   const [firstLoading, setFirstLoading] = useState(true)
   // Obtenir la date actuelle et la stocker dans l'état
   const [currentDate, setCurrentDate] = useState(new Date())
-  // useState pour définir si l'écran est mobile ou non
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
   // useState pour ouvrir/fermer la modale
   const [isModalOpen, setModalOpen] = useState(false)
   // useState pour stocker l'événement sélectionné dans la modale
   const [modalEvent, setModalEvent] = useState(null)
+  //Pour savoir si c'est un appareil mobile.
+  const { isMobile } = useContext(ScreenContext)
 
   //Permet de récupérer la liste des réservations.
   const {
@@ -186,29 +187,18 @@ function Calendar() {
     },
   )
 
-  // Ecouteur pour le redimensionnement de la fenêtre
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768)
-    }
-    window.addEventListener('resize', handleResize)
-    return () => {
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [])
-
-  // Ouvrir la modale et stocker l'événement sélectionné
+  //Ouvrir la modale et stocker l'événement sélectionné.
   const openModal = (event) => {
     setModalEvent(event)
     setModalOpen(true)
   }
 
-  // Fermer la modale
+  //Fermer la modale.
   const closeModal = () => {
     setModalOpen(false)
   }
 
-  // Obtenir le nom du mois
+  //Obtenir le nom du mois.
   const monthName = currentDate.toLocaleDateString('fr-FR', { month: 'long' })
 
   return (

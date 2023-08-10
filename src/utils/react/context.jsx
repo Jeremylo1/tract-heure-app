@@ -39,3 +39,28 @@ export function AuthProvider({ children }) {
     </AuthContext.Provider>
   )
 }
+
+//Contexte pour gérer la taille de l'écran.
+export const ScreenContext = createContext()
+
+//Fonction pour gérer la taille de l'écran.
+export function ScreenProvider({ children }) {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
+
+  //Fonction pour savoir si c'est un appareil mobile.
+  const handleResize = () => {
+    setIsMobile(window.innerWidth <= 768)
+  }
+
+  //Ajoute un écouteur d'évènement pour savoir si la taille de l'écran change.
+  useEffect(() => {
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  return (
+    <ScreenContext.Provider value={{ isMobile }}>
+      {children}
+    </ScreenContext.Provider>
+  )
+}
