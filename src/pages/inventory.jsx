@@ -161,7 +161,7 @@ function Inventory() {
             </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* MODALE DE RÉSERVATION */}
       <Modal
