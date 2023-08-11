@@ -1,0 +1,23 @@
+/* =============== RESPONSIVE =============== */
+/* MOBILE */
+.columns-mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.columns-mobile-size {
+    width: 75%;
+    margin: 0 auto;
+}
+
+/* TABLETTE ET ORDINATEUR */
+.columns-tablet-desktop {
+    display: flex;
+    justify-content: center;
+}
+
+.columns-tablet-desktop-size {
+    width: 75%;
+    margin: 0 auto;
+}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import { useMutationHasura } from '../utils/react/hooks'
 import Modal from '../components/modal'
 import CustomButton from '../components/button'
@@ -152,7 +152,7 @@ function Inventory() {
           </div>
         </div>
       ) : (
-        /* DESIGN POUR ORDINATEUR */
+        /* DESIGN POUR TABLETTE ET ORDINATEUR */
         <div>
           <div className="columns-tablet-desktop">
             <div className="columns-tablet-desktop-size">
