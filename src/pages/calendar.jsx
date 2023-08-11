@@ -4,7 +4,6 @@ import { formatDate } from '../utils/reusable/functions'
 import { ScreenContext } from '../utils/react/context'
 import Modal from '../components/modal'
 /*Style*/
-import StyledTitlePage from '../utils/styles/atoms'
 import '../styles/calendar.css'
 /*Importation des icônes*/
 import Icon from '@mdi/react'

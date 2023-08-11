@@ -1,7 +1,5 @@
 import React, { useContext } from 'react'
 import { ScreenContext } from '../utils/react/context'
-/*Style*/
-import StyledTitlePage from '../utils/styles/atoms'
 
 //Page d'accueil pour l'administrateur.
 function Dashboard() {
@@ -10,7 +8,7 @@ function Dashboard() {
 
   return (
     <div>
-      <StyledTitlePage>Dashboard pour admin</StyledTitlePage>
+      <h1>Dashboard pour admin</h1>
       <div>Catalogue</div>
       <div>
         Calendrier de réservations des utilisateurs avec sélecteur pour choix de

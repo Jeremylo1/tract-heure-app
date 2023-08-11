@@ -5,6 +5,7 @@
     margin-left: 6px;
 }
 
+/* =============== BOUTONS =============== */
 /*Style d'un élément d'une liste.*/
 .StyledListButton::before {
     content: '•';
@@ -22,6 +23,31 @@
     margin: 0 5px;
     margin-bottom: 0 !important;
 }
+
+/* =============== RESPONSIVE =============== */
+/* MOBILE */
+.columns-mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.columns-mobile-size {
+    width: 75%;
+    margin: 0 auto;
+}
+
+/* TABLETTE ET ORDINATEUR */
+.columns-tablet-desktop {
+    display: flex;
+    justify-content: center;
+}
+
+.columns-tablet-desktop-size {
+    width: 75%;
+    margin: 0 auto;
+}
+
 
 /* Empêcher la marge inférieure pour le dernier élément */
 /* .content p:not(:last-child) {

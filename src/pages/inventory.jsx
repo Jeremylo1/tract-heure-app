@@ -8,7 +8,6 @@ import { toISODateTime } from '../utils/reusable/functions'
 /*Style*/
 import '../styles/inventory.css'
 import colors from '../utils/styles/color'
-import StyledTitlePage from '../utils/styles/atoms'
 
 function Inventory() {
   //Hook pour la gestion de la modale.
@@ -145,11 +144,9 @@ function Inventory() {
       {isMobile ? (
         /* DESIGN POUR MOBILE */
         <div>
-          <div className="columns is-mobile is-centered">
-            <div className="column is-three-quarters-tablet is-three-quarters-mobile">
-              <StyledTitlePage className="title is-5 has-text-centered">
-                Machinerie agricole
-              </StyledTitlePage>
+          <div className="columns-mobile">
+            <div className="columns-mobile-size">
+              <h1>Machinerie agricole</h1>
               <ShowMachinery functionButtons={groupButtons} />
             </div>
           </div>
@@ -157,11 +154,9 @@ function Inventory() {
       ) : (
         /* DESIGN POUR ORDINATEUR */
         <div>
-          <div className="columns">
-            <div className="column is-8 is-offset-2">
-              <StyledTitlePage className="title">
-                Machinerie agricole
-              </StyledTitlePage>
+          <div className="columns-tablet-desktop">
+            <div className="columns-tablet-desktop-size">
+              <h1>Machinerie agricole</h1>
               <ShowMachinery functionButtons={groupButtons} />
             </div>
           </div>

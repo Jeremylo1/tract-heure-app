@@ -19,6 +19,7 @@ import { ScreenProvider } from './utils/react/context'
 import ProtectedRoute from './utils/react/protectedroute'
 /*Style*/
 import styled from 'styled-components'
+import GlobalStyle from './utils/styles/globalStyle'
 
 //Style du wrapper.
 const StyledWrapper = styled.div`
@@ -42,6 +43,7 @@ root.render(
           <StyledWrapper>
             {/* Wrapper pour le header, le body et le footer */}
             <div className="header">
+              <GlobalStyle />
               <Header />
             </div>
             <div className="content">
