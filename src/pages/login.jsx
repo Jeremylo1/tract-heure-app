@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect, useContext } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { AuthContext } from '../utils/react/context'
 import 'bulma/css/bulma.min.css'
 
@@ -13,6 +13,7 @@ function Connection() {
   const [error, setError] = useState('')
   const { isConnected, setLogin } = useContext(AuthContext)
   const navigate = useNavigate()
+  const location = useLocation()
 
   //Fonction pour se connecter.
   function tryConnection() {
@@ -35,7 +36,9 @@ function Connection() {
       ) {
         setLogin(username)
         setError('')
-        navigate('/') //Redirection vers la page d'accueil.
+
+        const from = location.state?.from || '/'
+        navigate(from) // Redirection vers la page initialement demandée ou la page d'accueil
       } else {
         setError("Nom d'utilisateur ou mot de passe incorrect")
       }
