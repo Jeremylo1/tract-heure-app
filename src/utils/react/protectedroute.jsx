@@ -1,20 +1,32 @@
 import { useContext } from 'react'
-import { Outlet, Navigate } from 'react-router-dom'
+import { Outlet, Navigate, useLocation } from 'react-router-dom'
 import { AuthContext } from './context'
 
-//Fonction pour protéger les routes.
 function ProtectedRoute() {
-  const { isConnected } = useContext(AuthContext)
+  const { isConnected, isInitialized, userType } = useContext(AuthContext)
+  const location = useLocation()
 
-  //Page de login demandée : redirige vers la page d'accueil si l'utilisateur est connecté.
-  if (window.location.pathname === '/login' && isConnected) {
+  // Si AuthProvider n'est pas encore initialisé, affichez simplement un spinner de chargement
+  if (!isInitialized) {
+    return <div>Loading...</div>
+  }
+
+  // Si vous êtes sur la page de login et que vous êtes déjà connecté
+  if (location.pathname === '/login' && isConnected) {
     return <Navigate to="/" replace />
   }
-  //Page de login demandée : redirige vers la page de login si l'utilisateur n'est pas connecté.
-  if (window.location.pathname !== '/login' && !isConnected) {
-    return <Navigate to="/login" replace />
+
+  // Si vous êtes sur une autre page et que vous n'êtes pas connecté
+  if (location.pathname !== '/login' && !isConnected) {
+    // Redirigez vers la page de login mais gardez la route initiale en mémoire
+    return <Navigate to="/login" state={{ from: location }} replace />
   }
-  //Si l'utilisateur est connecté, affiche le contenu de la page demandée.
+
+  // Si vous êtes sur la page d'administration et que vous n'êtes pas administrateur
+  if (location.pathname === '/admin' && userType !== 'admin') {
+    return <Navigate to="/" replace />
+  }
+
   return <Outlet />
 }
 

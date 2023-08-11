@@ -5,7 +5,10 @@ export const AuthContext = createContext()
 
 //Fonction pour gérer la connexion.
 export function AuthProvider({ children }) {
-  const [isConnected, setIsConnected] = useState(false)
+  const [isConnected, setIsConnected] = useState(
+    localStorage.getItem('isConnected') === 'true', //TEMPORAIRE.
+  )
+  const [isInitialized, setIsInitialized] = useState(false)
   const [userType, setUserType] = useState('user') //TEMPORAIRE.
 
   //Récupère les données de connexion dans le local storage lors du chargement de la page.
@@ -31,9 +34,14 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('userType') //TEMPORAIRE.
   }
 
+  useEffect(() => {
+    //Permet de savoir si les données de connexion ont été récupérées avant d'afficher la page de connexion.
+    setIsInitialized(true)
+  }, [])
+
   return (
     <AuthContext.Provider
-      value={{ userType, isConnected, setLogin, setLogout }}
+      value={{ userType, isConnected, isInitialized, setLogin, setLogout }}
     >
       {children}
     </AuthContext.Provider>

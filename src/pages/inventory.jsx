@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { useMutationHasura } from '../utils/react/hooks'
 import Modal from '../components/modal'
 import CustomButton from '../components/button'
@@ -79,19 +79,19 @@ function Inventory() {
     try {
       const responseDataMutation = await doMutation(mutation, {
         machineryId: selectedMachinery.id,
-        userId: '1', //TODO: Remplacer par l'ID de l'utilisateur connecté !
-        //Convertir les dates et heures en objets Date format ISO pour faciliter la comparaison avec " ".
+        userId: '1', // TODO: Remplacer par l'ID de l'utilisateur connecté
+        // Convertir les dates et heures en objets Date format ISO pour faciliter la comparaison avec " "
         startDate: toISODateTime(startDate, startTime),
         endDate: toISODateTime(endDate, endTime),
       })
       if (responseDataMutation) {
-        //Réinitialise les valeurs après la soumission.
+        // Réinitialise les valeurs après la soumission
         setStartDate(null)
         setStartTime(null)
         setEndDate(null)
         setEndTime(null)
 
-        //Ferme la modale.
+        // Ferme la modale
         setModalOpen(false)
       }
     } catch (err) {
@@ -102,15 +102,15 @@ function Inventory() {
     }
   }
 
-  //Gestion de réservation de la machinerie.
+  // Gestion de réservation de la machinerie
   function handleReservation(e) {
     e.preventDefault()
 
-    //Convertir les dates et heures en objets Date pour faciliter la comparaison.
+    // Convertir les dates et heures en objets Date pour faciliter la comparaison
     const startDateTime = new Date(startDate + ' ' + startTime)
     const endDateTime = new Date(endDate + ' ' + endTime)
 
-    //Vérifier si la date/heure de début est supérieure à la date/heure de fin.
+    // Vérifier si la date/heure de début est supérieure à la date/heure de fin
     if (startDateTime >= endDateTime) {
       alert(
         "La date et l'heure de début doivent être antérieures à la date et l'heure de fin!",
@@ -118,22 +118,22 @@ function Inventory() {
       return
     }
 
-    //Vérifier si la durée de la réservation est au moins de 30 minutes.
+    // Vérifier si la durée de la réservation est au moins de 30 minutes
     const duration = (endDateTime - startDateTime) / (1000 * 60) // Durée en minutes
     if (duration < 30) {
       alert("La réservation doit être d'une durée minimale de 30 minutes!")
       return
     }
 
-    //Traitement de la réservation ici, par exemple en envoyant les données au serveur.
+    // Traitement de la réservation ici, par exemple en envoyant les données au serveur
 
-    //Réinitialise les valeurs après la soumission.
+    // Réinitialise les valeurs après la soumission
     setStartDate(null)
     setStartTime(null)
     setEndDate(null)
     setEndTime(null)
 
-    //Ferme la modale.
+    // Ferme la modale
     setModalOpen(false)
     addReservation()
   }
@@ -161,7 +161,7 @@ function Inventory() {
             </div>
           </div>
         </div>
-      )}
+      </div>
 
       {/* MODALE DE RÉSERVATION */}
       <Modal
