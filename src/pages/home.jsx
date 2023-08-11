@@ -7,24 +7,100 @@ import '../styles/home.css'
 
 function Home() {
   //Pour savoir si c'est un appareil mobile.
-  const { isMobile } = useContext(ScreenContext)
+  const { isMobileTablet } = useContext(ScreenContext)
   return (
     <div>
-      {isMobile ? (
-        /* DESIGN POUR MOBILE */
+      {isMobileTablet ? (
+        /* DESIGN POUR MOBILE ET TABLETTE */
         <div>
           <div className="columns-mobile">
             <div className="columns-mobile-size">
-              <h1>Bienvenue sur Tract'Heure !</h1>
+              <h1>Mes réservations</h1>
+              <div className="tile is-ancestor">
+                <div className="tile is-vertical">
+                  <div className="tile">
+                    <div className="tile is-parent">
+                      <article className="tile is-child box">
+                        <p className="title">En cours</p>
+                        <p className="subtitle">Sous-titre pour en cours</p>
+                      </article>
+                    </div>
+                    <div className="tile is-vertical">
+                      <div className="tile">
+                        <div className="tile is-parent">
+                          <article className="tile is-child box">
+                            <p className="title">Début de location</p>
+                            <p className="subtitle">
+                              Sous-titre pour début de location
+                            </p>
+                          </article>
+                        </div>
+                        <div className="tile is-parent">
+                          <article className="tile is-child box">
+                            <p className="title">Fin de location</p>
+                            <p className="subtitle">
+                              Sous-titre pour fin de location
+                            </p>
+                          </article>
+                        </div>
+                      </div>
+                      <div className="tile is-parent">
+                        <article className="tile is-child box">
+                          <p className="title">À venir</p>
+                          <p className="subtitle">Sous-titre pour à venir</p>
+                        </article>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       ) : (
-        /* DESIGN POUR TABLETTE ET ORDINATEUR */
+        /* DESIGN POUR ORDINATEUR */
         <div>
           <div className="columns-tablet-desktop">
             <div className="columns-tablet-desktop-size">
-              <h1>Bienvenue sur Tract'Heure !</h1>
+              <h1>Mes réservations</h1>
+              <div className="tile is-ancestor">
+                <div className="tile is-vertical">
+                  <div className="tile">
+                    <div className="tile is-parent">
+                      <article className="tile is-child box">
+                        <p className="title">En cours</p>
+                        <p className="subtitle">Sous-titre pour en cours</p>
+                      </article>
+                    </div>
+                    <div className="tile is-8 is-vertical">
+                      <div className="tile">
+                        <div className="tile is-parent">
+                          <article className="tile is-child box">
+                            <p className="title">Début de location</p>
+                            <p className="subtitle">
+                              Sous-titre pour début de location
+                            </p>
+                          </article>
+                        </div>
+                        <div className="tile is-parent">
+                          <article className="tile is-child box">
+                            <p className="title">Fin de location</p>
+                            <p className="subtitle">
+                              Sous-titre pour fin de location
+                            </p>
+                          </article>
+                        </div>
+                      </div>
+                      <div className="tile is-parent">
+                        <article className="tile is-child box">
+                          <p className="title">À venir</p>
+                          <p className="subtitle">Sous-titre pour à venir</p>
+                        </article>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
