@@ -9,6 +9,7 @@ import Dashboard from './pages/dashboard'
 import Burger from './pages/burger'
 import Login from './pages/login'
 import Test from './trash-test/test' //! À SUPPRIMER
+import AdminCategory from './pages/admin_category' //! À MODIFIER PEUT-ÊTRE
 /*Components*/
 import Header from './components/header'
 import Footer from './components/footer'
@@ -62,6 +63,9 @@ root.render(
                 </Route>
                 <Route path="/admin" element={<ProtectedRoute />}>
                   <Route index element={<Dashboard />} />
+                </Route>
+                <Route path="/admin/category" element={<ProtectedRoute />}>
+                  <Route index element={<AdminCategory />} />
                 </Route>
                 <Route path="/others" element={<ProtectedRoute />}>
                   <Route index element={<Burger />} />
