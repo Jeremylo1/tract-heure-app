@@ -9,7 +9,7 @@ import { toISODateTime } from '../utils/reusable/functions'
 import {
   LIEN_API,
   INSERT_RESERVATION,
-  CHECK_RESERVATION_CONFLICT,
+  CHECK_RESERVATION_TIME_CONFLICT,
 } from '../utils/database/query'
 /*Style*/
 import '../styles/inventory.css'
@@ -86,7 +86,10 @@ function Inventory() {
       endDateTime: toISODateTime(endDate, endTime),
     }
 
-    const reservations = await doMutation(CHECK_RESERVATION_CONFLICT, variables)
+    const reservations = await doMutation(
+      CHECK_RESERVATION_TIME_CONFLICT,
+      variables,
+    )
     return reservations?.machinerie_reservation?.length > 0
   }
 
