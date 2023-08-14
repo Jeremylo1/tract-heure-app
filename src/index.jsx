@@ -5,11 +5,12 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Home from './pages/home'
 import Inventory from './pages/inventory'
 import Calendar from './pages/calendar'
-import Dashboard from './pages/dashboard'
+import Dashboard from './pages/admin_dashboard'
 import Burger from './pages/burger'
 import Login from './pages/login'
 import Test from './trash-test/test' //! À SUPPRIMER
 import AdminCategory from './pages/admin_category' //! À MODIFIER PEUT-ÊTRE
+import AdminMachinery from './pages/admin_machinery' //! À MODIFIER PEUT-ÊTRE
 /*Components*/
 import Header from './components/header'
 import Footer from './components/footer'
@@ -65,7 +66,12 @@ root.render(
                   <Route index element={<Dashboard />} />
                 </Route>
                 <Route path="/admin/category" element={<ProtectedRoute />}>
+                  {/* À MODIFIER PEUT-ÊTRE */}
                   <Route index element={<AdminCategory />} />
+                </Route>
+                <Route path="/admin/machinery" element={<ProtectedRoute />}>
+                  {/* À MODIFIER PEUT-ÊTRE */}
+                  <Route index element={<AdminMachinery />} />
                 </Route>
                 <Route path="/others" element={<ProtectedRoute />}>
                   <Route index element={<Burger />} />
