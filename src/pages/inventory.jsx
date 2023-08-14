@@ -72,6 +72,30 @@ function Inventory() {
     )
   }
 
+  // Permet de vérifier si la réservation est en conflit avec une autre réservation existante
+  const checkReservationConflict = async (startDateTime, endDateTime) => {
+    const query = `
+      query GetReservations($machineryId: Int!, $startDateTime: timestamptz!, $endDateTime: timestamptz!) {
+        machinerie_reservation(where: {
+          machinerie_id: {_eq: $machineryId}, 
+          date_debut: {_lte: $endDateTime},
+          date_fin: {_gte: $startDateTime}
+        }) {
+          id
+        }
+      }
+    `
+
+    const variables = {
+      machineryId: selectedMachinery.id,
+      startDateTime: toISODateTime(startDate, startTime),
+      endDateTime: toISODateTime(endDate, endTime),
+    }
+
+    const reservations = await doMutation(query, variables)
+    return reservations?.machinerie_reservation?.length > 0
+  }
+
   //Permet d'envoyer une requête de mutation (INSERT, UPDATE, DELETE) à Hasura.
   const { doMutation, error_mutation } = useMutationHasura(
     'https://champion-tiger-15.hasura.app/v1/graphql',
@@ -115,7 +139,7 @@ function Inventory() {
   }
 
   // Gestion de réservation de la machinerie
-  function handleReservation(e) {
+  async function handleReservation(e) {
     e.preventDefault()
 
     // Convertir les dates et heures en objets Date pour faciliter la comparaison
@@ -139,15 +163,25 @@ function Inventory() {
 
     // Traitement de la réservation ici, par exemple en envoyant les données au serveur
 
-    // Réinitialise les valeurs après la soumission
-    setStartDate(null)
-    setStartTime(null)
-    setEndDate(null)
-    setEndTime(null)
+    const conflictExists = await checkReservationConflict(
+      startDateTime,
+      endDateTime,
+    )
 
-    // Ferme la modale
-    setModalOpen(false)
-    addReservation()
+    if (conflictExists) {
+      alert('Cette machinerie est déjà réservée pour la période sélectionnée.')
+      return
+    } else {
+      addReservation()
+      // Ferme la modale
+      setModalOpen(false)
+
+      // Réinitialise les valeurs APRÈS la soumission
+      setStartDate(null)
+      setStartTime(null)
+      setEndDate(null)
+      setEndTime(null)
+    }
   }
 
   //Affichage selon le type d'appareil.
