@@ -3,6 +3,7 @@ import { useFetchHasura } from '../utils/react/hooks'
 import { formatDate } from '../utils/reusable/functions'
 import { ScreenContext } from '../utils/react/context'
 import Modal from '../components/modal'
+import { LIEN_API, GET_ALL_RESERVATION } from '../utils/database/query'
 /*Style*/
 import '../styles/calendar.css'
 /*Importation des icônes*/
@@ -12,8 +13,6 @@ import { mdiArrowRightThick } from '@mdi/js'
 
 function Calendar() {
   /*INFOS SUR LA BASE DE DONNÉES (À MODIFIER AU BESOIN)*/
-  //Lien de l'API GraphQL à utiliser.
-  const api_url = 'https://champion-tiger-15.hasura.app/v1/graphql'
   //Nom des tables à utiliser.
   const vue_reservation = 'machinerie_reservations_view'
   //Nom des colonnes à utiliser.
@@ -41,11 +40,7 @@ function Calendar() {
     data: reservation_data,
     isLoading: reservation_loading,
     error: reservation_error,
-  } = useFetchHasura(
-    api_url,
-    `{${vue_reservation}{${column_id} ${column_nom_machinerie} ${column_date_debut} ${column_date_fin} ${column_type} ${column_description}}}`,
-    firstLoading,
-  )
+  } = useFetchHasura(LIEN_API, GET_ALL_RESERVATION, firstLoading)
 
   //Permet de définir si c'est la première fois qu'on charge la page.
   useEffect(() => {

@@ -19,7 +19,6 @@ import colors from '../utils/styles/color'
 import Icon from '@mdi/react'
 import { mdiCalendarSearch } from '@mdi/js'
 import { mdiInformationBoxOutline } from '@mdi/js'
-import { mdiCalendar, mdiClockTimeFourOutline } from '@mdi/js'
 
 function Inventory() {
   //Hook pour la gestion de la modale.

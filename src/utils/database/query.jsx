@@ -6,6 +6,7 @@ export const LIEN_API = 'https://champion-tiger-15.hasura.app/v1/graphql'
 //Nom des tables.
 export const TABLE_CATEGORY = 'machinerie_categorie'
 export const VUE_MACHINERY = 'machinerie_view'
+export const VUE_RESERVATION = 'machinerie_reservations_view'
 
 //Nom des colonnes (en lien avec la machinerie).
 export const COLUMN_ID = 'id'
@@ -19,6 +20,12 @@ export const COLUMN_PRICE = 'prix_achat'
 export const COLUMN_HOURS = 'heure_utilisation'
 export const COLUMN_COMMENT = 'commentaire'
 export const COLUMN_LOCATION = 'localisation'
+
+//Nom des colonnes (en lien avec les réservations).
+export const COLUMN_DATE_DEBUT = 'date_debut'
+export const COLUMN_DATE_FIN = 'date_fin'
+export const COLUMN_TYPE = 'type'
+export const COLUMN_DESCRIPTION = 'description'
 
 //Requêtes GraphQL.
 export const INSERT_MACHINERY = `
@@ -40,6 +47,8 @@ export const INSERT_CATEGORY = `
 export const DELETE_CATEGORY = `
   
 `
+
+export const GET_ALL_RESERVATION = `{${VUE_RESERVATION}{${COLUMN_ID} ${COLUMN_NAME} ${COLUMN_DATE_DEBUT} ${COLUMN_DATE_FIN} ${COLUMN_TYPE} ${COLUMN_DESCRIPTION}}}`
 
 //Permet de créer une réservation.
 export const INSERT_RESERVATION = `
