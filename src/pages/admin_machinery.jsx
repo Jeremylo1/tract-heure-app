@@ -3,6 +3,8 @@ import { useMutationHasura } from '../utils/react/hooks'
 import CustomButton from '../components/button'
 import ShowMachinery from '../components/showmachinery'
 import { ScreenContext } from '../utils/react/context'
+/*Base de données*/
+import { LIEN_API } from '../utils/database/query'
 /*Style*/
 import '../styles/inventory.css'
 import colors from '../utils/styles/color'
@@ -23,7 +25,8 @@ function AdminMachinery() {
       <div className="grouped-buttons">
         <p className="control">
           <CustomButton
-            /*to="" ou functionclick=""*/
+            /*functionclick={() => {
+            }}*/
             color={colors.redButton}
             hovercolor={colors.redButtonHover}
           >
@@ -49,9 +52,8 @@ function AdminMachinery() {
         </p>
         <p className="control">
           <CustomButton
-            functionclick={() => {
-              setSelectedMachinery(machinery)
-            }}
+            /*functionclick={() => {
+            }}*/
             color={colors.greenButton}
             hovercolor={colors.greenButtonHover}
           >
@@ -63,9 +65,7 @@ function AdminMachinery() {
   }
 
   //Permet d'envoyer une requête de mutation (INSERT, UPDATE, DELETE) à Hasura.
-  const { doMutation, error_mutation } = useMutationHasura(
-    'https://champion-tiger-15.hasura.app/v1/graphql',
-  )
+  const { doMutation, error_mutation } = useMutationHasura(LIEN_API)
 
   //Affichage selon le type d'appareil.
   return (

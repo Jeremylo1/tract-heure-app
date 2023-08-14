@@ -1,9 +1,26 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { useState, useEffect } from 'react'
 import { useFetchHasura } from '../utils/react/hooks'
 import { formatDate } from '../utils/reusable/functions'
 import Accordion from './accordion'
+/*Base de données*/
+import {
+  LIEN_API,
+  TABLE_CATEGORY,
+  VUE_MACHINERY,
+  COLUMN_ID,
+  COLUMN_NAME,
+  COLUMN_MODEL,
+  COLUMN_SERIAL_NUMBER,
+  COLUMN_STATUS,
+  COLUMN_CATEGORY,
+  COLUMN_DATE,
+  COLUMN_PRICE,
+  COLUMN_HOURS,
+  COLUMN_COMMENT,
+  COLUMN_LOCATION,
+} from '../utils/database/query'
+/*Style*/
 import styled from 'styled-components'
 import colors from '../utils/styles/color'
 import '../styles/inventory.css'
@@ -19,26 +36,6 @@ const StyledText = styled.span`
 `
 
 function ShowMachinery({ functionButtons }) {
-  /*INFOS SUR LA BASE DE DONNÉES (À MODIFIER AU BESOIN)*/
-  //Lien de l'API GraphQL à utiliser.
-  const api_url = 'https://champion-tiger-15.hasura.app/v1/graphql'
-  //Nom des tables à utiliser.
-  const table_category = 'machinerie_categorie'
-  const vue_machinery = 'machinerie_view'
-  //Nom des colonnes à utiliser.
-  const column_id = 'id'
-  const column_name = 'nom'
-  const column_model = 'modele'
-  const column_serial_number = 'num_serie'
-  const column_status = 'statut_nom'
-  const column_category = 'categorie_id'
-  const column_date = 'date_acquisition'
-  const column_price = 'prix_achat'
-  const column_hours = 'heure_utilisation'
-  const column_comment = 'commentaire'
-  const column_location = 'localisation'
-  /* FIN DES INFOS*/
-
   //Pour stocker l'ID de la catégorie sélectionnée.
   const [selectedCategoryId, setSelectedCategoryId] = useState(0)
   //Pour savoir si c'est la première fois qu'on charge les données.
@@ -52,16 +49,16 @@ function ShowMachinery({ functionButtons }) {
     isLoading: category_loading,
     error: category_error,
   } = useFetchHasura(
-    api_url,
-    `{${table_category}{${column_id} ${column_name}}}`,
+    LIEN_API,
+    `{${TABLE_CATEGORY}{${COLUMN_ID} ${COLUMN_NAME}}}`,
     firstLoading,
   )
 
   //Trie les catégories par ordre alphabétique.
   useEffect(() => {
-    if (category_data && category_data[table_category]) {
-      category_data[table_category].sort((a, b) =>
-        a[column_name].localeCompare(b[column_name]),
+    if (category_data && category_data[TABLE_CATEGORY]) {
+      category_data[TABLE_CATEGORY].sort((a, b) =>
+        a[COLUMN_NAME].localeCompare(b[COLUMN_NAME]),
       )
     }
   }, [category_data])
@@ -70,10 +67,10 @@ function ShowMachinery({ functionButtons }) {
   useEffect(() => {
     if (
       category_data &&
-      category_data[table_category] &&
-      category_data[table_category].length > 0
+      category_data[TABLE_CATEGORY] &&
+      category_data[TABLE_CATEGORY].length > 0
     ) {
-      setSelectedCategoryId(category_data[table_category][0].id)
+      setSelectedCategoryId(category_data[TABLE_CATEGORY][0].id)
     }
   }, [category_data])
 
@@ -83,20 +80,20 @@ function ShowMachinery({ functionButtons }) {
     isLoading: machinery_loading,
     error: machinery_error,
   } = useFetchHasura(
-    api_url,
+    LIEN_API,
     `{
-      ${vue_machinery} {
-        ${column_id}
-        ${column_name}
-        ${column_category}
-        ${column_status}
-        ${column_model}
-        ${column_serial_number}
-        ${column_date}
-        ${column_price}
-        ${column_hours}
-        ${column_comment}
-        ${column_location}
+      ${VUE_MACHINERY} {
+        ${COLUMN_ID}
+        ${COLUMN_NAME}
+        ${COLUMN_CATEGORY}
+        ${COLUMN_STATUS}
+        ${COLUMN_MODEL}
+        ${COLUMN_SERIAL_NUMBER}
+        ${COLUMN_DATE}
+        ${COLUMN_PRICE}
+        ${COLUMN_HOURS}
+        ${COLUMN_COMMENT}
+        ${COLUMN_LOCATION}
       }
     }`,
     firstLoading,
@@ -109,20 +106,20 @@ function ShowMachinery({ functionButtons }) {
 
   //Permet de trier les machines par ordre alphabétique.
   function sortByMachineName(a, b) {
-    return a[column_name].localeCompare(b[column_name])
+    return a[COLUMN_NAME].localeCompare(b[COLUMN_NAME])
   }
 
   //Permet de filtrer les machines (dans "machinery_data") en fonction de la catégorie sélectionnée.
   useEffect(() => {
-    if (machinery_data && machinery_data[vue_machinery]) {
-      let filteredData = machinery_data[vue_machinery]
+    if (machinery_data && machinery_data[VUE_MACHINERY]) {
+      let filteredData = machinery_data[VUE_MACHINERY]
       //Catégorie "TOUT" (ordre alphabétique).
       if (selectedCategoryId === 0) {
         setFilteredMachineryData(filteredData.sort(sortByMachineName))
         //Autres catégories (ordre alphabétique).
       } else {
         filteredData = filteredData.filter(
-          (machine) => machine[column_category] === selectedCategoryId,
+          (machine) => machine[COLUMN_CATEGORY] === selectedCategoryId,
         )
         setFilteredMachineryData(filteredData.sort(sortByMachineName))
       }
@@ -133,49 +130,49 @@ function ShowMachinery({ functionButtons }) {
   function panelContent(machinery) {
     return (
       <ul>
-        {machinery[column_model] ? (
+        {machinery[COLUMN_MODEL] ? (
           <li className="StyledListButton">
             <StyledText>Numéro de modèle :</StyledText>{' '}
-            {`${machinery[column_model]}`}
+            {`${machinery[COLUMN_MODEL]}`}
           </li>
         ) : null}
-        {machinery[column_serial_number] ? (
+        {machinery[COLUMN_SERIAL_NUMBER] ? (
           <li className="StyledListButton">
             <StyledText>Numéro de série :</StyledText>{' '}
-            {`${machinery[column_serial_number]}`}
+            {`${machinery[COLUMN_SERIAL_NUMBER]}`}
           </li>
         ) : null}
         <li className="StyledListButton">
-          <StyledText>Statut :</StyledText> {`${machinery[column_status]}`}
+          <StyledText>Statut :</StyledText> {`${machinery[COLUMN_STATUS]}`}
         </li>
-        {machinery[column_hours] ? (
+        {machinery[COLUMN_HOURS] ? (
           <li className="StyledListButton">
             <StyledText>Utilisation accumulée :</StyledText>{' '}
-            {`${machinery[column_hours]} heures`}
+            {`${machinery[COLUMN_HOURS]} heures`}
           </li>
         ) : null}
-        {machinery[column_date] ? (
+        {machinery[COLUMN_DATE] ? (
           <li className="StyledListButton">
             <StyledText>Date d'acquisition :</StyledText>{' '}
-            {`${formatDate(machinery[column_date])}`}
+            {`${formatDate(machinery[COLUMN_DATE])}`}
           </li>
         ) : null}
-        {machinery[column_price] ? (
+        {machinery[COLUMN_PRICE] ? (
           <li className="StyledListButton">
             <StyledText>Prix d'achat :</StyledText>{' '}
-            {`${machinery[column_price]}$`}
+            {`${machinery[COLUMN_PRICE]}$`}
           </li>
         ) : null}
-        {machinery[column_comment] ? (
+        {machinery[COLUMN_COMMENT] ? (
           <li className="StyledListButton">
             <StyledText>Commentaire :</StyledText>{' '}
-            {`${machinery[column_comment]}`}
+            {`${machinery[COLUMN_COMMENT]}`}
           </li>
         ) : null}
-        {machinery[column_location] ? (
+        {machinery[COLUMN_LOCATION] ? (
           <li className="StyledListButton">
             <StyledText>Localisation :</StyledText>{' '}
-            {`${machinery[column_location]}`}
+            {`${machinery[COLUMN_LOCATION]}`}
           </li>
         ) : null}
       </ul>
@@ -200,7 +197,7 @@ function ShowMachinery({ functionButtons }) {
               -- Toutes les machines --
             </option>
             {/*Catégories de la BD*/}
-            {category_data[table_category].map((category) => (
+            {category_data[TABLE_CATEGORY].map((category) => (
               <option
                 key={`${category.nom}-${category.id}`}
                 value={parseInt(category.id)}
@@ -221,8 +218,8 @@ function ShowMachinery({ functionButtons }) {
             /*S'il y a des machines à afficher, on fait un accordéon avec chaque machine trouvée.*/
             filteredMachineryData.map((machinery) => (
               <Accordion
-                key={machinery[column_id]}
-                title={`${machinery[column_name]}`}
+                key={machinery[COLUMN_ID]}
+                title={`${machinery[COLUMN_NAME]}`}
                 content={panelContent(machinery)}
                 others={functionButtons(machinery)}
               />
