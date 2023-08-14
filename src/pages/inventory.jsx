@@ -5,6 +5,12 @@ import CustomButton from '../components/button'
 import ShowMachinery from '../components/showmachinery'
 import { ScreenContext } from '../utils/react/context'
 import { toISODateTime } from '../utils/reusable/functions'
+/*Base de données*/
+import {
+  LIEN_API,
+  INSERT_RESERVATION,
+  CHECK_RESERVATION_CONFLICT,
+} from '../utils/database/query'
 /*Style*/
 import '../styles/inventory.css'
 import colors from '../utils/styles/color'
@@ -74,46 +80,24 @@ function Inventory() {
 
   // Permet de vérifier si la réservation est en conflit avec une autre réservation existante
   const checkReservationConflict = async (startDateTime, endDateTime) => {
-    const query = `
-      query GetReservations($machineryId: Int!, $startDateTime: timestamptz!, $endDateTime: timestamptz!) {
-        machinerie_reservation(where: {
-          machinerie_id: {_eq: $machineryId}, 
-          date_debut: {_lte: $endDateTime},
-          date_fin: {_gte: $startDateTime}
-        }) {
-          id
-        }
-      }
-    `
-
     const variables = {
       machineryId: selectedMachinery.id,
       startDateTime: toISODateTime(startDate, startTime),
       endDateTime: toISODateTime(endDate, endTime),
     }
 
-    const reservations = await doMutation(query, variables)
+    const reservations = await doMutation(CHECK_RESERVATION_CONFLICT, variables)
     return reservations?.machinerie_reservation?.length > 0
   }
 
   //Permet d'envoyer une requête de mutation (INSERT, UPDATE, DELETE) à Hasura.
-  const { doMutation, error_mutation } = useMutationHasura(
-    'https://champion-tiger-15.hasura.app/v1/graphql',
-  )
+  const { doMutation, error_mutation } = useMutationHasura(LIEN_API)
 
   /*Permet d'ajouter un todo à la base de données. 
   Le titre du todo est récupéré depuis le state `title`.*/
   const addReservation = async () => {
-    const mutation = `
-      mutation InsertMachinerieReservation($machineryId: Int!, $userId: String!, $startDate: timestamptz!, $endDate: timestamptz!) {
-        insert_machinerie_reservation(objects:[{machinerie_id:$machineryId, utilisateur_id:$userId, date_debut: $startDate, date_fin: $endDate}]) {
-          affected_rows
-        }
-      }
-    `
-
     try {
-      const responseDataMutation = await doMutation(mutation, {
+      const responseDataMutation = await doMutation(INSERT_RESERVATION, {
         machineryId: selectedMachinery.id,
         userId: '1', // TODO: Remplacer par l'ID de l'utilisateur connecté
         // Convertir les dates et heures en objets Date format ISO pour faciliter la comparaison avec " "

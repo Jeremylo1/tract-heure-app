@@ -40,3 +40,24 @@ export const INSERT_CATEGORY = `
 export const DELETE_CATEGORY = `
   
 `
+
+export const INSERT_RESERVATION = `
+    mutation InsertMachinerieReservation($machineryId: Int!, $userId: String!, $startDate: timestamptz!, $endDate: timestamptz!) {
+        insert_machinerie_reservation(objects:[{machinerie_id:$machineryId, utilisateur_id:$userId, date_debut: $startDate, date_fin: $endDate}]) {
+        affected_rows
+        }
+    }
+`
+
+//Permet de vérifier si la réservation est en conflit avec une autre réservation existante.
+export const CHECK_RESERVATION_TIME_CONFLICT = `
+    query GetReservations($machineryId: Int!, $startDateTime: timestamptz!, $endDateTime: timestamptz!) {
+        machinerie_reservation(where: {
+            machinerie_id: {_eq: $machineryId}, 
+            date_debut: {_lte: $endDateTime},
+            date_fin: {_gte: $startDateTime}
+        }) {
+            id
+        }
+    }
+  `
