@@ -45,7 +45,7 @@ function Header() {
   return (
     <div>
       {isMobileTablet ? (
-        /* DESIGN POUR MOBILE */
+        /* DESIGN POUR MOBILE ET TABLETTE */
         <div>
           <div>
             <StyledLogoTouch src={LogoTxt} alt="Logo" />

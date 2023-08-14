@@ -70,7 +70,7 @@ function ShowMachinery({ functionButtons }) {
       category_data[TABLE_CATEGORY] &&
       category_data[TABLE_CATEGORY].length > 0
     ) {
-      setSelectedCategoryId(category_data[TABLE_CATEGORY][0].id)
+      setSelectedCategoryId(category_data[TABLE_CATEGORY][0][COLUMN_ID])
     }
   }, [category_data])
 
@@ -199,10 +199,10 @@ function ShowMachinery({ functionButtons }) {
             {/*Catégories de la BD*/}
             {category_data[TABLE_CATEGORY].map((category) => (
               <option
-                key={`${category.nom}-${category.id}`}
-                value={parseInt(category.id)}
+                key={`${category[COLUMN_NAME]}-${category[COLUMN_ID]}`}
+                value={parseInt(category[COLUMN_ID])}
               >
-                {category.nom}
+                {category[COLUMN_NAME]}
               </option>
             ))}
           </select>

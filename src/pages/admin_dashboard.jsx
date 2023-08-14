@@ -10,15 +10,26 @@ function Dashboard() {
   return (
     <div>
       <h1>Dashboard pour admin</h1>
-      <div>Catalogue</div>
       <div>
         Calendrier de réservations des utilisateurs avec sélecteur pour choix de
         l'utilisateur
       </div>
       <div>Calendrier</div>
-      <Link to="/test" className="button is-info">
-        Tester la connexion à la base de données
-      </Link>
+      <div>
+        <Link to="/test" className="button is-info">
+          Direction TO DO
+        </Link>
+      </div>
+      <div>
+        <Link to="/admin/category" className="button is-link is-rounded">
+          Gestion des catégories
+        </Link>
+      </div>
+      <div>
+        <Link to="/admin/machinery" className="button is-link is-rounded">
+          Gestion de la machinerie
+        </Link>
+      </div>
     </div>
   )
 }
