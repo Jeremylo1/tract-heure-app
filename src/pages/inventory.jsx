@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { useMutationHasura } from '../utils/react/hooks'
 import Modal from '../components/modal'
 import CustomButton from '../components/button'
@@ -10,6 +10,7 @@ import {
   LIEN_API,
   INSERT_RESERVATION,
   CHECK_RESERVATION_TIME_CONFLICT,
+  GET_UPCOMING_RESERVATIONS,
 } from '../utils/database/query'
 /*Style*/
 import '../styles/inventory.css'
@@ -31,6 +32,8 @@ function Inventory() {
   const [startTime, setStartTime] = useState(new Date())
   const [endDate, setEndDate] = useState(new Date())
   const [endTime, setEndTime] = useState(new Date())
+  //Pour stocker les disponibilités de la machinerie sélectionnée.
+  const [availabilities, setAvailabilities] = useState([])
 
   //Affichage des boutons du bas de l'accordéon.
   function groupButtons(machinery) {
@@ -77,6 +80,49 @@ function Inventory() {
       </div>
     )
   }
+
+  const getNextAvailabilities = async (machineryId) => {
+    const variables = {
+      machineryId,
+      currentDateTime: new Date().toISOString(),
+    }
+
+    console.log('variables', variables)
+
+    const upcomingReservations = await doMutation(
+      GET_UPCOMING_RESERVATIONS,
+      variables,
+    )
+    const slots = []
+
+    let currentDate = new Date()
+
+    upcomingReservations.machinerie_reservation.forEach(
+      (reservation, index) => {
+        // Si l'écart entre la date actuelle et la date de début de la réservation est supérieur à 0, c'est une plage de disponibilité.
+        if (new Date(reservation.date_debut) - currentDate > 0) {
+          slots.push({
+            start: currentDate,
+            end: new Date(reservation.date_debut),
+          })
+        }
+
+        // Mettez à jour la "date actuelle" pour la prochaine itération
+        currentDate = new Date(reservation.date_fin)
+      },
+    )
+
+    // Retournez uniquement les 3 premières disponibilités
+    return slots.slice(0, 3)
+  }
+
+  useEffect(() => {
+    if (isModalOpen && selectedMachinery) {
+      getNextAvailabilities(selectedMachinery.id).then((slots) => {
+        setAvailabilities(slots)
+      })
+    }
+  }, [isModalOpen, selectedMachinery])
 
   // Permet de vérifier si la réservation est en conflit avec une autre réservation existante
   const checkReservationConflict = async (startDateTime, endDateTime) => {
@@ -237,6 +283,19 @@ function Inventory() {
               >
                 Confirmer la réservation
               </CustomButton>
+
+              {availabilities.map(
+                (slot, index) => (
+                  console.log(slot),
+                  console.log(index),
+                  (
+                    <div key={index}>
+                      {slot.start.toLocaleString()} -{' '}
+                      {slot.end.toLocaleString()}
+                    </div>
+                  )
+                ),
+              )}
             </form>
           </>
         }
