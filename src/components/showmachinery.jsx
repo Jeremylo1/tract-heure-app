@@ -107,13 +107,25 @@ function ShowMachinery({ functionButtons }) {
     setFirstLoading(false)
   }, [])
 
+  //Permet de trier les machines par ordre alphabétique.
+  function sortByMachineName(a, b) {
+    return a[column_name].localeCompare(b[column_name])
+  }
+
   //Permet de filtrer les machines (dans "machinery_data") en fonction de la catégorie sélectionnée.
   useEffect(() => {
     if (machinery_data && machinery_data[vue_machinery]) {
-      const filteredData = machinery_data[vue_machinery].filter(
-        (machine) => machine[column_category] === selectedCategoryId,
-      )
-      setFilteredMachineryData(filteredData)
+      let filteredData = machinery_data[vue_machinery]
+      //Catégorie "TOUT" (ordre alphabétique).
+      if (selectedCategoryId === 0) {
+        setFilteredMachineryData(filteredData.sort(sortByMachineName))
+        //Autres catégories (ordre alphabétique).
+      } else {
+        filteredData = filteredData.filter(
+          (machine) => machine[column_category] === selectedCategoryId,
+        )
+        setFilteredMachineryData(filteredData.sort(sortByMachineName))
+      }
     }
   }, [machinery_data, selectedCategoryId])
 
@@ -183,6 +195,11 @@ function ShowMachinery({ functionButtons }) {
             value={selectedCategoryId}
             onChange={(e) => setSelectedCategoryId(parseInt(e.target.value))}
           >
+            {/*Catégorie "TOUT"*/}
+            <option key="all" value={0}>
+              -- Toutes les machines --
+            </option>
+            {/*Catégories de la BD*/}
             {category_data[table_category].map((category) => (
               <option
                 key={`${category.nom}-${category.id}`}
