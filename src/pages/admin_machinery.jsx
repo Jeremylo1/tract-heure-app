@@ -6,6 +6,10 @@ import { ScreenContext } from '../utils/react/context'
 /*Style*/
 import '../styles/inventory.css'
 import colors from '../utils/styles/color'
+/*Importation des icônes*/
+import Icon from '@mdi/react'
+import { mdiTrashCanOutline } from '@mdi/js'
+import { mdiInformationBoxOutline } from '@mdi/js'
 
 function AdminMachinery() {
   //Hook pour la gestion de la machinerie sélectionnée.
@@ -23,7 +27,11 @@ function AdminMachinery() {
             color={colors.redButton}
             hovercolor={colors.redButtonHover}
           >
-            Supprimer
+            {isMobile ? (
+              <Icon path={mdiTrashCanOutline} size={1} color="white" />
+            ) : (
+              'Supprimer'
+            )}
           </CustomButton>
         </p>
         <p className="control">
@@ -32,7 +40,11 @@ function AdminMachinery() {
             color={colors.blueButton}
             hovercolor={colors.blueButtonHover}
           >
-            Rapport
+            {isMobile ? (
+              <Icon path={mdiInformationBoxOutline} size={1} color="white" />
+            ) : (
+              'Rapport'
+            )}
           </CustomButton>
         </p>
         <p className="control">

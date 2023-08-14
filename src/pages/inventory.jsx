@@ -8,6 +8,10 @@ import { toISODateTime } from '../utils/reusable/functions'
 /*Style*/
 import '../styles/inventory.css'
 import colors from '../utils/styles/color'
+/*Importation des icônes*/
+import Icon from '@mdi/react'
+import { mdiCalendarSearch } from '@mdi/js'
+import { mdiInformationBoxOutline } from '@mdi/js'
 
 function Inventory() {
   //Hook pour la gestion de la modale.
@@ -32,7 +36,11 @@ function Inventory() {
             color={colors.blueButton}
             hovercolor={colors.blueButtonHover}
           >
-            Disponibilités
+            {isMobile ? (
+              <Icon path={mdiCalendarSearch} size={1} color="white" />
+            ) : (
+              'Disponibilités'
+            )}
           </CustomButton>
         </p>
         <p className="control">
@@ -41,7 +49,11 @@ function Inventory() {
             color={colors.blueButton}
             hovercolor={colors.blueButtonHover}
           >
-            Rapport
+            {isMobile ? (
+              <Icon path={mdiInformationBoxOutline} size={1} color="white" />
+            ) : (
+              'Rapport'
+            )}
           </CustomButton>
         </p>
         <p className="control">
