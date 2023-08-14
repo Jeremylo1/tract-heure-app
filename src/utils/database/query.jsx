@@ -60,4 +60,19 @@ export const CHECK_RESERVATION_TIME_CONFLICT = `
             id
         }
     }
-  `
+`
+
+export const GET_UPCOMING_RESERVATIONS = `
+    query GetUpcomingReservations($machineryId: Int!, $currentDateTime: timestamptz!) {
+        machinerie_reservation(
+        where: {
+            machinerie_id: {_eq: $machineryId}, 
+            date_fin: {_gte: $currentDateTime}
+        },
+        order_by: {date_debut: asc}
+        ) {
+            date_debut
+            date_fin
+        }
+    }  
+`
