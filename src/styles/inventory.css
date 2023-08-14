@@ -53,3 +53,42 @@
 /* .content p:not(:last-child) {
     margin-bottom: 0;
 } */
+
+/* === MODALE === */
+.modal-content {
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: border-color .2s;
+}
+
+.form-input:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+.form-input-icon {
+    position: absolute;
+    margin: 12px 8px;
+    color: #aaa;
+}
+
+.input-wrapper {
+    position: relative;
+}

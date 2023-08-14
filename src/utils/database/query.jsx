@@ -41,9 +41,10 @@ export const DELETE_CATEGORY = `
   
 `
 
+//Permet de créer une réservation.
 export const INSERT_RESERVATION = `
-    mutation InsertMachinerieReservation($machineryId: Int!, $userId: String!, $startDate: timestamptz!, $endDate: timestamptz!) {
-        insert_machinerie_reservation(objects:[{machinerie_id:$machineryId, utilisateur_id:$userId, date_debut: $startDate, date_fin: $endDate}]) {
+    mutation InsertMachinerieReservation($machineryId: Int!, $userId: String!, $startDate: timestamptz!, $endDate: timestamptz!,$typeId: Int!) {
+        insert_machinerie_reservation(objects:[{machinerie_id:$machineryId, utilisateur_id:$userId, date_debut: $startDate, date_fin: $endDate, type: $typeId}]) {
         affected_rows
         }
     }
@@ -62,6 +63,7 @@ export const CHECK_RESERVATION_TIME_CONFLICT = `
     }
 `
 
+//Permet de récupérer les réservations à venir d'une machinerie.
 export const GET_UPCOMING_RESERVATIONS = `
     query GetUpcomingReservations($machineryId: Int!, $currentDateTime: timestamptz!) {
         machinerie_reservation(
