@@ -14,16 +14,16 @@ function AdminMachinery() {
   const { isMobile } = useContext(ScreenContext)
 
   //Affichage des boutons du bas de l'accordéon.
-  function groupButtons(machinery) {
+  function groupButtonsAdmin(machinery) {
     return (
       <div className="grouped-buttons">
         <p className="control">
           <CustomButton
             /*to="" ou functionclick=""*/
-            color={colors.blueButton}
-            hovercolor={colors.blueButtonHover}
+            color={colors.redButton}
+            hovercolor={colors.redButtonHover}
           >
-            Disponibilités
+            Supprimer
           </CustomButton>
         </p>
         <p className="control">
@@ -43,7 +43,7 @@ function AdminMachinery() {
             color={colors.greenButton}
             hovercolor={colors.greenButtonHover}
           >
-            Réserver
+            Modifier
           </CustomButton>
         </p>
       </div>
@@ -64,7 +64,7 @@ function AdminMachinery() {
           <div className="columns-mobile">
             <div className="columns-mobile-size">
               <h1>Machinerie agricole</h1>
-              <ShowMachinery functionButtons={groupButtons} />
+              <ShowMachinery functionButtons={groupButtonsAdmin} />
             </div>
           </div>
         </div>
@@ -74,7 +74,7 @@ function AdminMachinery() {
           <div className="columns-tablet-desktop">
             <div className="columns-tablet-desktop-size">
               <h1>Machinerie agricole</h1>
-              <ShowMachinery functionButtons={groupButtons} />
+              <ShowMachinery functionButtons={groupButtonsAdmin} />
             </div>
           </div>
         </div>
