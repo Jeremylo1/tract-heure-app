@@ -32,6 +32,8 @@ function Inventory() {
   const [startTime, setStartTime] = useState(new Date())
   const [endDate, setEndDate] = useState(new Date())
   const [endTime, setEndTime] = useState(new Date())
+  //Pour stocker le type de réservation.
+  const [reservationType, setReservationType] = useState('1') // Par défaut, on met "Réservation".
   //Pour stocker les disponibilités de la machinerie sélectionnée.
   const [availabilities, setAvailabilities] = useState([])
 
@@ -87,8 +89,6 @@ function Inventory() {
       currentDateTime: new Date().toISOString(),
     }
 
-    console.log('variables', variables)
-
     const upcomingReservations = await doMutation(
       GET_UPCOMING_RESERVATIONS,
       variables,
@@ -99,20 +99,33 @@ function Inventory() {
 
     upcomingReservations.machinerie_reservation.forEach(
       (reservation, index) => {
-        // Si l'écart entre la date actuelle et la date de début de la réservation est supérieur à 0, c'est une plage de disponibilité.
         if (new Date(reservation.date_debut) - currentDate > 0) {
           slots.push({
             start: currentDate,
             end: new Date(reservation.date_debut),
           })
         }
-
-        // Mettez à jour la "date actuelle" pour la prochaine itération
         currentDate = new Date(reservation.date_fin)
       },
     )
 
-    // Retournez uniquement les 3 premières disponibilités
+    if (currentDate !== new Date()) {
+      // Si la date courante a été mise à jour après avoir parcouru les réservations
+      slots.push({
+        start: currentDate,
+        end: 'Indéfiniment',
+      })
+    } else if (
+      slots.length === 0 &&
+      upcomingReservations.machinerie_reservation.length === 0
+    ) {
+      // Si la machine n'a aucune réservation à venir, elle est disponible indéfiniment.
+      slots.push({
+        start: currentDate,
+        end: 'Indéfiniment',
+      })
+    }
+
     return slots.slice(0, 3)
   }
 
@@ -152,6 +165,7 @@ function Inventory() {
         // Convertir les dates et heures en objets Date format ISO pour faciliter la comparaison avec " "
         startDate: toISODateTime(startDate, startTime),
         endDate: toISODateTime(endDate, endTime),
+        typeId: reservationType,
       })
       if (responseDataMutation) {
         // Réinitialise les valeurs après la soumission
@@ -178,6 +192,13 @@ function Inventory() {
     // Convertir les dates et heures en objets Date pour faciliter la comparaison
     const startDateTime = new Date(startDate + ' ' + startTime)
     const endDateTime = new Date(endDate + ' ' + endTime)
+    const currentDateTime = new Date() // Date et heure actuelles
+
+    // Vérifier si la date/heure de début est dans le passé
+    if (startDateTime < currentDateTime) {
+      alert('Vous ne pouvez pas réserver à une date/heure déjà passée !')
+      return
+    }
 
     // Vérifier si la date/heure de début est supérieure à la date/heure de fin
     if (startDateTime >= endDateTime) {
@@ -195,7 +216,6 @@ function Inventory() {
     }
 
     // Traitement de la réservation ici, par exemple en envoyant les données au serveur
-
     const conflictExists = await checkReservationConflict(
       startDateTime,
       endDateTime,
@@ -247,34 +267,75 @@ function Inventory() {
         title={`Réserver : ${selectedMachinery?.nom || 'Non sélectionné'}`}
         content={
           <>
+            <h2>Réservation de machinerie</h2>
+            <p>Veuillez remplir les informations ci-dessous pour réserver.</p>
             <form onSubmit={handleReservation}>
-              <div>
-                <label>Date de début: </label>
-                <input
-                  type="date"
-                  required
-                  onChange={(e) => setStartDate(e.target.value)}
-                />
-                <label>Heure de début: </label>
-                <input
-                  type="time"
-                  required
-                  onChange={(e) => setStartTime(e.target.value)}
-                />
+              <div className="form-group">
+                <label>Type de réservation :</label>
+                <div>
+                  <input
+                    type="radio"
+                    id="reservation"
+                    name="reservationType"
+                    value="1"
+                    checked={reservationType === '1'}
+                    onChange={(e) => setReservationType(e.target.value)}
+                  />
+                  <label htmlFor="reservation">Réservation</label>
+                </div>
+                <div>
+                  <input
+                    type="radio"
+                    id="maintenance"
+                    name="reservationType"
+                    value="2"
+                    checked={reservationType === '2'}
+                    onChange={(e) => setReservationType(e.target.value)}
+                  />
+                  <label htmlFor="maintenance">Maintenance</label>
+                </div>
+                <label className="form-label" htmlFor="startDate">
+                  Date de début:
+                </label>
+                <div className="input-wrapper">
+                  <input
+                    id="startDate"
+                    type="date"
+                    className="form-input"
+                    required
+                    onChange={(e) => setStartDate(e.target.value)}
+                  />
+                </div>
+                <div className="input-wrapper">
+                  <input
+                    type="time"
+                    className="form-input"
+                    required
+                    onChange={(e) => setStartTime(e.target.value)}
+                  />
+                </div>
               </div>
-              <div>
-                <label>Date de fin: </label>
-                <input
-                  type="date"
-                  required
-                  onChange={(e) => setEndDate(e.target.value)}
-                />
-                <label>Heure de fin: </label>
-                <input
-                  type="time"
-                  required
-                  onChange={(e) => setEndTime(e.target.value)}
-                />
+              <div className="form-group">
+                <label className="form-label" htmlFor="endDate">
+                  Date de fin:
+                </label>
+                <div className="input-wrapper">
+                  <input
+                    id="endDate"
+                    type="date"
+                    className="form-input"
+                    required
+                    onChange={(e) => setEndDate(e.target.value)}
+                  />
+                </div>
+                <div className="input-wrapper">
+                  <input
+                    type="time"
+                    className="form-input"
+                    required
+                    onChange={(e) => setEndTime(e.target.value)}
+                  />
+                </div>
               </div>
               <CustomButton
                 type="submit"
@@ -284,18 +345,26 @@ function Inventory() {
                 Confirmer la réservation
               </CustomButton>
 
-              {availabilities.map(
-                (slot, index) => (
-                  console.log(slot),
-                  console.log(index),
-                  (
-                    <div key={index}>
-                      {slot.start.toLocaleString()} -{' '}
-                      {slot.end.toLocaleString()}
-                    </div>
-                  )
-                ),
-              )}
+              <h3>Prochaines disponibilités</h3>
+              {availabilities.map((slot, index) => {
+                let startTimeStr = slot.start.toLocaleString()
+                const currentTime = new Date().getTime()
+
+                if (Math.abs(slot.start.getTime() - currentTime) <= 2000) {
+                  startTimeStr = 'Maintenant'
+                }
+
+                let endTimeStr =
+                  slot.end === 'Indéfiniment'
+                    ? slot.end
+                    : slot.end.toLocaleString()
+
+                return (
+                  <div key={index}>
+                    {startTimeStr} - {endTimeStr}
+                  </div>
+                )
+              })}
             </form>
           </>
         }
