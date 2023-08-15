@@ -42,6 +42,8 @@ function ShowMachinery({ functionButtons }) {
   const [firstLoading, setFirstLoading] = useState(true)
   //Pour stocker les données filtrées.
   const [filteredMachineryData, setFilteredMachineryData] = useState([])
+  //Pour stocker les catégories triées.
+  const [sortedCategories, setSortedCategories] = useState([])
 
   //Permet de récupérer la liste des catégories depuis Hasura.
   const {
@@ -54,25 +56,23 @@ function ShowMachinery({ functionButtons }) {
     firstLoading,
   )
 
-  //Trie les catégories par ordre alphabétique.
+  //Permet de trier les catégories par ordre alphabétique.
   useEffect(() => {
     if (category_data && category_data[TABLE_CATEGORY]) {
-      category_data[TABLE_CATEGORY].sort((a, b) =>
+      const sorted = category_data[TABLE_CATEGORY].slice().sort((a, b) =>
         a[COLUMN_NAME].localeCompare(b[COLUMN_NAME]),
       )
+      //On stocke les catégories triées.
+      setSortedCategories(sorted)
     }
   }, [category_data])
 
   //Permet de sélectionner la première catégorie par défaut.
   useEffect(() => {
-    if (
-      category_data &&
-      category_data[TABLE_CATEGORY] &&
-      category_data[TABLE_CATEGORY].length > 0
-    ) {
-      setSelectedCategoryId(category_data[TABLE_CATEGORY][0][COLUMN_ID])
+    if (sortedCategories && sortedCategories.length > 0) {
+      setSelectedCategoryId(sortedCategories[0][COLUMN_ID])
     }
-  }, [category_data])
+  }, [sortedCategories])
 
   //Permet de récupérer les données de toutes les machines depuis Hasura.
   const {
@@ -196,8 +196,8 @@ function ShowMachinery({ functionButtons }) {
             <option key="all" value={0}>
               -- Toutes les machines --
             </option>
-            {/*Catégories de la BD*/}
-            {category_data[TABLE_CATEGORY].map((category) => (
+            {/*Autres catégories*/}
+            {sortedCategories.map((category) => (
               <option
                 key={`${category[COLUMN_NAME]}-${category[COLUMN_ID]}`}
                 value={parseInt(category[COLUMN_ID])}
