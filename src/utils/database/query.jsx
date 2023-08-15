@@ -1,14 +1,14 @@
 /*INFOS SUR LA BASE DE DONNÉES (À MODIFIER AU BESOIN)*/
 
-//Lien de l'API GraphQL.
+/*Lien de l'API GraphQL.*/
 export const LIEN_API = 'https://champion-tiger-15.hasura.app/v1/graphql'
 
-//Nom des tables.
+/*Nom des tables.*/
 export const TABLE_CATEGORY = 'machinerie_categorie'
 export const VUE_MACHINERY = 'machinerie_view'
 export const VUE_RESERVATION = 'machinerie_reservations_view'
 
-//Nom des colonnes (en lien avec la machinerie).
+/*Nom des colonnes (en lien avec la machinerie).*/
 export const COLUMN_ID = 'id'
 export const COLUMN_NAME = 'nom'
 export const COLUMN_MODEL = 'modele'
@@ -21,13 +21,14 @@ export const COLUMN_HOURS = 'heure_utilisation'
 export const COLUMN_COMMENT = 'commentaire'
 export const COLUMN_LOCATION = 'localisation'
 
-//Nom des colonnes (en lien avec les réservations).
+/*Nom des colonnes (en lien avec les réservations).*/
 export const COLUMN_DATE_DEBUT = 'date_debut'
 export const COLUMN_DATE_FIN = 'date_fin'
 export const COLUMN_TYPE = 'type'
 export const COLUMN_DESCRIPTION = 'description'
 
-//Requêtes GraphQL.
+/*Requêtes GraphQL.*/
+
 export const INSERT_MACHINERY = `
   
 `
