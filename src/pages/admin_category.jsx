@@ -22,6 +22,8 @@ import { mdiPencilOutline } from '@mdi/js'
 function AdminCategory() {
   //Pour savoir si c'est la première fois qu'on charge les données.
   const [firstLoading, setFirstLoading] = useState(true)
+  //Pour stocker les catégories triées.
+  const [sortedCategories, setSortedCategories] = useState([])
 
   //Pour savoir si c'est un appareil mobile.
   const { isMobile } = useContext(ScreenContext)
@@ -42,6 +44,17 @@ function AdminCategory() {
     setFirstLoading(false)
   }, [])
 
+  //Permet de trier les catégories par ordre alphabétique.
+  useEffect(() => {
+    if (category_data && category_data[TABLE_CATEGORY]) {
+      const sorted = category_data[TABLE_CATEGORY].slice().sort((a, b) =>
+        a[COLUMN_NAME].localeCompare(b[COLUMN_NAME]),
+      )
+      //On stocke les catégories triées.
+      setSortedCategories(sorted)
+    }
+  }, [category_data])
+
   //Permet de créer le tableau des catégories.
   function tableCategory() {
     return (
@@ -59,7 +72,7 @@ function AdminCategory() {
               </tr>
             </thead>
             <tbody>
-              {category_data[TABLE_CATEGORY].map((category) => (
+              {sortedCategories.map((category) => (
                 <tr key={`${category[COLUMN_NAME]}-${category[COLUMN_ID]}`}>
                   <td>{category[COLUMN_NAME]}</td>
                   <td className="actions-buttons">
