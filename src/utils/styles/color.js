@@ -1,7 +1,7 @@
 //Palette de couleurs utilisées dans l'application.
 const colors = {
-    greenButton: '#2ECC71',
-    greenButtonHover: '#239B56',
+    greenButton: '#58D68D',
+    greenButtonHover: '#28B463',
     blueButton: '#5DADE2',
     blueButtonHover: '#2E86C1',
     redButton: '#EC7063',

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { ScreenContext } from '../utils/react/context'
 import CustomButton from '../components/button'
-import { Link } from 'react-router-dom'
+import AddButton from '../components/addbutton'
 import { useFetchHasura } from '../utils/react/hooks'
 /*Base de données*/
 import {
@@ -24,6 +24,8 @@ function AdminCategory() {
   const [firstLoading, setFirstLoading] = useState(true)
   //Pour stocker les catégories triées.
   const [sortedCategories, setSortedCategories] = useState([])
+  //Hook pour la gestion des catégories.
+  const [selectedCategory, setSelectedCategory] = useState(null)
 
   //Pour savoir si c'est un appareil mobile.
   const { isMobile } = useContext(ScreenContext)
@@ -55,6 +57,7 @@ function AdminCategory() {
     }
   }, [category_data])
 
+  /*AFFICHAGE*/
   //Permet de créer le tableau des catégories.
   function tableCategory() {
     return (
@@ -79,6 +82,9 @@ function AdminCategory() {
                     <CustomButton
                       color={colors.redButton}
                       hovercolor={colors.redButtonHover}
+                      functionclick={() => {
+                        setSelectedCategory(category)
+                      }}
                     >
                       {isMobile ? (
                         <Icon
@@ -93,6 +99,9 @@ function AdminCategory() {
                     <CustomButton
                       color={colors.greenButton}
                       hovercolor={colors.greenButtonHover}
+                      functionclick={() => {
+                        setSelectedCategory(category)
+                      }}
                     >
                       {isMobile ? (
                         <Icon path={mdiPencilOutline} size={1} color="white" />
@@ -110,6 +119,18 @@ function AdminCategory() {
     )
   }
 
+  //Permet de créer le contenu de la page.
+  function pageContent() {
+    return (
+      <div>
+        <h1>Gestion des catégories</h1>
+        <AddButton onClick={() => console.log('Coucou')} />
+        {/*TODO: Ajouter la fonctionnalité d'ajout de catégorie !!!*/}
+        <div>{tableCategory()}</div>
+      </div>
+    )
+  }
+
   //Affichage selon le type d'appareil.
   return (
     <div>
@@ -117,20 +138,14 @@ function AdminCategory() {
         /* DESIGN POUR MOBILE */
         <div>
           <div className="columns-mobile">
-            <div className="columns-mobile-size">
-              <h1>Gestion des catégories</h1>
-              <div>{tableCategory()}</div>
-            </div>
+            <div className="columns-mobile-size">{pageContent()}</div>
           </div>
         </div>
       ) : (
         /* DESIGN POUR TABLETTE ET ORDINATEUR */
         <div>
           <div className="columns-tablet-desktop">
-            <div className="columns-tablet-desktop-size">
-              <h1>Gestion des catégories</h1>
-              <div>{tableCategory()}</div>
-            </div>
+            <div className="columns-tablet-desktop-size">{pageContent()}</div>
           </div>
         </div>
       )}

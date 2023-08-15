@@ -1,0 +1,21 @@
+/* Espace entre l'icône et le texte */
+.marginBetween {
+    margin-left: 6px;
+}
+
+.locationAddButton {
+    display: flex;
+    justify-content: flex-start;
+    /* Aligne le contenu à droite */
+    margin-bottom: 20px;
+}
+
+@media only screen and (max-width: 767px) {
+
+    .locationAddButton {
+        display: flex;
+        justify-content: center;
+        /* Aligne le contenu à droite */
+        margin-bottom: 20px;
+    }
+}

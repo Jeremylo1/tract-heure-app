@@ -21,7 +21,7 @@ function Home() {
                   <div className="tile">
                     <div className="tile is-parent">
                       <article className="tile is-child box">
-                        <p className="title">En cours</p>
+                        <p className="title is-4">En cours</p>
                         <p className="subtitle">Sous-titre pour en cours</p>
                       </article>
                     </div>
@@ -29,7 +29,7 @@ function Home() {
                       <div className="tile">
                         <div className="tile is-parent">
                           <article className="tile is-child box">
-                            <p className="title">Début de location</p>
+                            <p className="title is-4">Début de location</p>
                             <p className="subtitle">
                               Sous-titre pour début de location
                             </p>
@@ -37,7 +37,7 @@ function Home() {
                         </div>
                         <div className="tile is-parent">
                           <article className="tile is-child box">
-                            <p className="title">Fin de location</p>
+                            <p className="title is-4">Fin de location</p>
                             <p className="subtitle">
                               Sous-titre pour fin de location
                             </p>
@@ -46,7 +46,7 @@ function Home() {
                       </div>
                       <div className="tile is-parent">
                         <article className="tile is-child box">
-                          <p className="title">À venir</p>
+                          <p className="title is-4">À venir</p>
                           <p className="subtitle">Sous-titre pour à venir</p>
                         </article>
                       </div>
@@ -68,7 +68,7 @@ function Home() {
                   <div className="tile">
                     <div className="tile is-parent">
                       <article className="tile is-child box">
-                        <p className="title">En cours</p>
+                        <p className="title is-4">En cours</p>
                         <p className="subtitle">Sous-titre pour en cours</p>
                       </article>
                     </div>
@@ -76,7 +76,7 @@ function Home() {
                       <div className="tile">
                         <div className="tile is-parent">
                           <article className="tile is-child box">
-                            <p className="title">Début de location</p>
+                            <p className="title is-4">Début de location</p>
                             <p className="subtitle">
                               Sous-titre pour début de location
                             </p>
@@ -84,7 +84,7 @@ function Home() {
                         </div>
                         <div className="tile is-parent">
                           <article className="tile is-child box">
-                            <p className="title">Fin de location</p>
+                            <p className="title is-4">Fin de location</p>
                             <p className="subtitle">
                               Sous-titre pour fin de location
                             </p>
@@ -93,7 +93,7 @@ function Home() {
                       </div>
                       <div className="tile is-parent">
                         <article className="tile is-child box">
-                          <p className="title">À venir</p>
+                          <p className="title is-4">À venir</p>
                           <p className="subtitle">Sous-titre pour à venir</p>
                         </article>
                       </div>

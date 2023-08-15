@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { useMutationHasura } from '../utils/react/hooks'
 import CustomButton from '../components/button'
+import AddButton from '../components/addbutton'
 import ShowMachinery from '../components/showmachinery'
 import { ScreenContext } from '../utils/react/context'
 /*Base de données*/
@@ -76,6 +77,11 @@ function AdminMachinery() {
           <div className="columns-mobile">
             <div className="columns-mobile-size">
               <h1>Machinerie agricole</h1>
+              <AddButton
+                onClick={() => {
+                  console.log('Ajouter') //TODO: Ajouter la fonctionnalité d'ajout !!!
+                }}
+              />
               <ShowMachinery functionButtons={groupButtonsAdmin} />
             </div>
           </div>
@@ -86,6 +92,11 @@ function AdminMachinery() {
           <div className="columns-tablet-desktop">
             <div className="columns-tablet-desktop-size">
               <h1>Machinerie agricole</h1>
+              <AddButton
+                onClick={() => {
+                  console.log('Ajouter') //TODO: Ajouter la fonctionnalité d'ajout !!!
+                }}
+              />
               <ShowMachinery functionButtons={groupButtonsAdmin} />
             </div>
           </div>
