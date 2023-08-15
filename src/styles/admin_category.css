@@ -1,0 +1,15 @@
+/* Style pour les boutons d'actions */
+.actions-buttons {
+    text-align: right;
+    /* Aligner le contenu à droite */
+    vertical-align: middle;
+    /* Aligner verticalement au milieu */
+    white-space: nowrap;
+    /* Empêcher le renvoi à la ligne automatique */
+}
+
+/* Appliquer le style aux boutons d'actions */
+.actions-buttons button {
+    margin-left: 10px;
+    /* Espacement entre les boutons */
+}
