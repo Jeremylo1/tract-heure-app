@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useTable, useSortBy, useRowSelect } from 'react-table'
 import { ScreenContext } from '../utils/react/context'
+import CustomButton from '../components/button'
 import { Link } from 'react-router-dom'
 import { useFetchHasura } from '../utils/react/hooks'
 /*Base de données*/
@@ -10,6 +10,13 @@ import {
   COLUMN_ID,
   COLUMN_NAME,
 } from '../utils/database/query'
+/*Style*/
+import colors from '../utils/styles/color'
+import '../styles/admin_category.css'
+/*Importation des icônes*/
+import Icon from '@mdi/react'
+import { mdiTrashCanOutline } from '@mdi/js'
+import { mdiPencilOutline } from '@mdi/js'
 
 //Page de gestion des catégories.
 function AdminCategory() {
@@ -47,17 +54,39 @@ function AdminCategory() {
           <table className="table">
             <thead>
               <tr>
-                <th>Catégorie</th>
-                <th>Actions</th>
+                <th>Noms</th>
+                <th className="is-narrow"></th> {/* Pour les boutons */}
               </tr>
             </thead>
             <tbody>
               {category_data[TABLE_CATEGORY].map((category) => (
                 <tr key={`${category[COLUMN_NAME]}-${category[COLUMN_ID]}`}>
                   <td>{category[COLUMN_NAME]}</td>
-                  <td>
-                    <button>S</button>
-                    <button>M</button>
+                  <td className="actions-buttons">
+                    <CustomButton
+                      color={colors.redButton}
+                      hovercolor={colors.redButtonHover}
+                    >
+                      {isMobile ? (
+                        <Icon
+                          path={mdiTrashCanOutline}
+                          size={1}
+                          color="white"
+                        />
+                      ) : (
+                        'Supprimer'
+                      )}
+                    </CustomButton>
+                    <CustomButton
+                      color={colors.greenButton}
+                      hovercolor={colors.greenButtonHover}
+                    >
+                      {isMobile ? (
+                        <Icon path={mdiPencilOutline} size={1} color="white" />
+                      ) : (
+                        'Modifier'
+                      )}
+                    </CustomButton>
                   </td>
                 </tr>
               ))}
