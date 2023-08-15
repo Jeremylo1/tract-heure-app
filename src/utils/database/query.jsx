@@ -52,8 +52,8 @@ export const GET_ALL_RESERVATION = `{${VUE_RESERVATION}{${COLUMN_ID} ${COLUMN_NA
 
 //Permet de créer une réservation.
 export const INSERT_RESERVATION = `
-    mutation InsertMachinerieReservation($machineryId: Int!, $userId: String!, $startDate: timestamptz!, $endDate: timestamptz!,$typeId: Int!) {
-        insert_machinerie_reservation(objects:[{machinerie_id:$machineryId, utilisateur_id:$userId, date_debut: $startDate, date_fin: $endDate, type: $typeId}]) {
+    mutation InsertMachinerieReservation($machineryId: Int!, $userId: String!, $startDate: timestamptz!, $endDate: timestamptz!, $typeId: Int!, $userReservationComment: String) {
+        insert_machinerie_reservation(objects:[{machinerie_id:$machineryId, utilisateur_id:$userId, date_debut: $startDate, date_fin: $endDate, type: $typeId, description: $userReservationComment}]) {
         affected_rows
         }
     }

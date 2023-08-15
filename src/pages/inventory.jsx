@@ -34,6 +34,8 @@ function Inventory() {
   const [endTime, setEndTime] = useState(new Date())
   //Pour stocker le type de réservation.
   const [reservationType, setReservationType] = useState('1') // Par défaut, on met "Réservation".
+  //Pour stocker le commentaire de la réservation.
+  const [reservationComment, setReservationComment] = useState('')
   //Pour stocker les disponibilités de la machinerie sélectionnée.
   const [availabilities, setAvailabilities] = useState([])
 
@@ -166,6 +168,7 @@ function Inventory() {
         startDate: toISODateTime(startDate, startTime),
         endDate: toISODateTime(endDate, endTime),
         typeId: reservationType,
+        userReservationComment: reservationComment,
       })
       if (responseDataMutation) {
         // Réinitialise les valeurs après la soumission
@@ -173,6 +176,7 @@ function Inventory() {
         setStartTime(null)
         setEndDate(null)
         setEndTime(null)
+        setReservationComment('')
 
         // Ferme la modale
         setModalOpen(false)
@@ -234,6 +238,7 @@ function Inventory() {
       setStartTime(null)
       setEndDate(null)
       setEndTime(null)
+      setReservationComment('')
     }
   }
 
@@ -271,7 +276,7 @@ function Inventory() {
             <p>Veuillez remplir les informations ci-dessous pour réserver.</p>
             <form onSubmit={handleReservation}>
               <div className="form-group">
-                <label>Type de réservation :</label>
+                <label className="form-label">Type de réservation :</label>
                 <div>
                   <input
                     type="radio"
@@ -294,8 +299,10 @@ function Inventory() {
                   />
                   <label htmlFor="maintenance">Maintenance</label>
                 </div>
+              </div>
+              <div className="form-group">
                 <label className="form-label" htmlFor="startDate">
-                  Date de début:
+                  Date de début :
                 </label>
                 <div className="input-wrapper">
                   <input
@@ -317,7 +324,7 @@ function Inventory() {
               </div>
               <div className="form-group">
                 <label className="form-label" htmlFor="endDate">
-                  Date de fin:
+                  Date de fin :
                 </label>
                 <div className="input-wrapper">
                   <input
@@ -336,6 +343,19 @@ function Inventory() {
                     onChange={(e) => setEndTime(e.target.value)}
                   />
                 </div>
+              </div>
+              <div className="form-group">
+                <label className="form-label" htmlFor="reservationComment">
+                  Commentaire :
+                </label>
+                <textarea
+                  id="reservationComment"
+                  className="form-input"
+                  rows="4"
+                  placeholder="Entrez votre commentaire ici..."
+                  onChange={(e) => setReservationComment(e.target.value)}
+                  value={reservationComment}
+                ></textarea>
               </div>
               <CustomButton
                 type="submit"
