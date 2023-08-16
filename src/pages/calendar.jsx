@@ -286,7 +286,7 @@ function Calendar() {
           </div>
         </div>
       </div>
-
+      {/* Modale pour afficher les détails de l'événement */}
       <Modal
         title={modalEvent?.title || "Détails de l'événement"}
         isOpen={isModalOpen}
