@@ -3,7 +3,17 @@ import { useFetchHasura } from '../utils/react/hooks'
 import { formatDate } from '../utils/reusable/functions'
 import { ScreenContext } from '../utils/react/context'
 import Modal from '../components/modal'
-import { LIEN_API, GET_ALL_RESERVATION } from '../utils/database/query'
+import {
+  LIEN_API,
+  GET_ALL_RESERVATION,
+  VUE_RESERVATION,
+  COLUMN_ID,
+  COLUMN_NAME,
+  COLUMN_DATE_DEBUT,
+  COLUMN_DATE_FIN,
+  COLUMN_TYPE,
+  COLUMN_DESCRIPTION,
+} from '../utils/database/query'
 /*Style*/
 import '../styles/calendar.css'
 /*Importation des icônes*/
@@ -12,18 +22,6 @@ import { mdiArrowLeftThick } from '@mdi/js'
 import { mdiArrowRightThick } from '@mdi/js'
 
 function Calendar() {
-  /*INFOS SUR LA BASE DE DONNÉES (À MODIFIER AU BESOIN)*/
-  //Nom des tables à utiliser.
-  const vue_reservation = 'machinerie_reservations_view'
-  //Nom des colonnes à utiliser.
-  const column_id = 'id'
-  const column_nom_machinerie = 'nom'
-  const column_date_debut = 'date_debut'
-  const column_date_fin = 'date_fin'
-  const column_type = 'type'
-  const column_description = 'description'
-  /*FIN DES INFOS*/
-
   //Pour savoir si c'est la première fois qu'on charge les données.
   const [firstLoading, setFirstLoading] = useState(true)
   //Obtenir la date actuelle et la stocker dans l'état.
@@ -72,19 +70,19 @@ function Calendar() {
 
   //Permet de formater les données pour l'affichage des événements dans le calendrier.
   const formatEvents = (data) => {
-    if (!data || !data[vue_reservation]) return []
+    if (!data || !data[VUE_RESERVATION]) return []
 
-    return data[vue_reservation].map((event) => {
+    return data[VUE_RESERVATION].map((event) => {
       return {
-        id: event[column_id],
-        title: `${eventType(event[column_type], 'string')} - ${
-          event[column_nom_machinerie]
+        id: event[COLUMN_ID],
+        title: `${eventType(event[COLUMN_TYPE], 'string')} - ${
+          event[COLUMN_NAME]
         }`,
         //description can be null
-        description: event[column_description] || '',
-        type: event[column_type],
-        start: new Date(event[column_date_debut]),
-        end: new Date(event[column_date_fin]),
+        description: event[COLUMN_DESCRIPTION] || '',
+        type: event[COLUMN_TYPE],
+        start: new Date(event[COLUMN_DATE_DEBUT]),
+        end: new Date(event[COLUMN_DATE_FIN]),
       }
     })
   }
