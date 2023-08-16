@@ -14,6 +14,7 @@ import {
   COLUMN_DATE_FIN,
   COLUMN_TYPE,
   COLUMN_DESCRIPTION,
+  DELETE_RESERVATION,
 } from '../utils/database/query'
 /*Style*/
 import '../styles/calendar.css'
@@ -26,8 +27,10 @@ import { mdiArrowRightThick } from '@mdi/js'
 function Calendar() {
   //Pour savoir si c'est la première fois qu'on charge les données.
   const [firstLoading, setFirstLoading] = useState(true)
-  //Obtenir la date actuelle et la stocker dans l'état.
-  const [currentDate, setCurrentDate] = useState(new Date())
+  //Obtenir la date du LocalStorage ou utilisez la date actuelle si elle n'existe pas
+  const storedDate = localStorage.getItem('currentDate')
+  const initialDate = storedDate ? new Date(storedDate) : new Date()
+  const [currentDate, setCurrentDate] = useState(initialDate)
   //useState pour ouvrir/fermer la modale.
   const [isModalOpen, setModalOpen] = useState(false)
   //useState pour stocker l'événement sélectionné dans la modale.
@@ -45,6 +48,7 @@ function Calendar() {
   //Permet de définir si c'est la première fois qu'on charge la page.
   useEffect(() => {
     setFirstLoading(false)
+    localStorage.removeItem('currentDate') //Supprime la date du localStorage.
   }, [])
 
   // Convert events type to string ( 1 = réservation, 2 = maintenance) !!! À TRADUIRE !!!
@@ -94,20 +98,14 @@ function Calendar() {
   //Permet d'envoyer une requête de mutation (INSERT, UPDATE, DELETE) à Hasura.
   const { doMutation } = useMutationHasura(LIEN_API)
 
-  const DELETE_RESERVATION = `
-  mutation DeleteReservation($id: Int!) {
-    delete_machinerie_reservation_by_pk(id: $id) {
-      id
-    }
-  }
-`
-
   const deleteReservation = async (id) => {
     try {
       const responseDataMutation = await doMutation(DELETE_RESERVATION, { id })
       if (responseDataMutation) {
         alert('Réservation annulée avec succès!')
         setModalOpen(false) // Fermer la modale
+        //Stocke la date actuelle dans le localStorage pour recharger la page avec la date actuelle.
+        localStorage.setItem('currentDate', currentDate.toISOString())
         //Recharger la page
         window.location.reload()
       }

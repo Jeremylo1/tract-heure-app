@@ -49,6 +49,14 @@ export const DELETE_CATEGORY = `
   
 `
 
+export const DELETE_RESERVATION = `
+    mutation DeleteReservation($id: Int!) {
+        delete_machinerie_reservation_by_pk(id: $id) {
+        id
+        }
+    }
+`
+
 export const GET_ALL_RESERVATION = `{${VUE_RESERVATION}{${COLUMN_ID} ${COLUMN_NAME} ${COLUMN_DATE_DEBUT} ${COLUMN_DATE_FIN} ${COLUMN_TYPE} ${COLUMN_DESCRIPTION}}}`
 
 //Permet de créer une réservation.
