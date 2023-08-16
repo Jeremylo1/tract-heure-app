@@ -136,7 +136,7 @@ function Inventory() {
     }
   }, [isModalOpen, selectedMachinery])
 
-  // Permet de vérifier si la réservation est en conflit avec une autre réservation existante
+  //Permet de vérifier si la réservation est en conflit avec une autre réservation existante.
   const checkReservationConflict = async (startDateTime, endDateTime) => {
     const variables = {
       machineryId: selectedMachinery.id,
@@ -160,21 +160,21 @@ function Inventory() {
       const responseDataMutation = await doMutation(INSERT_RESERVATION, {
         machineryId: selectedMachinery.id,
         userId: '1', // TODO: Remplacer par l'ID de l'utilisateur connecté
-        // Convertir les dates et heures en objets Date format ISO pour faciliter la comparaison avec " "
+        //Convertir les dates et heures en objets Date format ISO pour faciliter la comparaison avec " ".
         startDate: toISODateTime(startDate, startTime),
         endDate: toISODateTime(endDate, endTime),
         typeId: reservationType,
         userReservationComment: reservationComment,
       })
       if (responseDataMutation) {
-        // Réinitialise les valeurs après la soumission
+        //Réinitialise les valeurs après la soumission.
         setStartDate(null)
         setStartTime(null)
         setEndDate(null)
         setEndTime(null)
         setReservationComment('')
 
-        // Ferme la modale
+        //Ferme la modale.
         setModalOpen(false)
       }
     } catch (err) {
@@ -185,22 +185,22 @@ function Inventory() {
     }
   }
 
-  // Gestion de réservation de la machinerie
+  //Gestion de réservation de la machinerie.
   async function handleReservation(e) {
     e.preventDefault()
 
-    // Convertir les dates et heures en objets Date pour faciliter la comparaison
+    //Convertir les dates et heures en objets Date pour faciliter la comparaison.
     const startDateTime = new Date(startDate + ' ' + startTime)
     const endDateTime = new Date(endDate + ' ' + endTime)
     const currentDateTime = new Date() // Date et heure actuelles
 
-    // Vérifier si la date/heure de début est dans le passé
+    //Vérifier si la date/heure de début est dans le passé.
     if (startDateTime < currentDateTime) {
       alert('Vous ne pouvez pas réserver à une date/heure déjà passée !')
       return
     }
 
-    // Vérifier si la date/heure de début est supérieure à la date/heure de fin
+    //Vérifier si la date/heure de début est supérieure à la date/heure de fin.
     if (startDateTime >= endDateTime) {
       alert(
         "La date et l'heure de début doivent être antérieures à la date et l'heure de fin!",
@@ -208,14 +208,15 @@ function Inventory() {
       return
     }
 
-    // Vérifier si la durée de la réservation est au moins de 30 minutes
-    const duration = (endDateTime - startDateTime) / (1000 * 60) // Durée en minutes
+    //Vérifier si la durée de la réservation est au moins de 30 minutes.
+    const duration = (endDateTime - startDateTime) / (1000 * 60) //Durée en minutes.
     if (duration < 30) {
       alert("La réservation doit être d'une durée minimale de 30 minutes!")
       return
     }
 
-    // Traitement de la réservation ici, par exemple en envoyant les données au serveur
+    //Traitement de la réservation ici, par exemple en envoyant les données au serveur. ??????
+    //Vérifier si la réservation est en conflit avec une autre réservation existante.
     const conflictExists = await checkReservationConflict(
       startDateTime,
       endDateTime,
@@ -226,10 +227,11 @@ function Inventory() {
       return
     } else {
       addReservation()
-      // Ferme la modale
+
+      //Ferme la modale.
       setModalOpen(false)
 
-      // Réinitialise les valeurs APRÈS la soumission
+      //Réinitialise les valeurs APRÈS la soumission.
       setStartDate(null)
       setStartTime(null)
       setEndDate(null)
