@@ -263,8 +263,8 @@ function Calendar() {
                               className={`box event ${eventType(
                                 event.type,
                                 'class',
-                              )} ${event.allDay ? 'allday' : ''}`}
-                              key={event.title}
+                              )}`}
+                              key={event.id}
                               style={event.style}
                               onClick={() => openModal(event)}
                             >
