@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useFetchHasura } from '../utils/react/hooks'
+import { useMutationHasura } from '../utils/react/hooks'
 import { ScreenContext } from '../utils/react/context'
+import CustomButton from '../components/button'
 import Modal from '../components/modal'
 import {
   LIEN_API,
@@ -15,6 +17,7 @@ import {
 } from '../utils/database/query'
 /*Style*/
 import '../styles/calendar.css'
+import colors from '../utils/styles/color'
 /*Importation des icônes*/
 import Icon from '@mdi/react'
 import { mdiArrowLeftThick } from '@mdi/js'
@@ -88,6 +91,41 @@ function Calendar() {
 
   const eventsJSON = formatEvents(reservation_data)
 
+  //Permet d'envoyer une requête de mutation (INSERT, UPDATE, DELETE) à Hasura.
+  const { doMutation } = useMutationHasura(LIEN_API)
+
+  const DELETE_RESERVATION = `
+  mutation DeleteReservation($id: Int!) {
+    delete_machinerie_reservation_by_pk(id: $id) {
+      id
+    }
+  }
+`
+
+  const deleteReservation = async (id) => {
+    try {
+      const responseDataMutation = await doMutation(DELETE_RESERVATION, { id })
+      if (responseDataMutation) {
+        alert('Réservation annulée avec succès!')
+        setModalOpen(false) // Fermer la modale
+        //Recharger la page
+        window.location.reload()
+      }
+    } catch (err) {
+      console.error(err)
+      alert("Une erreur s'est produite lors de l'annulation de la réservation.")
+    }
+  }
+
+  const confirmDeletion = (id) => {
+    const userConfirmed = window.confirm(
+      'Êtes-vous sûr de vouloir annuler cette réservation?',
+    )
+    if (userConfirmed) {
+      deleteReservation(id)
+    }
+  }
+
   //Fonction pour passer à la semaine/jour suivant(e).
   const nextPeriod = () => {
     const newDate = new Date(currentDate)
@@ -117,10 +155,8 @@ function Calendar() {
           //Filtre les événements pour n'afficher que ceux de la journée.
           .filter((event) => {
             const startDay = new Date(event.start)
-            console.log('startDay', startDay)
             startDay.setHours(0, 0, 0, 0) //Définit le début de la journée pour l'événement.
             const endDay = new Date(event.end)
-            console.log('endDay', endDay)
             endDay.setHours(23, 59, 59, 999) //Inclut la fin de la journée dans l'événement.
 
             return date >= startDay && date <= endDay
@@ -164,7 +200,6 @@ function Calendar() {
                 date.getFullYear() === event.end.getFullYear()
                   ? event.end.getHours()
                   : 24
-              console.log('info', event)
 
               return {
                 ...event,
@@ -301,6 +336,13 @@ function Calendar() {
             <p>{modalEvent?.start.toLocaleString()}</p>
             <h3>Date de fin:</h3>
             <p>{modalEvent?.end.toLocaleString()}</p>
+            <CustomButton
+              color={colors.redButton}
+              hovercolor={colors.redButtonHover}
+              functionclick={() => confirmDeletion(modalEvent?.id)}
+            >
+              Annuler la réservation
+            </CustomButton>
           </>
         }
       />
