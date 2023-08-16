@@ -51,7 +51,7 @@ function Calendar() {
     localStorage.removeItem('currentDate') //Supprime la date du localStorage.
   }, [])
 
-  // Convert events type to string ( 1 = réservation, 2 = maintenance) !!! À TRADUIRE !!!
+  //Convertir le type de l'événement en string ou en class ( 1 = réservation, 2 = maintenance).
   const eventType = (type, mode) => {
     if (mode === 'class') {
       switch (type) {
