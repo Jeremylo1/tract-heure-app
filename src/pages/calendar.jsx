@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useFetchHasura } from '../utils/react/hooks'
-import { formatDate } from '../utils/reusable/functions'
 import { ScreenContext } from '../utils/react/context'
 import Modal from '../components/modal'
 import {

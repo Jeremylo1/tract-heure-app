@@ -86,54 +86,57 @@ function Inventory() {
   }
 
   // Permet de récupérer les prochaines disponibilités de la machinerie sélectionnée
-  const getNextAvailabilities = async (machineryId) => {
-    const variables = {
-      machineryId,
-      currentDateTime: new Date().toISOString(),
-    }
-
-    const upcomingReservations = await doMutation(
-      GET_UPCOMING_RESERVATIONS,
-      variables,
-    )
-    const slots = []
-
-    let currentDate = new Date()
-
-    upcomingReservations.machinerie_reservation.forEach(
-      (reservation, index) => {
-        if (new Date(reservation.date_debut) - currentDate > 0) {
-          slots.push({
-            start: currentDate,
-            end: new Date(reservation.date_debut),
-          })
-        }
-        currentDate = new Date(reservation.date_fin)
-      },
-    )
-
-    // Si la dernière réservation se termine dans le futur, on ajoute un slot (date x - Indéfiniment)
-    if (
-      currentDate !== new Date() ||
-      (slots.length === 0 &&
-        upcomingReservations.machinerie_reservation.length === 0)
-    ) {
-      slots.push({
-        start: currentDate,
-        end: 'Indéfiniment',
-      })
-    }
-
-    return slots.slice(0, 3)
-  }
-
-  // Permet de selectionner les disponibilités de la machinerie sélectionnée
   useEffect(() => {
-    if (isModalOpen && selectedMachinery) {
-      getNextAvailabilities(selectedMachinery.id).then((slots) => {
-        setAvailabilities(slots)
-      })
+    const getNextAvailabilitiesCallback = async (machineryId) => {
+      const variables = {
+        machineryId,
+        currentDateTime: new Date().toISOString(),
+      }
+
+      const upcomingReservations = await doMutation(
+        GET_UPCOMING_RESERVATIONS,
+        variables,
+      )
+      const slots = []
+
+      let currentDate = new Date()
+
+      upcomingReservations.machinerie_reservation.forEach(
+        (reservation, index) => {
+          if (new Date(reservation.date_debut) - currentDate > 0) {
+            slots.push({
+              start: currentDate,
+              end: new Date(reservation.date_debut),
+            })
+          }
+          currentDate = new Date(reservation.date_fin)
+        },
+      )
+
+      // Si la dernière réservation se termine dans le futur, on ajoute un slot (date x - Indéfiniment)
+      if (
+        currentDate !== new Date() ||
+        (slots.length === 0 &&
+          upcomingReservations.machinerie_reservation.length === 0)
+      ) {
+        slots.push({
+          start: currentDate,
+          end: 'Indéfiniment',
+        })
+      }
+
+      return slots.slice(0, 3)
     }
+
+    const fetchAvailabilities = async () => {
+      if (isModalOpen && selectedMachinery) {
+        const slots = await getNextAvailabilitiesCallback(selectedMachinery.id)
+        setAvailabilities(slots)
+      }
+    }
+
+    fetchAvailabilities()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isModalOpen, selectedMachinery])
 
   //Permet de vérifier si la réservation est en conflit avec une autre réservation existante.
@@ -152,7 +155,7 @@ function Inventory() {
   }
 
   //Permet d'envoyer une requête de mutation (INSERT, UPDATE, DELETE) à Hasura.
-  const { doMutation, error_mutation } = useMutationHasura(LIEN_API)
+  const { doMutation } = useMutationHasura(LIEN_API)
 
   // Permet d'ajouter une réservation à la base de données
   const addReservation = async () => {
