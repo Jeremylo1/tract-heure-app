@@ -85,6 +85,7 @@ function Inventory() {
     )
   }
 
+  // Permet de récupérer les prochaines disponibilités de la machinerie sélectionnée
   const getNextAvailabilities = async (machineryId) => {
     const variables = {
       machineryId,
@@ -111,17 +112,12 @@ function Inventory() {
       },
     )
 
-    if (currentDate !== new Date()) {
-      // Si la date courante a été mise à jour après avoir parcouru les réservations
-      slots.push({
-        start: currentDate,
-        end: 'Indéfiniment',
-      })
-    } else if (
-      slots.length === 0 &&
-      upcomingReservations.machinerie_reservation.length === 0
+    // Si la dernière réservation se termine dans le futur, on ajoute un slot (date x - Indéfiniment)
+    if (
+      currentDate !== new Date() ||
+      (slots.length === 0 &&
+        upcomingReservations.machinerie_reservation.length === 0)
     ) {
-      // Si la machine n'a aucune réservation à venir, elle est disponible indéfiniment.
       slots.push({
         start: currentDate,
         end: 'Indéfiniment',
@@ -131,6 +127,7 @@ function Inventory() {
     return slots.slice(0, 3)
   }
 
+  // Permet de selectionner les disponibilités de la machinerie sélectionnée
   useEffect(() => {
     if (isModalOpen && selectedMachinery) {
       getNextAvailabilities(selectedMachinery.id).then((slots) => {
@@ -157,8 +154,7 @@ function Inventory() {
   //Permet d'envoyer une requête de mutation (INSERT, UPDATE, DELETE) à Hasura.
   const { doMutation, error_mutation } = useMutationHasura(LIEN_API)
 
-  /*Permet d'ajouter un todo à la base de données. 
-  Le titre du todo est récupéré depuis le state `title`.*/
+  // Permet d'ajouter une réservation à la base de données
   const addReservation = async () => {
     try {
       const responseDataMutation = await doMutation(INSERT_RESERVATION, {
