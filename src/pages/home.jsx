@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import { ScreenContext } from '../utils/react/context'
 import { useFetchHasura } from '../utils/react/hooks'
 import {
@@ -7,26 +6,10 @@ import {
   GET_ALL_RESERVATION,
   VUE_RESERVATION,
 } from '../utils/database/query'
+import ReservationList from '../components/reservationlist'
+/*Style*/
 import 'bulma/css/bulma.min.css'
 import '../styles/home.css'
-
-function ReservationSection({ title, cards, notificationClass }) {
-  return (
-    <div className="tile is-parent">
-      <article className={`tile is-child notification ${notificationClass}`}>
-        <div className="content">
-          <p className="title">{title}</p>
-          {/* Si aucune carte, on affiche un message. */}
-          {cards.length === 0 && (
-            <p className="no-card">Aucune réservation à afficher</p>
-          )}
-          {/* Sinon, on affiche les cartes. */}
-          <div className="content">{cards}</div>
-        </div>
-      </article>
-    </div>
-  )
-}
 
 function Home() {
   const { isMobileTablet } = useContext(ScreenContext)
@@ -39,6 +22,7 @@ function Home() {
     error: reservation_error,
   } = useFetchHasura(LIEN_API, GET_ALL_RESERVATION, firstLoading)
 
+  //Les cartes à afficher dans les listes.
   const [inProgressCards, setInProgressCards] = useState([])
   const [upcomingCards, setUpcomingCards] = useState([])
   const [finishedCards, setFinishedCards] = useState([])
@@ -112,6 +96,7 @@ function Home() {
   //   </div>,
   // ]
 
+  //Affichage de la page selon la taille de l'écran.
   return (
     <div
       className={isMobileTablet ? 'columns-mobile' : 'columns-tablet-desktop'}
@@ -119,17 +104,17 @@ function Home() {
       <div className="columns-size">
         <h1>Mes réservations</h1>
         <div className="tile is-ancestor">
-          <ReservationSection
+          <ReservationList
             title="En cours"
             cards={inProgressCards}
             notificationClass="is-success"
           />
-          <ReservationSection
+          <ReservationList
             title="À venir"
             cards={upcomingCards}
             notificationClass="is-primary"
           />
-          <ReservationSection
+          <ReservationList
             title="Terminé"
             cards={finishedCards}
             notificationClass="is-warning"
