@@ -24,6 +24,30 @@ function formatDate(dateString) {
 
 export { formatDate }
 
+//Permet de formater une date et de l'afficher en format court.
+//Par exemple: 2021-03-01T15:00:00.000Z => lun. 1 mars 2021.
+function formatShortDate(dateString) {
+  return dateString.toLocaleDateString('fr-FR', {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  })
+}
+
+export { formatShortDate }
+
+//Permet de formater une heure et de l'afficher.
+//Par exemple: 2021-03-01T15:00:00.000Z => 11:00.
+function formatTime(dateString) {
+  return dateString.toLocaleTimeString('fr-FR', {
+    hour: '2-digit',
+    minute: '2-digit',
+  })
+}
+
+export { formatTime }
+
 //Permet de transformer une date + heure au format ISO.
 //Par exemple: 2023-08-03 16:05 => 2023-08-03T16:05:00.000Z.
 function toISODateTime(dateString, timeString) {
