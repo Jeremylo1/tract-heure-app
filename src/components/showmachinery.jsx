@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { useFetchHasura } from '../utils/react/hooks'
+import { useFetchHasura, useCategory } from '../utils/react/hooks'
 import { formatDate } from '../utils/reusable/functions'
 import Accordion from './accordion'
 /*Base de données*/
 import {
   LIEN_API,
-  TABLE_CATEGORY,
   VUE_MACHINERY,
   COLUMN_ID,
   COLUMN_NAME,
@@ -42,30 +41,9 @@ function ShowMachinery({ functionButtons }) {
   const [firstLoading, setFirstLoading] = useState(true)
   //Pour stocker les données filtrées.
   const [filteredMachineryData, setFilteredMachineryData] = useState([])
-  //Pour stocker les catégories triées.
-  const [sortedCategories, setSortedCategories] = useState([])
 
-  //Permet de récupérer la liste des catégories depuis Hasura.
-  const {
-    data: category_data,
-    isLoading: category_loading,
-    error: category_error,
-  } = useFetchHasura(
-    LIEN_API,
-    `{${TABLE_CATEGORY}{${COLUMN_ID} ${COLUMN_NAME}}}`,
-    firstLoading,
-  )
-
-  //Permet de trier les catégories par ordre alphabétique.
-  useEffect(() => {
-    if (category_data && category_data[TABLE_CATEGORY]) {
-      const sorted = category_data[TABLE_CATEGORY].slice().sort((a, b) =>
-        a[COLUMN_NAME].localeCompare(b[COLUMN_NAME]),
-      )
-      //On stocke les catégories triées.
-      setSortedCategories(sorted)
-    }
-  }, [category_data])
+  //Pour récupérer les catégories.
+  const { sortedCategories, category_loading, category_error } = useCategory()
 
   //Permet de sélectionner la première catégorie par défaut.
   useEffect(() => {
