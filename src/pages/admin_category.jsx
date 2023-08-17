@@ -119,36 +119,22 @@ function AdminCategory() {
     )
   }
 
-  //Permet de créer le contenu de la page.
-  function pageContent() {
-    return (
-      <div>
-        <h1>Gestion des catégories</h1>
-        <AddButton onClick={() => console.log('Coucou')} />
-        {/*TODO: Ajouter la fonctionnalité d'ajout de catégorie !!!*/}
-        <div>{tableCategory()}</div>
-      </div>
-    )
-  }
-
   //Affichage selon le type d'appareil.
   return (
     <div>
-      {isMobile ? (
-        /* DESIGN POUR MOBILE */
-        <div>
-          <div className="columns-mobile">
-            <div className="columns-mobile-size">{pageContent()}</div>
-          </div>
+      {/* DESIGN POUR MOBILE : DESIGN POUR TABLETTE ET ORDINATEUR */}
+      <div className={isMobile ? 'columns-mobile' : 'columns-tablet-desktop'}>
+        <div
+          className={
+            isMobile ? 'columns-mobile-size' : 'columns-tablet-desktop-size'
+          }
+        >
+          <h1>Gestion des catégories</h1>
+          <AddButton onClick={() => console.log('Coucou')} />
+          {/*TODO: Ajouter la fonctionnalité d'ajout de catégorie !!!*/}
+          <div>{tableCategory()}</div>
         </div>
-      ) : (
-        /* DESIGN POUR TABLETTE ET ORDINATEUR */
-        <div>
-          <div className="columns-tablet-desktop">
-            <div className="columns-tablet-desktop-size">{pageContent()}</div>
-          </div>
-        </div>
-      )}
+      </div>
     </div>
   )
 }
