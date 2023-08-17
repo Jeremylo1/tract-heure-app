@@ -218,8 +218,7 @@ function Inventory() {
       return
     }
 
-    //Traitement de la réservation ici, par exemple en envoyant les données au serveur. ??????
-    //Vérifier si la réservation est en conflit avec une autre réservation existante.
+    //Traitement de la réservation ici, par exemple en envoyant les données au serveur.
     const conflictExists = await checkReservationConflict(
       startDateTime,
       endDateTime,
@@ -246,27 +245,19 @@ function Inventory() {
   //Affichage selon le type d'appareil.
   return (
     <div>
-      {isMobile ? (
-        /* DESIGN POUR MOBILE */
-        <div>
-          <div className="columns-mobile">
-            <div className="columns-mobile-size">
-              <h1>Machinerie agricole</h1>
-              <ShowMachinery functionButtons={groupButtons} />
-            </div>
+      <div>
+        {/* DESIGN POUR MOBILE : DESIGN POUR TABLETTE ET ORDINATEUR */}
+        <div className={isMobile ? 'columns-mobile' : 'columns-tablet-desktop'}>
+          <div
+            className={
+              isMobile ? 'columns-mobile-size' : 'columns-tablet-desktop-size'
+            }
+          >
+            <h1>Machinerie agricole</h1>
+            <ShowMachinery functionButtons={groupButtons} />
           </div>
         </div>
-      ) : (
-        /* DESIGN POUR TABLETTE ET ORDINATEUR */
-        <div>
-          <div className="columns-tablet-desktop">
-            <div className="columns-tablet-desktop-size">
-              <h1>Machinerie agricole</h1>
-              <ShowMachinery functionButtons={groupButtons} />
-            </div>
-          </div>
-        </div>
-      )}
+      </div>
 
       {/* MODALE DE RÉSERVATION */}
       <Modal

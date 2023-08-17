@@ -1,9 +1,11 @@
 import React, { useState, useContext } from 'react'
 import { useMutationHasura } from '../utils/react/hooks'
+import { ScreenContext } from '../utils/react/context'
 import CustomButton from '../components/button'
 import AddButton from '../components/addbutton'
 import ShowMachinery from '../components/showmachinery'
-import { ScreenContext } from '../utils/react/context'
+import Modal from '../components/modal'
+import FormAddMachinery from '../components/form_addmachinery'
 /*Base de données*/
 import { LIEN_API } from '../utils/database/query'
 /*Style*/
@@ -17,6 +19,8 @@ import { mdiInformationBoxOutline } from '@mdi/js'
 function AdminMachinery() {
   //Hook pour la gestion de la machinerie sélectionnée.
   const [selectedMachinery, setSelectedMachinery] = useState(null)
+  //Hook pour la gestion de la modale.
+  const [isModalOpen, setModalOpen] = useState(false)
   //Pour savoir si c'est un appareil mobile.
   const { isMobile } = useContext(ScreenContext)
 
@@ -71,37 +75,40 @@ function AdminMachinery() {
   //Affichage selon le type d'appareil.
   return (
     <div>
-      {isMobile ? (
-        /* DESIGN POUR MOBILE */
-        <div>
-          <div className="columns-mobile">
-            <div className="columns-mobile-size">
-              <h1>Machinerie agricole</h1>
-              <AddButton
-                onClick={() => {
-                  console.log('Ajouter') //TODO: Ajouter la fonctionnalité d'ajout !!!
-                }}
-              />
-              <ShowMachinery functionButtons={groupButtonsAdmin} />
-            </div>
-          </div>
+      {/* DESIGN POUR MOBILE : DESIGN POUR TABLETTE ET ORDINATEUR */}
+      <div className={isMobile ? 'columns-mobile' : 'columns-tablet-desktop'}>
+        <div
+          className={
+            isMobile ? 'columns-mobile-size' : 'columns-tablet-desktop-size'
+          }
+        >
+          <h1>Machinerie agricole</h1>
+          <AddButton
+            onClick={() => {
+              setModalOpen(true)
+            }}
+          />
+          <ShowMachinery functionButtons={groupButtonsAdmin} />
         </div>
-      ) : (
-        /* DESIGN POUR TABLETTE ET ORDINATEUR */
-        <div>
-          <div className="columns-tablet-desktop">
-            <div className="columns-tablet-desktop-size">
-              <h1>Machinerie agricole</h1>
-              <AddButton
-                onClick={() => {
-                  console.log('Ajouter') //TODO: Ajouter la fonctionnalité d'ajout !!!
-                }}
-              />
-              <ShowMachinery functionButtons={groupButtonsAdmin} />
-            </div>
-          </div>
-        </div>
-      )}
+      </div>
+
+      {/* MODALE POUR AJOUTER UNE MACHINE */}
+      <Modal
+        title={
+          <>
+            <h2>Ajouter une machine</h2>
+          </>
+        }
+        content={
+          <>
+            <FormAddMachinery />
+          </>
+        }
+        isOpen={isModalOpen}
+        onClose={() => {
+          setModalOpen(false)
+        }}
+      />
     </div>
   )
 }
