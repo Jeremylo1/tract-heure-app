@@ -1,6 +1,13 @@
 import { useState, useEffect, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AuthContext } from './context'
+/*Base de données*/
+import {
+  LIEN_API,
+  TABLE_CATEGORY,
+  COLUMN_ID,
+  COLUMN_NAME,
+} from '../database/query'
 
 //Permet de récupérer (SELECT) des données depuis Hasura.
 export function useFetchHasura(url, query, stopFetch = false) {
@@ -93,6 +100,45 @@ export function useMutationHasura(url) {
 
   return { doMutation, error }
 }
+
+/*====================*/
+//Permet de récupérer les catégories triées par ordre alphabétique depuis Hasura.
+export function useCategory() {
+  //Pour savoir si c'est la première fois qu'on charge les données.
+  const [firstLoading, setFirstLoading] = useState(true)
+  //Pour stocker les catégories triées.
+  const [sortedCategories, setSortedCategories] = useState([])
+
+  //Permet de récupérer la liste des catégories depuis Hasura.
+  const {
+    data: category_data,
+    isLoading: category_loading,
+    error: category_error,
+  } = useFetchHasura(
+    LIEN_API,
+    `{${TABLE_CATEGORY}{${COLUMN_ID} ${COLUMN_NAME}}}`,
+    firstLoading,
+  )
+
+  //Permet de définir si c'est la première fois qu'on charge la page.
+  useEffect(() => {
+    setFirstLoading(false)
+  }, [])
+
+  //Permet de trier les catégories par ordre alphabétique.
+  useEffect(() => {
+    if (category_data && category_data[TABLE_CATEGORY]) {
+      const sorted = category_data[TABLE_CATEGORY].slice().sort((a, b) =>
+        a[COLUMN_NAME].localeCompare(b[COLUMN_NAME]),
+      )
+      //On stocke les catégories triées.
+      setSortedCategories(sorted)
+    }
+  }, [category_data])
+
+  return { sortedCategories, category_loading, category_error }
+}
+/*====================*/
 
 //Permet de se déconnecter, de récupérer le type d'utilisateur et de savoir si l'utilisateur est connecté.
 export function useConnexion() {
