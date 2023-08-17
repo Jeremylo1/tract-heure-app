@@ -21,6 +21,7 @@ function AdminMachinery() {
   const [selectedMachinery, setSelectedMachinery] = useState(null)
   //Hook pour la gestion de la modale.
   const [isModalOpen, setModalOpen] = useState(false)
+
   //Pour savoir si c'est un appareil mobile.
   const { isMobile } = useContext(ScreenContext)
 

@@ -1,8 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { useFetchHasura } from '../utils/react/hooks'
 import { ScreenContext } from '../utils/react/context'
 import CustomButton from '../components/button'
 import AddButton from '../components/addbutton'
-import { useFetchHasura } from '../utils/react/hooks'
+import Modal from '../components/modal'
+import FormAddCategory from '../components/form_addmachinery'
 /*Base de données*/
 import {
   LIEN_API,
@@ -26,6 +28,8 @@ function AdminCategory() {
   const [sortedCategories, setSortedCategories] = useState([])
   //Hook pour la gestion des catégories.
   const [selectedCategory, setSelectedCategory] = useState(null)
+  //Hook pour la gestion de la modale.
+  const [isModalOpen, setModalOpen] = useState(false)
 
   //Pour savoir si c'est un appareil mobile.
   const { isMobile } = useContext(ScreenContext)
@@ -130,11 +134,32 @@ function AdminCategory() {
           }
         >
           <h1>Gestion des catégories</h1>
-          <AddButton onClick={() => console.log('Coucou')} />
-          {/*TODO: Ajouter la fonctionnalité d'ajout de catégorie !!!*/}
+          <AddButton
+            onClick={() => {
+              setModalOpen(true)
+            }}
+          />
           <div>{tableCategory()}</div>
         </div>
       </div>
+
+      {/* MODALE POUR AJOUTER UNE MACHINE */}
+      <Modal
+        title={
+          <>
+            <h2>Ajouter une catégorie</h2>
+          </>
+        }
+        content={
+          <>
+            <FormAddCategory />
+          </>
+        }
+        isOpen={isModalOpen}
+        onClose={() => {
+          setModalOpen(false)
+        }}
+      />
     </div>
   )
 }
