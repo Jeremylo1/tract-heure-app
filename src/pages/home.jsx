@@ -1,110 +1,136 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { ScreenContext } from '../utils/react/context'
-/*CSS*/
+import { useFetchHasura } from '../utils/react/hooks'
+import {
+  LIEN_API,
+  GET_ALL_RESERVATION,
+  VUE_RESERVATION,
+} from '../utils/database/query'
 import 'bulma/css/bulma.min.css'
 import '../styles/home.css'
 
-function Home() {
-  //Pour savoir si c'est un appareil mobile.
-  const { isMobileTablet } = useContext(ScreenContext)
+function ReservationSection({ title, cards, notificationClass }) {
   return (
-    <div>
-      {isMobileTablet ? (
-        /* DESIGN POUR MOBILE ET TABLETTE */
-        <div>
-          <div className="columns-mobile">
-            <div className="columns-mobile-size">
-              <h1>Mes réservations</h1>
-              <div className="tile is-ancestor">
-                <div className="tile is-vertical">
-                  <div className="tile">
-                    <div className="tile is-parent">
-                      <article className="tile is-child box">
-                        <p className="title is-4">En cours</p>
-                        <p className="subtitle">Sous-titre pour en cours</p>
-                      </article>
-                    </div>
-                    <div className="tile is-vertical">
-                      <div className="tile">
-                        <div className="tile is-parent">
-                          <article className="tile is-child box">
-                            <p className="title is-4">Début de location</p>
-                            <p className="subtitle">
-                              Sous-titre pour début de location
-                            </p>
-                          </article>
-                        </div>
-                        <div className="tile is-parent">
-                          <article className="tile is-child box">
-                            <p className="title is-4">Fin de location</p>
-                            <p className="subtitle">
-                              Sous-titre pour fin de location
-                            </p>
-                          </article>
-                        </div>
-                      </div>
-                      <div className="tile is-parent">
-                        <article className="tile is-child box">
-                          <p className="title is-4">À venir</p>
-                          <p className="subtitle">Sous-titre pour à venir</p>
-                        </article>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+    <div className="tile is-parent">
+      <article className={`tile is-child notification ${notificationClass}`}>
+        <div className="content">
+          <p className="title">{title}</p>
+          <div className="content">{cards}</div>
         </div>
-      ) : (
-        /* DESIGN POUR ORDINATEUR */
-        <div>
-          <div className="columns-tablet-desktop">
-            <div className="columns-tablet-desktop-size">
-              <h1>Mes réservations</h1>
-              <div className="tile is-ancestor">
-                <div className="tile is-vertical">
-                  <div className="tile">
-                    <div className="tile is-parent">
-                      <article className="tile is-child box">
-                        <p className="title is-4">En cours</p>
-                        <p className="subtitle">Sous-titre pour en cours</p>
-                      </article>
-                    </div>
-                    <div className="tile is-8 is-vertical">
-                      <div className="tile">
-                        <div className="tile is-parent">
-                          <article className="tile is-child box">
-                            <p className="title is-4">Début de location</p>
-                            <p className="subtitle">
-                              Sous-titre pour début de location
-                            </p>
-                          </article>
-                        </div>
-                        <div className="tile is-parent">
-                          <article className="tile is-child box">
-                            <p className="title is-4">Fin de location</p>
-                            <p className="subtitle">
-                              Sous-titre pour fin de location
-                            </p>
-                          </article>
-                        </div>
-                      </div>
-                      <div className="tile is-parent">
-                        <article className="tile is-child box">
-                          <p className="title is-4">À venir</p>
-                          <p className="subtitle">Sous-titre pour à venir</p>
-                        </article>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+      </article>
+    </div>
+  )
+}
+
+function Home() {
+  const { isMobileTablet } = useContext(ScreenContext)
+  //Pour savoir si c'est la première fois qu'on charge les données.
+  const [firstLoading, setFirstLoading] = useState(true)
+
+  const {
+    data: reservation_data,
+    isLoading: reservation_loading,
+    error: reservation_error,
+  } = useFetchHasura(LIEN_API, GET_ALL_RESERVATION, firstLoading)
+
+  const [inProgressCards, setInProgressCards] = useState([])
+  const [upcomingCards, setUpcomingCards] = useState([])
+  const [finishedCards, setFinishedCards] = useState([])
+
+  //Permet de définir si c'est la première fois qu'on charge la page.
+  useEffect(() => {
+    setFirstLoading(false)
+  }, [])
+
+  useEffect(() => {
+    if (reservation_data && reservation_data[VUE_RESERVATION]) {
+      const today = new Date()
+
+      const inProgress = []
+      const upcoming = []
+      const finished = []
+
+      reservation_data[VUE_RESERVATION].forEach((reservation) => {
+        const startDate = new Date(reservation.date_debut)
+        const endDate = new Date(reservation.date_fin)
+
+        const cardClass = reservation.type === 2 ? 'maintenance' : 'reservation'
+
+        const card = (
+          <div
+            key={reservation.id}
+            className={`card reservation-card ${cardClass}`}
+          >
+            {reservation.nom}
           </div>
+        )
+        if (today >= startDate && today <= endDate) {
+          inProgress.push(card)
+        } else if (today < startDate) {
+          upcoming.push(card)
+        } else {
+          finished.push(card)
+        }
+      })
+
+      setInProgressCards(inProgress)
+      setUpcomingCards(upcoming)
+      setFinishedCards(finished)
+    }
+  }, [reservation_data])
+
+  if (reservation_loading) return <div>Chargement...</div>
+  if (reservation_error)
+    return <div>Erreur lors du chargement des réservations!</div>
+
+  // Exemple de cartes fictives pour les sections
+  // const inProgressCards = [
+  //   <div key="1" className="card reservation-card ">
+  //     Carte 1 en cours
+  //   </div>,
+  //   <div key="2" className="card reservation-card ">
+  //     Carte 2 en cours
+  //   </div>,
+  // ]
+  // const upcomingCards = [
+  //   <div key="1" className="card reservation-card ">
+  //     Carte 1 à venir
+  //   </div>,
+  // ]
+  // const finishedCards = [
+  //   <div key="1" className="card reservation-card ">
+  //     Carte 1 terminé
+  //   </div>,
+  //   <div key="2" className="card reservation-card ">
+  //     Carte 2 terminé
+  //   </div>,
+  // ]
+
+  return (
+    <div
+      className={isMobileTablet ? 'columns-mobile' : 'columns-tablet-desktop'}
+    >
+      <div className="columns-size">
+        <h1>Mes réservations</h1>
+        <div className="tile is-ancestor">
+          <ReservationSection
+            title="En cours"
+            cards={inProgressCards}
+            notificationClass="is-success"
+          />
+          <ReservationSection
+            title="À venir"
+            cards={upcomingCards}
+            notificationClass="is-primary"
+          />
+          <ReservationSection
+            title="Terminé"
+            cards={finishedCards}
+            notificationClass="is-warning"
+          />
         </div>
-      )}
+      </div>
     </div>
   )
 }

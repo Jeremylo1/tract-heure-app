@@ -1,4 +1,10 @@
 /* =============== RESPONSIVE =============== */
+
+.columns-size {
+    width: 75%;
+    margin: 0 auto;
+}
+
 /* MOBILE */
 .columns-mobile {
     display: flex;
@@ -6,23 +12,42 @@
     align-items: center;
 }
 
-.columns-mobile-size {
-    width: 75%;
-    margin: 0 auto;
-}
-
 /* TABLETTE ET ORDINATEUR */
 .columns-tablet-desktop {
-    display: flex;
     justify-content: center;
 }
 
-.columns-tablet-desktop-size {
-    width: 75%;
-    margin: 0 auto;
+.reservation-card {
+    width: 100%;
+    /* La carte prend toute la largeur */
+    box-sizing: border-box;
+    /* Permet d'inclure le padding et la bordure dans la largeur totale de l'élément */
+    border: 1px solid #e0e0e0;
+    /* Bordure optionnelle pour la carte */
+    padding: 10px;
+    margin-bottom: 10px;
+    /* Espace entre les cartes */
 }
 
-@media only screen and (max-width: 1023px), print {
+.reservation-card:last-child {
+    margin-bottom: 0;
+    /* Pour ne pas avoir d'espace inutile après la dernière carte */
+}
+
+.reservation-card.reservation {
+    background-color: CornflowerBlue;
+    border-color: CornflowerBlue;
+    /* couleur pour les réservations */
+}
+
+.reservation-card.maintenance {
+    background-color: orange;
+    border-color: orange;
+    /* couleur pour les maintenances */
+}
+
+@media only screen and (max-width: 1023px),
+print {
     .tile:not(.is-child) {
         display: block;
     }

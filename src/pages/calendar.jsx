@@ -56,11 +56,11 @@ function Calendar() {
     if (mode === 'class') {
       switch (type) {
         case 1:
-          return 'event-reservation'
+          return 'reservation'
         case 2:
-          return 'event-maintenance'
+          return 'maintenance'
         default:
-          return 'event-reservation'
+          return 'reservation'
       }
     } else {
       switch (type) {

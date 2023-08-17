@@ -93,11 +93,11 @@
     margin-bottom: 0 !important;
 }
 
-.event-reservation {
-    background-color: gold;
+.reservation {
+    background-color: CornflowerBlue;
 }
 
-.event-maintenance {
+.maintenance {
     background-color: orange
 }
 
