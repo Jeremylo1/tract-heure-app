@@ -16,6 +16,11 @@ function ReservationSection({ title, cards, notificationClass }) {
       <article className={`tile is-child notification ${notificationClass}`}>
         <div className="content">
           <p className="title">{title}</p>
+          {/* Si aucune carte, on affiche un message. */}
+          {cards.length === 0 && (
+            <p className="no-card">Aucune réservation à afficher</p>
+          )}
+          {/* Sinon, on affiche les cartes. */}
           <div className="content">{cards}</div>
         </div>
       </article>
