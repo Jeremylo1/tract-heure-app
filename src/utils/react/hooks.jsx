@@ -9,7 +9,7 @@ import {
   COLUMN_NAME,
 } from '../database/query'
 
-//Permet de récupérer (SELECT) des données depuis Hasura.
+/*Permet de récupérer (SELECT) des données depuis Hasura.*/
 export function useFetchHasura(url, query, stopFetch = false) {
   const [data, setData] = useState(null)
   const [isLoading, setLoading] = useState(true)
@@ -60,7 +60,7 @@ export function useFetchHasura(url, query, stopFetch = false) {
   return { isLoading, data, error, reload }
 }
 
-//Permet d'envoyer une requête de mutation (INSERT, UPDATE, DELETE) à Hasura.
+/*Permet d'envoyer une requête de mutation (INSERT, UPDATE, DELETE) à Hasura.*/
 export function useMutationHasura(url) {
   const [error, setError] = useState(false)
 
@@ -101,8 +101,7 @@ export function useMutationHasura(url) {
   return { doMutation, error }
 }
 
-/*====================*/
-//Permet de récupérer les catégories triées par ordre alphabétique depuis Hasura.
+/*Permet de récupérer les catégories triées par ordre alphabétique depuis Hasura.*/
 export function useCategory() {
   //Pour savoir si c'est la première fois qu'on charge les données.
   const [firstLoading, setFirstLoading] = useState(true)
@@ -138,9 +137,8 @@ export function useCategory() {
 
   return { sortedCategories, category_loading, category_error }
 }
-/*====================*/
 
-//Permet de se déconnecter, de récupérer le type d'utilisateur et de savoir si l'utilisateur est connecté.
+/*Permet de se déconnecter, de récupérer le type d'utilisateur et de savoir si l'utilisateur est connecté.*/
 export function useConnexion() {
   const { isConnected, setLogout } = useContext(AuthContext)
   const { userType } = useContext(AuthContext) //TEMPORAIRE.
