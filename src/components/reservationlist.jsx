@@ -5,7 +5,7 @@ import 'bulma/css/bulma.min.css'
 function ReservationList({ title, cards, notificationClass }) {
   return (
     <div className="tile is-parent">
-      <article className={`tile is-child notification ${notificationClass}`}>
+      <article className={`tile is-child box ${notificationClass}`}>
         <div className="content">
           <p className="title">{title}</p>
           {/* Si aucune carte, on affiche un message. */}

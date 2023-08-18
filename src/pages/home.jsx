@@ -105,20 +105,21 @@ function Home() {
       <div className="columns-size">
         <h1>Mes réservations</h1>
         <div className="tile is-ancestor">
+          {/* Pour chaque liste on affiche les cartes correspondantes. */}
           <ReservationList
             title="En cours"
             cards={inProgressCards}
-            notificationClass="is-success"
+            notificationClass="has-background-success"
           />
           <ReservationList
             title="À venir"
             cards={upcomingCards}
-            notificationClass="is-primary"
+            notificationClass="has-background-primary"
           />
           <ReservationList
             title="Terminé"
             cards={finishedCards}
-            notificationClass="is-warning"
+            notificationClass="has-background-warning"
           />
         </div>
       </div>
