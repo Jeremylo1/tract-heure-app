@@ -5,11 +5,9 @@ import styled from 'styled-components'
 import 'bulma/css/bulma.min.css'
 
 //Style de la tuile.
-const StyledTile = styled.div`
+const StyledTile = styled.article`
   background-color: ${(props) => props.color};
   color: white;
-  border-radius: 10px;
-  padding: 20px;
 `
 
 //Style du titre de la tuile.
@@ -21,7 +19,7 @@ const StyledTitle = styled.p`
 function ReservationList({ title, cards, backgroundColor }) {
   return (
     <div className="tile is-parent">
-      <article className={`tile is-child box ${backgroundColor}`}>
+      <StyledTile color={backgroundColor} className={`tile is-child box`}>
         <div className="content">
           <StyledTitle>{title}</StyledTitle>
           {/* Si aucune carte, on affiche un message. */}
@@ -31,7 +29,7 @@ function ReservationList({ title, cards, backgroundColor }) {
           {/* Sinon, on affiche les cartes. */}
           <div className="content">{cards}</div>
         </div>
-      </article>
+      </StyledTile>
     </div>
   )
 }
