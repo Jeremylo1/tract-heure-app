@@ -1,6 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import PropTypes from 'prop-types'
+/*Style*/
 import styled from 'styled-components'
 import 'bulma/css/bulma.min.css'
 

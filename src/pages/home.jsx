@@ -9,6 +9,7 @@ import {
 import ReservationList from '../components/reservationlist'
 import { formatShortDate, formatTime } from '../utils/reusable/functions'
 /*Style*/
+import colors from '../utils/styles/color'
 import 'bulma/css/bulma.min.css'
 import '../styles/home.css'
 
@@ -109,17 +110,17 @@ function Home() {
           <ReservationList
             title="En cours"
             cards={inProgressCards}
-            notificationClass="has-background-success"
+            backgroundColor={'blue'}
           />
           <ReservationList
             title="À venir"
             cards={upcomingCards}
-            notificationClass="has-background-primary"
+            backgroundColor={'blue'}
           />
           <ReservationList
             title="Terminé"
             cards={finishedCards}
-            notificationClass="has-background-warning"
+            backgroundColor={'blue'}
           />
         </div>
       </div>

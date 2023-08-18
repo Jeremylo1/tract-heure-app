@@ -1,13 +1,27 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 /*Style*/
+import styled from 'styled-components'
 import 'bulma/css/bulma.min.css'
 
-function ReservationList({ title, cards, notificationClass }) {
+//Style de la tuile.
+const StyledTile = styled.article`
+  background-color: ${(props) => props.color};
+  color: white;
+`
+
+//Style du titre de la tuile.
+const StyledTitle = styled.p`
+  font-size: 1.75em;
+`
+
+//Permet d'afficher une liste de réservations.
+function ReservationList({ title, cards, backgroundColor }) {
   return (
     <div className="tile is-parent">
-      <article className={`tile is-child box ${notificationClass}`}>
+      <StyledTile color={backgroundColor} className={`tile is-child box`}>
         <div className="content">
-          <p className="title">{title}</p>
+          <StyledTitle>{title}</StyledTitle>
           {/* Si aucune carte, on affiche un message. */}
           {cards.length === 0 && (
             <p className="no-card">Aucune réservation à afficher</p>
@@ -15,9 +29,16 @@ function ReservationList({ title, cards, notificationClass }) {
           {/* Sinon, on affiche les cartes. */}
           <div className="content">{cards}</div>
         </div>
-      </article>
+      </StyledTile>
     </div>
   )
+}
+
+//Définition des props de la liste de réservations.
+ReservationList.propTypes = {
+  title: PropTypes.string,
+  cards: PropTypes.array,
+  notificationClass: PropTypes.string,
 }
 
 export default ReservationList
