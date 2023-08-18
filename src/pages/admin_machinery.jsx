@@ -26,6 +26,9 @@ import { mdiTrashCanOutline } from '@mdi/js'
 import { mdiInformationBoxOutline } from '@mdi/js'
 
 function AdminMachinery() {
+  //Titre de la page.
+  document.title = 'Tableau de bord'
+
   //Hook pour la gestion de la machinerie sélectionnée.
   const [selectedMachinery, setSelectedMachinery] = useState(null)
   //Hook pour la gestion de la modale d'ajout.

@@ -17,6 +17,9 @@ import { mdiPencilOutline } from '@mdi/js'
 
 //Page de gestion des catégories.
 function AdminCategory() {
+  //Titre de la page.
+  document.title = 'Tableau de bord'
+
   //Hook pour la gestion des catégories.
   const [selectedCategory, setSelectedCategory] = useState(null)
   //Hook pour la gestion de la modale.
