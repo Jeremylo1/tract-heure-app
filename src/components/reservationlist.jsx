@@ -21,7 +21,7 @@ const StyledTitle = styled.p`
 function ReservationList({ title, cards, backgroundColor }) {
   return (
     <div className="tile is-parent">
-      <StyledTile color={backgroundColor} className={`tile is-child`}>
+      <article className={`tile is-child box ${backgroundColor}`}>
         <div className="content">
           <StyledTitle>{title}</StyledTitle>
           {/* Si aucune carte, on affiche un message. */}
@@ -31,7 +31,7 @@ function ReservationList({ title, cards, backgroundColor }) {
           {/* Sinon, on affiche les cartes. */}
           <div className="content">{cards}</div>
         </div>
-      </StyledTile>
+      </article>
     </div>
   )
 }
