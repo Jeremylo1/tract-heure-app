@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useConnexion } from '../utils/react/hooks'
 import { ScreenContext } from '../utils/react/context'
+import PropTypes from 'prop-types'
 /*Style*/
 import LogoTxt from '../assets/logo-texte.png'
 import styled from 'styled-components'
@@ -160,6 +161,14 @@ function Header() {
       )}
     </div>
   )
+}
+
+//Définition des props du header.
+Header.propTypes = {
+  isConnected: PropTypes.bool,
+  userType: PropTypes.string,
+  handleLogout: PropTypes.func,
+  isMobileTablet: PropTypes.bool,
 }
 
 export default Header
