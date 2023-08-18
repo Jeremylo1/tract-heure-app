@@ -11,6 +11,7 @@ import {
   INSERT_RESERVATION,
   CHECK_RESERVATION_TIME_CONFLICT,
   GET_UPCOMING_RESERVATIONS,
+  COLUMN_ID,
 } from '../utils/database/query'
 /*Style*/
 import '../styles/inventory.css'
@@ -21,6 +22,9 @@ import { mdiCalendarSearch } from '@mdi/js'
 import { mdiInformationBoxOutline } from '@mdi/js'
 
 function Inventory() {
+  //Titre de la page.
+  document.title = 'Inventaire'
+
   //Hook pour la gestion de la modale.
   const [isModalOpen, setModalOpen] = useState(false)
   //Hook pour la gestion de la machinerie sélectionnée.
@@ -142,7 +146,7 @@ function Inventory() {
   //Permet de vérifier si la réservation est en conflit avec une autre réservation existante.
   const checkReservationConflict = async (startDateTime, endDateTime) => {
     const variables = {
-      machineryId: selectedMachinery.id,
+      machineryId: selectedMachinery?.[COLUMN_ID],
       startDateTime: toISODateTime(startDate, startTime),
       endDateTime: toISODateTime(endDate, endTime),
     }

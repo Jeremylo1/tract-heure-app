@@ -7,11 +7,15 @@ import {
   VUE_RESERVATION,
 } from '../utils/database/query'
 import ReservationList from '../components/reservationlist'
+import { formatShortDate, formatTime } from '../utils/reusable/functions'
 /*Style*/
 import 'bulma/css/bulma.min.css'
 import '../styles/home.css'
 
 function Home() {
+  //Titre de la page.
+  document.title = 'Accueil'
+
   const { isMobileTablet } = useContext(ScreenContext)
   //Pour savoir si c'est la première fois qu'on charge les données.
   const [firstLoading, setFirstLoading] = useState(true)
@@ -46,12 +50,24 @@ function Home() {
 
         const cardClass = reservation.type === 2 ? 'maintenance' : 'reservation'
 
+        const cardDate = (date) => (
+          <strong>
+            {formatShortDate(date)}
+            <span> ({formatTime(date)}) </span>
+          </strong>
+        )
+
         const card = (
           <div
             key={reservation.id}
             className={`card reservation-card ${cardClass}`}
           >
             {reservation.nom}
+            <div className="reservation-card-date">
+              {cardDate(startDate)}
+              <br />
+              {cardDate(endDate)}
+            </div>
           </div>
         )
         if (today >= startDate && today <= endDate) {
@@ -72,29 +88,6 @@ function Home() {
   if (reservation_loading) return <div>Chargement...</div>
   if (reservation_error)
     return <div>Erreur lors du chargement des réservations!</div>
-
-  // Exemple de cartes fictives pour les sections
-  // const inProgressCards = [
-  //   <div key="1" className="card reservation-card ">
-  //     Carte 1 en cours
-  //   </div>,
-  //   <div key="2" className="card reservation-card ">
-  //     Carte 2 en cours
-  //   </div>,
-  // ]
-  // const upcomingCards = [
-  //   <div key="1" className="card reservation-card ">
-  //     Carte 1 à venir
-  //   </div>,
-  // ]
-  // const finishedCards = [
-  //   <div key="1" className="card reservation-card ">
-  //     Carte 1 terminé
-  //   </div>,
-  //   <div key="2" className="card reservation-card ">
-  //     Carte 2 terminé
-  //   </div>,
-  // ]
 
   //Affichage de la page selon la taille de l'écran.
   return (

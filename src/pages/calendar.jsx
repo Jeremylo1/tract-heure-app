@@ -25,6 +25,9 @@ import { mdiArrowLeftThick } from '@mdi/js'
 import { mdiArrowRightThick } from '@mdi/js'
 
 function Calendar() {
+  //Titre de la page.
+  document.title = 'Calendrier'
+
   //Pour savoir si c'est la première fois qu'on charge les données.
   const [firstLoading, setFirstLoading] = useState(true)
   //Obtenir la date du LocalStorage ou utilisez la date actuelle si elle n'existe pas
