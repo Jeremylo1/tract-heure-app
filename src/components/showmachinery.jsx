@@ -168,13 +168,18 @@ function ShowMachinery({ functionButtons }) {
 
   //Quand utilisateur tape dans le champ de recherche pour filtrer les machines par nom.
   function handleSearch(e) {
+    //On récupère la valeur du champ de recherche.
     const searchValue = e.target.value
+    //Si la valeur n'est pas vide, on filtre les machines en fonction de la valeur.
     if (searchValue) {
       const filteredData = machinery_data[VUE_MACHINERY].filter((machine) =>
+        //On compare en minuscule pour ne pas avoir de problème de casse.
         machine[COLUMN_NAME].toLowerCase().includes(searchValue.toLowerCase()),
       )
+      //On met à jour les données filtrées.
       setFilteredMachineryData(filteredData.sort(sortByMachineName))
     } else {
+      //Sinon, on remet les données de base.
       setFilteredMachineryData(
         machinery_data[VUE_MACHINERY].sort(sortByMachineName),
       )
