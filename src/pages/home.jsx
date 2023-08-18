@@ -37,7 +37,9 @@ function Home() {
     setFirstLoading(false)
   }, [])
 
+  //Permet de créer les cartes à afficher dans les listes.
   useEffect(() => {
+    //Si on a des données.
     if (reservation_data && reservation_data[VUE_RESERVATION]) {
       const today = new Date()
 
@@ -45,12 +47,15 @@ function Home() {
       const upcoming = []
       const finished = []
 
+      //Pour chaque réservation on crée une carte.
       reservation_data[VUE_RESERVATION].forEach((reservation) => {
         const startDate = new Date(reservation.date_debut)
         const endDate = new Date(reservation.date_fin)
 
+        //On détermine la classe de la carte selon le type de réservation.
         const cardClass = reservation.type === 2 ? 'maintenance' : 'reservation'
 
+        //Permet de créer la date de la carte.
         const cardDate = (date) => (
           <strong>
             {formatShortDate(date)}
@@ -58,6 +63,7 @@ function Home() {
           </strong>
         )
 
+        //Permet de créer la carte.
         const card = (
           <div
             key={reservation.id}
@@ -71,6 +77,7 @@ function Home() {
             </div>
           </div>
         )
+        //On détermine dans quelle liste on ajoute la carte selon la date (en cours, à venir, terminé).
         if (today >= startDate && today <= endDate) {
           inProgress.push(card)
         } else if (today < startDate) {
