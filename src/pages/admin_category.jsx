@@ -8,7 +8,7 @@ import FormAddCategory from '../components/form_addmachinery'
 /*Base de données*/
 import { COLUMN_ID, COLUMN_NAME } from '../utils/database/query'
 /*Style*/
-import colors from '../utils/styles/color'
+import { buttonColors } from '../utils/styles/color'
 import '../styles/admin_category.css'
 /*Importation des icônes*/
 import Icon from '@mdi/react'
@@ -54,8 +54,8 @@ function AdminCategory() {
                   <td>{category[COLUMN_NAME]}</td>
                   <td className="actions-buttons">
                     <CustomButton
-                      color={colors.redButton}
-                      hovercolor={colors.redButtonHover}
+                      color={buttonColors.redButton}
+                      hovercolor={buttonColors.redButtonHover}
                       functionclick={() => {
                         setSelectedCategory(category)
                       }}
@@ -71,8 +71,8 @@ function AdminCategory() {
                       )}
                     </CustomButton>
                     <CustomButton
-                      color={colors.greenButton}
-                      hovercolor={colors.greenButtonHover}
+                      color={buttonColors.greenButton}
+                      hovercolor={buttonColors.greenButtonHover}
                       functionclick={() => {
                         setSelectedCategory(category)
                       }}

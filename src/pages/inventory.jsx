@@ -15,7 +15,7 @@ import {
 } from '../utils/database/query'
 /*Style*/
 import '../styles/inventory.css'
-import colors from '../utils/styles/color'
+import { buttonColors } from '../utils/styles/color'
 /*Importation des icônes*/
 import Icon from '@mdi/react'
 import { mdiCalendarSearch } from '@mdi/js'
@@ -50,8 +50,8 @@ function Inventory() {
         <p className="control">
           <CustomButton
             /*to="" ou functionclick=""*/
-            color={colors.blueButton}
-            hovercolor={colors.blueButtonHover}
+            color={buttonColors.blueButton}
+            hovercolor={buttonColors.blueButtonHover}
           >
             {isMobile ? (
               <Icon path={mdiCalendarSearch} size={1} color="white" />
@@ -63,8 +63,8 @@ function Inventory() {
         <p className="control">
           <CustomButton
             /*to="" ou functionclick=""*/
-            color={colors.blueButton}
-            hovercolor={colors.blueButtonHover}
+            color={buttonColors.blueButton}
+            hovercolor={buttonColors.blueButtonHover}
           >
             {isMobile ? (
               <Icon path={mdiInformationBoxOutline} size={1} color="white" />
@@ -79,8 +79,8 @@ function Inventory() {
               setSelectedMachinery(machinery)
               setModalOpen(true)
             }}
-            color={colors.greenButton}
-            hovercolor={colors.greenButtonHover}
+            color={buttonColors.greenButton}
+            hovercolor={buttonColors.greenButtonHover}
           >
             Réserver
           </CustomButton>
@@ -355,8 +355,8 @@ function Inventory() {
               </div>
               <CustomButton
                 type="submit"
-                color={colors.greenButton}
-                hovercolor={colors.greenButtonHover}
+                color={buttonColors.greenButton}
+                hovercolor={buttonColors.greenButtonHover}
               >
                 Confirmer la réservation
               </CustomButton>

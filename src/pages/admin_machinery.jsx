@@ -19,7 +19,7 @@ import {
 } from '../utils/database/query'
 /*Style*/
 import '../styles/inventory.css'
-import colors from '../utils/styles/color'
+import { buttonColors } from '../utils/styles/color'
 /*Importation des icônes*/
 import Icon from '@mdi/react'
 import { mdiTrashCanOutline } from '@mdi/js'
@@ -49,8 +49,8 @@ function AdminMachinery() {
               setDelModalOpen(true) /*Pour la modale de suppression.*/
               setSelectedMachinery(machinery)
             }}
-            color={colors.redButton}
-            hovercolor={colors.redButtonHover}
+            color={{ buttonColors }.redButton}
+            hovercolor={{ buttonColors }.redButtonHover}
           >
             {isMobile ? (
               <Icon path={mdiTrashCanOutline} size={1} color="white" />
@@ -62,8 +62,8 @@ function AdminMachinery() {
         <p className="control">
           <CustomButton
             /*to="" ou functionclick=""*/
-            color={colors.blueButton}
-            hovercolor={colors.blueButtonHover}
+            color={{ buttonColors }.blueButton}
+            hovercolor={{ buttonColors }.blueButtonHover}
           >
             {isMobile ? (
               <Icon path={mdiInformationBoxOutline} size={1} color="white" />
@@ -76,8 +76,8 @@ function AdminMachinery() {
           <CustomButton
             /*functionclick={() => {
             }}*/
-            color={colors.greenButton}
-            hovercolor={colors.greenButtonHover}
+            color={{ buttonColors }.greenButton}
+            hovercolor={{ buttonColors }.greenButtonHover}
           >
             Modifier
           </CustomButton>
@@ -177,16 +177,16 @@ function AdminMachinery() {
                 functionclick={() => {
                   deleteMachinery()
                 }}
-                color={colors.redButton}
-                hovercolor={colors.redButtonHover}
+                color={{ buttonColors }.redButton}
+                hovercolor={{ buttonColors }.redButtonHover}
               >
                 Oui
               </CustomButton>
               <CustomButton
                 /*functionclick={() => {
             }}*/
-                color={colors.greyButton}
-                hovercolor={colors.greyButtonHover}
+                color={{ buttonColors }.greyButton}
+                hovercolor={{ buttonColors }.greyButtonHover}
               >
                 Annuler
               </CustomButton>

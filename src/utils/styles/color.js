@@ -6,8 +6,6 @@ const colors = {
   blueButtonHover: '#2E86C1',
   redButton: '#EC7063',
   redButtonHover: '#CB4335',
-  greyButton: '#99A3A4',
-  greyButtonHover: '#707B7C',
   panelTitle: '#16A085',
 }
 

@@ -9,7 +9,7 @@ import {
 import ReservationList from '../components/reservationlist'
 import { formatShortDate, formatTime } from '../utils/reusable/functions'
 /*Style*/
-import colors from '../utils/styles/color'
+import { buttonColors } from '../utils/styles/color'
 import 'bulma/css/bulma.min.css'
 import '../styles/home.css'
 

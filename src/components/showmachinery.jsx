@@ -21,7 +21,7 @@ import {
 } from '../utils/database/query'
 /*Style*/
 import styled from 'styled-components'
-import colors from '../utils/styles/color'
+import { buttonColors } from '../utils/styles/color'
 import '../styles/inventory.css'
 
 //Style du wrapper des accordéons.
@@ -31,7 +31,7 @@ const StyledAccordionWrapper = styled.div`
 
 //Style des titres de la liste.
 const StyledText = styled.span`
-  color: ${colors.panelTitle};
+  color: ${buttonColors.panelTitle};
 `
 
 function ShowMachinery({ functionButtons }) {

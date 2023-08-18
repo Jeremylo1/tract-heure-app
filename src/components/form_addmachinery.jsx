@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 /*Base de données*/
 import { COLUMN_ID, COLUMN_NAME } from '../utils/database/query'
 /*Style*/
-import colors from '../utils/styles/color'
+import { buttonColors } from '../utils/styles/color'
 import 'bulma/css/bulma.min.css'
 
 //Formulaire d'ajout d'une machine.

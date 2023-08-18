@@ -18,7 +18,7 @@ import {
 } from '../utils/database/query'
 /*Style*/
 import '../styles/calendar.css'
-import colors from '../utils/styles/color'
+import { buttonColors } from '../utils/styles/color'
 /*Importation des icônes*/
 import Icon from '@mdi/react'
 import { mdiArrowLeftThick } from '@mdi/js'
@@ -338,8 +338,8 @@ function Calendar() {
             <h3>Date de fin:</h3>
             <p>{modalEvent?.end.toLocaleString()}</p>
             <CustomButton
-              color={colors.redButton}
-              hovercolor={colors.redButtonHover}
+              color={buttonColors.redButton}
+              hovercolor={buttonColors.redButtonHover}
               functionclick={() => confirmDeletion(modalEvent?.id)}
             >
               Annuler la réservation
