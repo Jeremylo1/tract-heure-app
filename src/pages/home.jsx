@@ -70,7 +70,7 @@ function Home() {
             key={reservation.id}
             className={`card reservation-card ${cardClass}`}
           >
-            {reservation.nom}
+            {reservation.nom} - {reservation.modele}
             <div className="reservation-card-date">
               {cardDate(startDate)}
               <br />
