@@ -15,10 +15,11 @@ import '../styles/home.css'
 function Home() {
   //Titre de la page.
   document.title = 'Accueil'
-
-  const { isMobileTablet } = useContext(ScreenContext)
   //Pour savoir si c'est la première fois qu'on charge les données.
   const [firstLoading, setFirstLoading] = useState(true)
+
+  //Pour savoir si on est sur un mobile ou une tablette.
+  const { isMobileTablet } = useContext(ScreenContext)
 
   const {
     data: reservation_data,
@@ -89,7 +90,7 @@ function Home() {
   if (reservation_error)
     return <div>Erreur lors du chargement des réservations!</div>
 
-  //Affichage de la page selon la taille de l'écran.
+  //Affichage de la page selon le type d'appareil.
   return (
     <div
       className={isMobileTablet ? 'columns-mobile' : 'columns-tablet-desktop'}
