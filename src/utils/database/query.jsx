@@ -51,7 +51,7 @@ export const DELETE_CATEGORY = `
 
 export const DELETE_RESERVATION = `
     mutation DeleteReservation($id: Int!) {
-        delete_machinerie_reservation(id: $id) {
+        delete_machinerie_reservation_by_pk(id: $id) {
         id
         }
     }
