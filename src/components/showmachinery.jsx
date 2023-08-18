@@ -34,6 +34,14 @@ const StyledText = styled.span`
   color: ${colors.panelTitle};
 `
 
+//Style pour le selecteur de catégorie et le champ de recherche.
+const StyledSelect = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 20px;
+`
+
 function ShowMachinery({ functionButtons }) {
   //Pour stocker l'ID de la catégorie sélectionnée.
   const [selectedCategoryId, setSelectedCategoryId] = useState(0)
@@ -158,6 +166,21 @@ function ShowMachinery({ functionButtons }) {
     )
   }
 
+  //Quand utilisateur tape dans le champ de recherche pour filtrer les machines par nom.
+  function handleSearch(e) {
+    const searchValue = e.target.value
+    if (searchValue) {
+      const filteredData = machinery_data[VUE_MACHINERY].filter((machine) =>
+        machine[COLUMN_NAME].toLowerCase().includes(searchValue.toLowerCase()),
+      )
+      setFilteredMachineryData(filteredData.sort(sortByMachineName))
+    } else {
+      setFilteredMachineryData(
+        machinery_data[VUE_MACHINERY].sort(sortByMachineName),
+      )
+    }
+  }
+
   //Affichage du contenu de la page.
   return (
     <div>
@@ -166,26 +189,37 @@ function ShowMachinery({ functionButtons }) {
       ) : category_error ? (
         <div>Erreur lors du chargement des catégories !</div>
       ) : (
-        <div className="select">
-          <select
-            value={selectedCategoryId}
-            onChange={(e) => setSelectedCategoryId(parseInt(e.target.value))}
-          >
-            {/*Catégorie "TOUTES LES MACHINES"*/}
-            <option key="all" value={0}>
-              -- Toutes les machines --
-            </option>
-            {/*Autres catégories*/}
-            {sortedCategories.map((category) => (
-              <option
-                key={`${category[COLUMN_NAME]}-${category[COLUMN_ID]}`}
-                value={parseInt(category[COLUMN_ID])}
-              >
-                {category[COLUMN_NAME]}
+        <StyledSelect>
+          <div className="select">
+            <select
+              value={selectedCategoryId}
+              onChange={(e) => setSelectedCategoryId(parseInt(e.target.value))}
+            >
+              {/*Catégorie "TOUTES LES MACHINES"*/}
+              <option key="all" value={0}>
+                -- Toutes les machines --
               </option>
-            ))}
-          </select>
-        </div>
+              {/*Autres catégories*/}
+              {sortedCategories.map((category) => (
+                <option
+                  key={`${category[COLUMN_NAME]}-${category[COLUMN_ID]}`}
+                  value={parseInt(category[COLUMN_ID])}
+                >
+                  {category[COLUMN_NAME]}
+                </option>
+              ))}
+            </select>
+          </div>
+          {/* Barre de recherche */}
+          <div>
+            <input
+              class="input"
+              type="text"
+              placeholder="Find a repository"
+              onChange={handleSearch}
+            />
+          </div>
+        </StyledSelect>
       )}
       {machinery_loading ? (
         <div>Chargement de la machinerie ...</div>
