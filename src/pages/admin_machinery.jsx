@@ -145,7 +145,7 @@ function AdminMachinery() {
 
       {/* MODALE POUR AJOUTER UNE MACHINE */}
       <Modal
-        title={<h2>Ajouter une machine</h2>}
+        title={'Ajouter une machine'}
         content={<FormAddMachinery />}
         isOpen={isAddModalOpen}
         onClose={() => {
@@ -155,7 +155,7 @@ function AdminMachinery() {
 
       {/* MODALE POUR SUPPRIMER UNE MACHINE */}
       <Modal
-        title={<h2>Supprimer une machine</h2>}
+        title={'Supprimer une machine'}
         content={
           <>
             <span>Êtes-vous sûr(e) de vouloir supprimer cette machine ?</span>

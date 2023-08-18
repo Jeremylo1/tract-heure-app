@@ -111,7 +111,7 @@ function AdminCategory() {
 
       {/* MODALE POUR AJOUTER UNE CATÉGORIE */}
       <Modal
-        title={<h2>Ajouter une catégorie</h2>}
+        title={'Ajouter une catégorie'}
         content={<FormAddCategory />}
         isOpen={isModalOpen}
         onClose={() => {
