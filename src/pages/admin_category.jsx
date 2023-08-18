@@ -44,7 +44,8 @@ function AdminCategory() {
             <thead>
               <tr>
                 <th>Noms</th>
-                <th className="is-narrow"></th> {/* Pour les boutons */}
+                <th className="is-narrow"></th>
+                {/* Pour les boutons */}
               </tr>
             </thead>
             <tbody>
