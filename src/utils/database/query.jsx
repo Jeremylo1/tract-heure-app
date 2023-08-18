@@ -33,8 +33,23 @@ export const INSERT_MACHINERY = `
   
 `
 
+//Permet de supprimer une machine.
 export const DELETE_MACHINERY = `
-  
+    mutation DeleteMachinery($machineryId: Int!) {
+        delete_machinerie(where: {id: {_eq: $machineryId}}) {
+        affected_rows
+        }
+    }
+`
+//Permet de vérifier l'existence de réservation(s) pour une machine.
+export const CHECK_MACHINERY_RESERVATION = `
+    query CheckMachineryReservation($machineryId: Int!) {
+        machinerie_reservation(where: {
+            machinerie_id: {_eq: $machineryId}
+        }) {
+            id
+        }
+    }
 `
 
 export const UPDATE_MACHINERY = `

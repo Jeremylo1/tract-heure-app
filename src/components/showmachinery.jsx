@@ -45,10 +45,10 @@ function ShowMachinery({ functionButtons }) {
   //Pour récupérer les catégories.
   const { sortedCategories, category_loading, category_error } = useCategory()
 
-  //Permet de sélectionner la première catégorie par défaut.
+  //Permet de sélectionner "Toutes les machines" par défaut.
   useEffect(() => {
     if (sortedCategories && sortedCategories.length > 0) {
-      setSelectedCategoryId(sortedCategories[0][COLUMN_ID])
+      setSelectedCategoryId(0)
     }
   }, [sortedCategories])
 
@@ -108,7 +108,7 @@ function ShowMachinery({ functionButtons }) {
   //Affichage du contenu d'un panneau d'accordéon (infos de la machine).
   function panelContent(machinery) {
     return (
-      <ul>
+      <ul className="infoMachine">
         {machinery[COLUMN_MODEL] ? (
           <li className="StyledListButton">
             <StyledText>Numéro de modèle :</StyledText>{' '}
@@ -171,7 +171,7 @@ function ShowMachinery({ functionButtons }) {
             value={selectedCategoryId}
             onChange={(e) => setSelectedCategoryId(parseInt(e.target.value))}
           >
-            {/*Catégorie "TOUT"*/}
+            {/*Catégorie "TOUTES LES MACHINES"*/}
             <option key="all" value={0}>
               -- Toutes les machines --
             </option>

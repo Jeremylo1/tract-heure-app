@@ -4,11 +4,11 @@ import PropTypes from 'prop-types'
 function FormAddCategory() {
   return (
     <div>
-      <div class="field">
-        <label class="label">Nom</label>
-        <div class="control">
+      <div className="field">
+        <label className="label">Nom</label>
+        <div className="control">
           <input
-            class="input"
+            className="input"
             type="text"
             placeholder="Entrez le nom de la catégorie"
           />
