@@ -37,9 +37,7 @@ const StyledText = styled.span`
 //Style pour le selecteur de catégorie et le champ de recherche.
 const StyledSelect = styled.div`
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
-  margin-bottom: 20px;
 `
 
 function ShowMachinery({ functionButtons }) {
