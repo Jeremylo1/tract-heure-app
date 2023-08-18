@@ -220,7 +220,7 @@ function ShowMachinery({ functionButtons }) {
             <input
               class="input"
               type="text"
-              placeholder="Find a repository"
+              placeholder="Recherche"
               onChange={handleSearch}
             />
           </div>
