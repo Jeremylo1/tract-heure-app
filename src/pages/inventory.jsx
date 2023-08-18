@@ -23,7 +23,7 @@ import { mdiInformationBoxOutline } from '@mdi/js'
 
 function Inventory() {
   //Titre de la page.
-  document.title = 'Inventaire'
+  document.title = 'Catalogue'
 
   //Hook pour la gestion de la modale.
   const [isModalOpen, setModalOpen] = useState(false)

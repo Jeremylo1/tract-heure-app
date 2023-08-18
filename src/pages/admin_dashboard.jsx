@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom'
 
 //Page d'accueil pour l'administrateur.
 function Dashboard() {
+  //Titre de la page.
+  document.title = 'Tableau de bord'
+
   //Pour savoir si c'est un appareil mobile.
   const { isMobile } = useContext(ScreenContext)
 

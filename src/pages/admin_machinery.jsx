@@ -26,6 +26,9 @@ import { mdiTrashCanOutline } from '@mdi/js'
 import { mdiInformationBoxOutline } from '@mdi/js'
 
 function AdminMachinery() {
+  //Titre de la page.
+  document.title = 'Tableau de bord'
+
   //Hook pour la gestion de la machinerie sélectionnée.
   const [selectedMachinery, setSelectedMachinery] = useState(null)
   //Hook pour la gestion de la modale d'ajout.
@@ -145,7 +148,7 @@ function AdminMachinery() {
 
       {/* MODALE POUR AJOUTER UNE MACHINE */}
       <Modal
-        title={<h2>Ajouter une machine</h2>}
+        title={'Ajouter une machine'}
         content={<FormAddMachinery />}
         isOpen={isAddModalOpen}
         onClose={() => {
@@ -155,7 +158,7 @@ function AdminMachinery() {
 
       {/* MODALE POUR SUPPRIMER UNE MACHINE */}
       <Modal
-        title={<h2>Supprimer une machine</h2>}
+        title={'Supprimer une machine'}
         content={
           <>
             <span>Êtes-vous sûr(e) de vouloir supprimer cette machine ?</span>

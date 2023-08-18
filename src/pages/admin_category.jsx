@@ -17,6 +17,9 @@ import { mdiPencilOutline } from '@mdi/js'
 
 //Page de gestion des catégories.
 function AdminCategory() {
+  //Titre de la page.
+  document.title = 'Tableau de bord'
+
   //Hook pour la gestion des catégories.
   const [selectedCategory, setSelectedCategory] = useState(null)
   //Hook pour la gestion de la modale.
@@ -111,16 +114,8 @@ function AdminCategory() {
 
       {/* MODALE POUR AJOUTER UNE CATÉGORIE */}
       <Modal
-        title={
-          <>
-            <h2>Ajouter une catégorie</h2>
-          </>
-        }
-        content={
-          <>
-            <FormAddCategory />
-          </>
-        }
+        title={'Ajouter une catégorie'}
+        content={<FormAddCategory />}
         isOpen={isModalOpen}
         onClose={() => {
           setModalOpen(false)
