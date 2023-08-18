@@ -18,18 +18,18 @@ function FormAddMachinery() {
   return (
     <div>
       {/*Nom*/}
-      <div class="field">
-        <label class="label">Nom</label>
-        <div class="control">
+      <div className="field">
+        <label className="label">Nom</label>
+        <div className="control">
           <input
-            class="input"
+            className="input"
             type="text"
             placeholder="Entrez le nom de la machine"
           />
         </div>
       </div>
       {/*Catégorie*/}
-      <label class="label">Catégorie</label>
+      <label className="label">Catégorie</label>
       <div className="select">
         <select
           value={selectedCategoryId}

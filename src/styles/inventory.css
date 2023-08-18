@@ -1,5 +1,5 @@
 /*Pour enlever la marge et les puces par défaut.*/
-.content ul {
+.content .infoMachine {
     margin-top: 0;
     list-style-type: none;
     margin-left: 6px;

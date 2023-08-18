@@ -7,7 +7,16 @@ import ShowMachinery from '../components/showmachinery'
 import Modal from '../components/modal'
 import FormAddMachinery from '../components/form_addmachinery'
 /*Base de données*/
-import { LIEN_API } from '../utils/database/query'
+/*Base de données*/
+import {
+  LIEN_API,
+  COLUMN_ID,
+  COLUMN_NAME,
+  COLUMN_MODEL,
+  COLUMN_SERIAL_NUMBER,
+  CHECK_MACHINERY_RESERVATION,
+  DELETE_MACHINERY,
+} from '../utils/database/query'
 /*Style*/
 import '../styles/inventory.css'
 import colors from '../utils/styles/color'
@@ -19,8 +28,10 @@ import { mdiInformationBoxOutline } from '@mdi/js'
 function AdminMachinery() {
   //Hook pour la gestion de la machinerie sélectionnée.
   const [selectedMachinery, setSelectedMachinery] = useState(null)
-  //Hook pour la gestion de la modale.
-  const [isModalOpen, setModalOpen] = useState(false)
+  //Hook pour la gestion de la modale d'ajout.
+  const [isAddModalOpen, setAddModalOpen] = useState(false)
+  //Hook pour la gestion de la modale de suppression.
+  const [isDelModalOpen, setDelModalOpen] = useState(false)
 
   //Pour savoir si c'est un appareil mobile.
   const { isMobile } = useContext(ScreenContext)
@@ -31,8 +42,10 @@ function AdminMachinery() {
       <div className="grouped-buttons">
         <p className="control">
           <CustomButton
-            /*functionclick={() => {
-            }}*/
+            functionclick={() => {
+              setDelModalOpen(true) /*Pour la modale de suppression.*/
+              setSelectedMachinery(machinery)
+            }}
             color={colors.redButton}
             hovercolor={colors.redButtonHover}
           >
@@ -73,6 +86,43 @@ function AdminMachinery() {
   //Permet d'envoyer une requête de mutation (INSERT, UPDATE, DELETE) à Hasura.
   const { doMutation, error_mutation } = useMutationHasura(LIEN_API)
 
+  //Permet de supprimer une machine.
+  async function deleteMachinery() {
+    const variables = {
+      machineryId: selectedMachinery?.[COLUMN_ID],
+    }
+
+    //Vérification de l'existence de réservation(s) pour la machine.
+    const reservationExists = await doMutation(
+      CHECK_MACHINERY_RESERVATION,
+      variables,
+    )
+
+    //Si la machine a une (ou plusieurs) réservation.
+    if (reservationExists?.machinerie_reservation?.length > 0) {
+      alert(
+        'Impossible de supprimer cette machine, car elle a une (ou plusieurs) réservation(s).',
+      )
+    } else {
+      //Si la machine n'a pas de réservation.
+      //Suppression de la machine.
+      const deleteMachinery = await doMutation(DELETE_MACHINERY, variables)
+
+      //Si la suppression a fonctionné.
+      if (deleteMachinery?.delete_machinerie?.affected_rows > 0) {
+        alert('La machine a été supprimée avec succès.')
+      } else {
+        alert("La machine n'a pas été supprimée.")
+      }
+
+      //Fermeture de la modale de suppression.
+      setDelModalOpen(false)
+
+      //Rafraîchissement de la page.
+      window.location.reload()
+    }
+  }
+
   //Affichage selon le type d'appareil.
   return (
     <div>
@@ -86,7 +136,7 @@ function AdminMachinery() {
           <h1>Machinerie agricole</h1>
           <AddButton
             onClick={() => {
-              setModalOpen(true)
+              setAddModalOpen(true)
             }}
           />
           <ShowMachinery functionButtons={groupButtonsAdmin} />
@@ -95,19 +145,54 @@ function AdminMachinery() {
 
       {/* MODALE POUR AJOUTER UNE MACHINE */}
       <Modal
-        title={
-          <>
-            <h2>Ajouter une machine</h2>
-          </>
-        }
+        title={<h2>Ajouter une machine</h2>}
+        content={<FormAddMachinery />}
+        isOpen={isAddModalOpen}
+        onClose={() => {
+          setAddModalOpen(false)
+        }}
+      />
+
+      {/* MODALE POUR SUPPRIMER UNE MACHINE */}
+      <Modal
+        title={<h2>Supprimer une machine</h2>}
         content={
           <>
-            <FormAddMachinery />
+            <span>Êtes-vous sûr(e) de vouloir supprimer cette machine ?</span>
+            <br />
+            <ul>
+              <li>{selectedMachinery?.[COLUMN_NAME]}</li>
+              <ul>
+                <li>Modèle : {selectedMachinery?.[COLUMN_MODEL]}</li>
+                <li>
+                  Numéro de série : {selectedMachinery?.[COLUMN_SERIAL_NUMBER]}
+                </li>
+              </ul>
+            </ul>
+            <div>
+              <CustomButton
+                functionclick={() => {
+                  deleteMachinery()
+                }}
+                color={colors.redButton}
+                hovercolor={colors.redButtonHover}
+              >
+                Oui
+              </CustomButton>
+              <CustomButton
+                /*functionclick={() => {
+            }}*/
+                color={colors.greyButton}
+                hovercolor={colors.greyButtonHover}
+              >
+                Annuler
+              </CustomButton>
+            </div>
           </>
         }
-        isOpen={isModalOpen}
+        isOpen={isDelModalOpen}
         onClose={() => {
-          setModalOpen(false)
+          setDelModalOpen(false)
         }}
       />
     </div>
