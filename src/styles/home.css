@@ -17,6 +17,8 @@
     justify-content: center;
 }
 
+/* =============== CARTE =============== */
+
 .reservation-card {
     width: 100%;
     /* La carte prend toute la largeur */
@@ -35,14 +37,14 @@
 }
 
 .reservation-card.reservation {
-    background-color: CornflowerBlue;
-    border-color: CornflowerBlue;
+    background-color: #FEE8B0;
+    border-color: #FEE8B0;
     /* couleur pour les réservations */
 }
 
 .reservation-card.maintenance {
-    background-color: orange;
-    border-color: orange;
+    background-color: #0CECDD;
+    border-color: #0CECDD;
     /* couleur pour les maintenances */
 }
 

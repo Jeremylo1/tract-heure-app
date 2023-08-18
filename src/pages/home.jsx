@@ -110,17 +110,17 @@ function Home() {
           <ReservationList
             title="En cours"
             cards={inProgressCards}
-            backgroundColor={'blue'}
+            backgroundColor={colors.colorPresent}
           />
           <ReservationList
             title="À venir"
             cards={upcomingCards}
-            backgroundColor={'blue'}
+            backgroundColor={colors.colorFuture}
           />
           <ReservationList
             title="Terminé"
             cards={finishedCards}
-            backgroundColor={'blue'}
+            backgroundColor={colors.colorePast}
           />
         </div>
       </div>
