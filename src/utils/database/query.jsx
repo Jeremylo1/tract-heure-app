@@ -28,7 +28,7 @@ export const COLUMN_TYPE = 'type'
 export const COLUMN_DESCRIPTION = 'description'
 
 /*Requêtes GraphQL.*/
-
+//Permet d'ajouter une machine.
 export const INSERT_MACHINERY = `
   
 `
@@ -52,10 +52,12 @@ export const CHECK_MACHINERY_RESERVATION = `
     }
 `
 
+//Permet de modifier une machine.
 export const UPDATE_MACHINERY = `
   
 `
 
+//Permet d'ajouter une catégorie.
 export const INSERT_CATEGORY = `
   
 `
@@ -78,6 +80,11 @@ export const CHECK_CATEGORY_MACHINERY = `
             id
         }
     }
+`
+
+//Permet de modifier une catégorie.
+export const UPDATE_CATEGORY = `
+  
 `
 
 //Permet de supprimer une réservation.
