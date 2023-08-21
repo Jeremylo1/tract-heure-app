@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useMemo } from 'react'
 import { useFetchHasura } from '../utils/react/hooks'
 import { useMutationHasura } from '../utils/react/hooks'
 import { ScreenContext } from '../utils/react/context'
@@ -87,7 +87,7 @@ function Calendar() {
         title: `${eventType(event[COLUMN_TYPE], 'string')} - ${
           event[COLUMN_NAME]
         }`,
-        //description can be null
+        //La description est vide si elle n'existe pas.
         description: event[COLUMN_DESCRIPTION] || '',
         type: event[COLUMN_TYPE],
         start: new Date(event[COLUMN_DATE_DEBUT]),
@@ -96,7 +96,31 @@ function Calendar() {
     })
   }
 
+  // Pour stocker les données formatées.
   const eventsJSON = formatEvents(reservation_data)
+
+  //Pour stocker la valeur de la barre de recherche.
+  const [searchValue, setSearchValue] = useState('')
+
+  //Quand utilisateur tape dans la barre de recherche filtrer les événements par leur titre.
+  function handleSearch(e) {
+    const value = e.target.value
+    setSearchValue(value)
+  }
+
+  //Filtrer les événements par leur titre et par la valeur de la barre de recherche.
+  const filteredEvents = useMemo(() => {
+    //Supprimer les accents.
+    function removeAccents(str) {
+      return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    }
+
+    return eventsJSON.filter((event) =>
+      removeAccents(event.title.toLowerCase()).includes(
+        removeAccents(searchValue.toLowerCase()),
+      ),
+    )
+  }, [eventsJSON, searchValue])
 
   //Permet d'envoyer une requête de mutation (INSERT, UPDATE, DELETE) à Hasura.
   const { doMutation } = useMutationHasura(LIEN_API)
@@ -152,7 +176,7 @@ function Calendar() {
         day,
         dateNum: date.getDate(),
         dateDay: day.charAt(0).toUpperCase() + day.slice(1),
-        events: eventsJSON //Récupère les événements de la journée.
+        events: filteredEvents //Récupère les événements de la journée.
           //Filtre les événements pour n'afficher que ceux de la journée.
           .filter((event) => {
             const startDay = new Date(event.start)
@@ -233,16 +257,27 @@ function Calendar() {
   return (
     <div className="calendar section">
       <div className="container">
-        <div className="header level calendar-header">
-          <button onClick={prevPeriod} className="button is-link">
-            <Icon path={mdiArrowLeftThick} size={1} />
-          </button>
-          <h2 className="title is-4 level-item">
-            {monthName} {currentDate.getFullYear()}
-          </h2>
-          <button onClick={nextPeriod} className="button is-link">
-            <Icon path={mdiArrowRightThick} size={1} />
-          </button>
+        <div>
+          <div className="header level calendar-header">
+            <button onClick={prevPeriod} className="button is-link">
+              <Icon path={mdiArrowLeftThick} size={1} />
+            </button>
+            <h2 className="title is-4 level-item">
+              {monthName} {currentDate.getFullYear()}
+            </h2>
+            <button onClick={nextPeriod} className="button is-link">
+              <Icon path={mdiArrowRightThick} size={1} />
+            </button>
+          </div>
+          {/* Barre de recherche */}
+          <div>
+            <input
+              className="input"
+              type="text"
+              placeholder="Recherche"
+              onChange={handleSearch}
+            />
+          </div>
         </div>
         <div className="calendar-grid">
           <div className="timeline">

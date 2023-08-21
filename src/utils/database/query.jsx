@@ -73,17 +73,17 @@ export const DELETE_RESERVATION = `
 `
 
 export const GET_ALL_RESERVATION = `
-{
-  ${VUE_RESERVATION}(order_by: {${COLUMN_DATE_DEBUT}: asc}) {
-    ${COLUMN_ID}
-    ${COLUMN_NAME}
-    ${COLUMN_DATE_DEBUT}
-    ${COLUMN_DATE_FIN}
-    ${COLUMN_TYPE}
-    ${COLUMN_DESCRIPTION}
-    ${COLUMN_MODEL}
-  }
-}
+    {
+        ${VUE_RESERVATION}(order_by: {${COLUMN_DATE_DEBUT}: asc}) {
+            ${COLUMN_ID}
+            ${COLUMN_NAME}
+            ${COLUMN_DATE_DEBUT}
+            ${COLUMN_DATE_FIN}
+            ${COLUMN_TYPE}
+            ${COLUMN_DESCRIPTION}
+            ${COLUMN_MODEL}
+        }
+    }
 `
 
 //Permet de créer une réservation.
