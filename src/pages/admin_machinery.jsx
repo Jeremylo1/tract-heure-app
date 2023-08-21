@@ -7,7 +7,6 @@ import ShowMachinery from '../components/showmachinery'
 import Modal from '../components/modal'
 import FormAddMachinery from '../components/form_addmachinery'
 /*Base de données*/
-/*Base de données*/
 import {
   LIEN_API,
   COLUMN_ID,
@@ -19,6 +18,7 @@ import {
 } from '../utils/database/query'
 /*Style*/
 import '../styles/inventory.css'
+import '../styles/admin_machinery.css'
 import colors from '../utils/styles/color'
 /*Importation des icônes*/
 import Icon from '@mdi/react'
@@ -91,6 +91,12 @@ function AdminMachinery() {
 
   //Permet de supprimer une machine.
   async function deleteMachinery() {
+    //S'il y a erreur, ne pas exécuter la fonction.
+    if (error_mutation) {
+      return
+    }
+
+    //Variables pour la requête de suppression.
     const variables = {
       machineryId: selectedMachinery?.[COLUMN_ID],
     }
@@ -166,13 +172,20 @@ function AdminMachinery() {
             <ul>
               <li>{selectedMachinery?.[COLUMN_NAME]}</li>
               <ul>
-                <li>Modèle : {selectedMachinery?.[COLUMN_MODEL]}</li>
-                <li>
-                  Numéro de série : {selectedMachinery?.[COLUMN_SERIAL_NUMBER]}
-                </li>
+                {/*Si le modèle est vide, ne pas l'afficher.*/}
+                {selectedMachinery?.[COLUMN_MODEL] ? (
+                  <li>Modèle : {selectedMachinery?.[COLUMN_MODEL]}</li>
+                ) : null}
+                {/*Si le numéro de série est vide, ne pas l'afficher.*/}
+                {selectedMachinery?.[COLUMN_SERIAL_NUMBER] ? (
+                  <li>
+                    Numéro de série :{' '}
+                    {selectedMachinery?.[COLUMN_SERIAL_NUMBER]}
+                  </li>
+                ) : null}
               </ul>
             </ul>
-            <div>
+            <div className="delete-buttons">
               <CustomButton
                 functionclick={() => {
                   deleteMachinery()
@@ -183,8 +196,9 @@ function AdminMachinery() {
                 Oui
               </CustomButton>
               <CustomButton
-                /*functionclick={() => {
-            }}*/
+                functionclick={() => {
+                  setDelModalOpen(false)
+                }}
                 color={colors.greyButton}
                 hovercolor={colors.greyButtonHover}
               >
