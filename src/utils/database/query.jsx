@@ -60,10 +60,27 @@ export const INSERT_CATEGORY = `
   
 `
 
+//Permet de supprimer une catégorie.
 export const DELETE_CATEGORY = `
-  
+    mutation DeleteCategory($categoryId: Int!) {
+        delete_machinerie_categorie(where: {id: {_eq: $categoryId}}) {
+        affected_rows
+        }
+    }
 `
 
+//Permet de vérifier l'existence de machine(s) pour une catégorie.
+export const CHECK_CATEGORY_MACHINERY = `
+    query CheckCategoryMachinery($categoryId: Int!) {
+        machinerie(where: {
+            categorie_id: {_eq: $categoryId}
+        }) {
+            id
+        }
+    }
+`
+
+//Permet de supprimer une réservation.
 export const DELETE_RESERVATION = `
     mutation DeleteReservation($id: Int!) {
         delete_machinerie_reservation_by_pk(id: $id) {
@@ -72,6 +89,7 @@ export const DELETE_RESERVATION = `
     }
 `
 
+//Permet d'obtenir toutes les réservations (récent à ancien).
 export const GET_ALL_RESERVATION = `
     {
         ${VUE_RESERVATION}(order_by: {${COLUMN_DATE_DEBUT}: asc}) {

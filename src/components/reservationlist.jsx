@@ -24,7 +24,7 @@ function ReservationList({ title, cards, backgroundColor }) {
           <StyledTitle>{title}</StyledTitle>
           {/* Si aucune carte, on affiche un message. */}
           {cards.length === 0 && (
-            <p className="no-card">Aucune réservation à afficher</p>
+            <p className="no-card">Aucune réservation à afficher.</p>
           )}
           {/* Sinon, on affiche les cartes. */}
           <div className="content">{cards}</div>

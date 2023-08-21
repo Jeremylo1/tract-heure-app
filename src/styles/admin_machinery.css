@@ -1,0 +1,9 @@
+/* =============== BOUTONS =============== */
+.delete-buttons {
+    display: flex;
+    justify-content: center;
+}
+
+.delete-buttons button {
+    margin: 0 5px;
+}

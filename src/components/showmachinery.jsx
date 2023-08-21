@@ -164,7 +164,7 @@ function ShowMachinery({ functionButtons }) {
     )
   }
 
-  //Quand utilisateur tape dans le champ de recherche pour filtrer les machines par nom.
+  /*BARRE DE RECHERCHE*/
   function handleSearch(e) {
     //On récupère la valeur du champ de recherche.
     const searchValue = e.target.value

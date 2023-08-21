@@ -1,12 +1,18 @@
 import React, { useContext, useState } from 'react'
-import { useCategory } from '../utils/react/hooks'
+import { useCategory, useMutationHasura } from '../utils/react/hooks'
 import { ScreenContext } from '../utils/react/context'
 import CustomButton from '../components/button'
 import AddButton from '../components/addbutton'
 import Modal from '../components/modal'
 import FormAddCategory from '../components/form_addmachinery'
 /*Base de données*/
-import { COLUMN_ID, COLUMN_NAME } from '../utils/database/query'
+import {
+  LIEN_API,
+  COLUMN_ID,
+  COLUMN_NAME,
+  CHECK_CATEGORY_MACHINERY,
+  DELETE_CATEGORY,
+} from '../utils/database/query'
 /*Style*/
 import colors from '../utils/styles/color'
 import '../styles/admin_category.css'
@@ -22,13 +28,61 @@ function AdminCategory() {
 
   //Hook pour la gestion des catégories.
   const [selectedCategory, setSelectedCategory] = useState(null)
-  //Hook pour la gestion de la modale.
-  const [isModalOpen, setModalOpen] = useState(false)
+  //Hook pour la gestion de la modale d'ajout.
+  const [isAddModalOpen, setAddModalOpen] = useState(false)
+  //Hook pour la gestion de la modale de suppression.
+  const [isDelModalOpen, setDelModalOpen] = useState(false)
 
   //Pour savoir si c'est un appareil mobile.
   const { isMobile } = useContext(ScreenContext)
   //Pour récupérer les catégories.
   const { sortedCategories, category_loading, category_error } = useCategory()
+
+  //Permet d'envoyer une requête de mutation (INSERT, UPDATE, DELETE) à Hasura.
+  const { doMutation, error_mutation } = useMutationHasura(LIEN_API)
+
+  /*SUPPRESSION*/
+  //Permet de supprimer une catégorie.
+  async function deleteCategory() {
+    //S'il y a erreur, ne pas exécuter la fonction.
+    if (error_mutation) {
+      return
+    }
+
+    //Variables pour la requête de suppression.
+    const variables = {
+      categoryId: selectedCategory?.[COLUMN_ID],
+    }
+
+    //Vérification de l'existence de machine(s) pour la catégorie.
+    const machineryExists = await doMutation(
+      CHECK_CATEGORY_MACHINERY,
+      variables,
+    )
+
+    //Si la catégorie contient (au moins) une machine.
+    if (machineryExists?.machinerie?.length > 0) {
+      alert(
+        'Impossible de supprimer cette catégorie, car elle contient une (ou plusieurs) machine(s).',
+      )
+      //Sinon, si la catégorie est vide -> Suppression de la catégorie.
+    } else {
+      const deleteCategory = await doMutation(DELETE_CATEGORY, variables)
+
+      //Si la suppression a fonctionné.
+      if (deleteCategory?.delete_machinerie_categorie?.affected_rows > 0) {
+        alert('La catégorie a été supprimée avec succès.')
+      } else {
+        alert("La catégorie n'a pas été supprimée.")
+      }
+
+      //Fermeture de la modale de suppression.
+      setDelModalOpen(false)
+
+      //Rafraîchissement de la page.
+      window.location.reload()
+    }
+  }
 
   /*AFFICHAGE*/
   //Permet de créer le tableau des catégories.
@@ -57,6 +111,7 @@ function AdminCategory() {
                       color={colors.redButton}
                       hovercolor={colors.redButtonHover}
                       functionclick={() => {
+                        setDelModalOpen(true) /*Pour la modale de suppression.*/
                         setSelectedCategory(category)
                       }}
                     >
@@ -106,7 +161,7 @@ function AdminCategory() {
           <h1>Gestion des catégories</h1>
           <AddButton
             onClick={() => {
-              setModalOpen(true)
+              setAddModalOpen(true)
             }}
           />
           <div>{tableCategory()}</div>
@@ -117,9 +172,48 @@ function AdminCategory() {
       <Modal
         title={'Ajouter une catégorie'}
         content={<FormAddCategory />}
-        isOpen={isModalOpen}
+        isOpen={isAddModalOpen}
         onClose={() => {
-          setModalOpen(false)
+          setAddModalOpen(false)
+        }}
+      />
+
+      {/* MODALE POUR SUPPRIMER UNE CATÉGORIE */}
+      <Modal
+        title={'Supprimer une catégorie'}
+        content={
+          <>
+            <span>Êtes-vous sûr(e) de vouloir supprimer cette catégorie ?</span>
+            <br />
+            <ul>
+              <li>{selectedCategory?.[COLUMN_NAME]}</li>
+            </ul>
+            <div className="delete-buttons">
+              {/*CSS à revoir !!!!!!*/}
+              <CustomButton
+                functionclick={() => {
+                  deleteCategory()
+                }}
+                color={colors.redButton}
+                hovercolor={colors.redButtonHover}
+              >
+                Oui
+              </CustomButton>
+              <CustomButton
+                functionclick={() => {
+                  setDelModalOpen(false)
+                }}
+                color={colors.greyButton}
+                hovercolor={colors.greyButtonHover}
+              >
+                Annuler
+              </CustomButton>
+            </div>
+          </>
+        }
+        isOpen={isDelModalOpen}
+        onClose={() => {
+          setDelModalOpen(false)
         }}
       />
     </div>
