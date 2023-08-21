@@ -12,7 +12,7 @@ const colors = {
   /* Couleurs de l'accordéon */
   panelTitle: '#16A085',
   /* Couleurs des listes de réservation */
-  colorePast: '#A4907C',
+  colorePast: '#A9A9A9',
   colorPresent: '#5FD068',
   colorFuture: '#FAC213',
 }
