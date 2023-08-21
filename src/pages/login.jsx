@@ -32,7 +32,8 @@ function Connection() {
       //Si le nom d'utilisateur et le mot de passe sont corrects, alors on se connecte et on est redirigé vers la page d'accueil.
       if (
         (username === 'admin' && password === 'admin') ||
-        (username === 'user' && password === 'user')
+        (username === 'user' && password === 'user') ||
+        (username === 'user2' && password === 'user2')
       ) {
         setLogin(username)
         setError('')

@@ -25,8 +25,9 @@ function Inventory() {
   //Titre de la page.
   document.title = 'Catalogue'
 
-  //Hook pour la gestion de la modale.
-  const [isModalOpen, setModalOpen] = useState(false)
+  //Hook pour la gestion des modales.
+  const [isModalReservationOpen, setModalReservationOpen] = useState(false)
+  const [isModalAvailabilityOpen, setModalAvailabilityOpen] = useState(false)
   //Hook pour la gestion de la machinerie sélectionnée.
   const [selectedMachinery, setSelectedMachinery] = useState(null)
   //Pour savoir si c'est un appareil mobile.
@@ -42,6 +43,8 @@ function Inventory() {
   const [reservationComment, setReservationComment] = useState('')
   //Pour stocker les disponibilités de la machinerie sélectionnée.
   const [availabilities, setAvailabilities] = useState([])
+  //Pour savoir si les disponibilités sont en cours de chargement.
+  const [availabilitiesIsLoading, setAvailabilitiesIsLoading] = useState(false)
 
   //Affichage des boutons du bas de l'accordéon.
   function groupButtons(machinery) {
@@ -49,7 +52,10 @@ function Inventory() {
       <div className="grouped-buttons">
         <p className="control">
           <CustomButton
-            /*to="" ou functionclick=""*/
+            functionclick={() => {
+              setSelectedMachinery(machinery)
+              setModalAvailabilityOpen(true)
+            }}
             color={colors.blueButton}
             hovercolor={colors.blueButtonHover}
           >
@@ -77,7 +83,7 @@ function Inventory() {
           <CustomButton
             functionclick={() => {
               setSelectedMachinery(machinery)
-              setModalOpen(true)
+              setModalReservationOpen(true)
             }}
             color={colors.greenButton}
             hovercolor={colors.greenButtonHover}
@@ -91,7 +97,10 @@ function Inventory() {
 
   // Permet de récupérer les prochaines disponibilités de la machinerie sélectionnée
   useEffect(() => {
-    const getNextAvailabilitiesCallback = async (machineryId) => {
+    const getNextAvailabilitiesCallback = async (
+      machineryId,
+      limit = Infinity,
+    ) => {
       const variables = {
         machineryId,
         currentDateTime: new Date().toISOString(),
@@ -129,19 +138,26 @@ function Inventory() {
         })
       }
 
-      return slots.slice(0, 3)
+      return slots.slice(0, limit)
     }
 
     const fetchAvailabilities = async () => {
-      if (isModalOpen && selectedMachinery) {
-        const slots = await getNextAvailabilitiesCallback(selectedMachinery.id)
+      setAvailabilitiesIsLoading(true) //Pour afficher le message de chargement.
+      if (selectedMachinery) {
+        const limit = isModalReservationOpen ? 3 : Infinity
+        const slots = await getNextAvailabilitiesCallback(
+          selectedMachinery.id,
+          limit,
+        )
         setAvailabilities(slots)
       }
+      setAvailabilitiesIsLoading(false)
     }
 
     fetchAvailabilities()
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isModalOpen, selectedMachinery])
+  }, [isModalReservationOpen, isModalAvailabilityOpen, selectedMachinery])
 
   //Permet de vérifier si la réservation est en conflit avec une autre réservation existante.
   const checkReservationConflict = async (startDateTime, endDateTime) => {
@@ -182,7 +198,7 @@ function Inventory() {
         setReservationComment('')
 
         //Ferme la modale.
-        setModalOpen(false)
+        setModalReservationOpen(false)
       }
     } catch (err) {
       console.error(err)
@@ -235,7 +251,7 @@ function Inventory() {
       addReservation()
 
       //Ferme la modale.
-      setModalOpen(false)
+      setModalReservationOpen(false)
 
       //Réinitialise les valeurs APRÈS la soumission.
       setStartDate(null)
@@ -262,6 +278,65 @@ function Inventory() {
           </div>
         </div>
       </div>
+      {/* MODALE DES DISPONIBILITÉS */}
+      <Modal
+        title={`Disponibilités : ${
+          selectedMachinery?.nom || 'Non sélectionné'
+        }`}
+        content={
+          <>
+            <h2>Disponibilités de machinerie</h2>
+            {availabilitiesIsLoading ? (
+              <div>Chargement...</div>
+            ) : availabilities.length === 0 ? (
+              <div>Aucune disponibilité</div>
+            ) : (
+              <>
+                <p>Voici toutes les disponibilités de la machinerie.</p>
+                <div>
+                  {availabilities.map((slot, index) => {
+                    let startTimeStr = slot.start.toLocaleString()
+                    const currentTime = new Date().getTime()
+
+                    if (Math.abs(slot.start.getTime() - currentTime) <= 2000) {
+                      startTimeStr = 'Maintenant'
+                    }
+
+                    let endTimeStr =
+                      slot.end === 'Indéfiniment'
+                        ? slot.end
+                        : slot.end.toLocaleString()
+
+                    return (
+                      <div key={index}>
+                        {startTimeStr} - {endTimeStr}
+                        {/* <CustomButton
+                          functionclick={() => {
+                            setStartDate(slot.start)
+                            setEndDate(
+                              slot.end === 'Indéfiniment' ? null : slot.end,
+                            )
+                            setModalReservationOpen(true)
+                          }}
+                          color={colors.greenButton}
+                          hovercolor={colors.greenButtonHover}
+                        >
+                          Réserver
+                        </CustomButton> */}
+                      </div>
+                    )
+                  })}
+                </div>
+              </>
+            )}
+          </>
+        }
+        isOpen={isModalAvailabilityOpen}
+        onClose={() => {
+          setModalAvailabilityOpen(false)
+          setSelectedMachinery(null) //Réinitialise la machinerie sélectionnée.
+        }}
+      />
 
       {/* MODALE DE RÉSERVATION */}
       <Modal
@@ -362,31 +437,39 @@ function Inventory() {
               </CustomButton>
 
               <h3>Prochaines disponibilités</h3>
-              {availabilities.map((slot, index) => {
-                let startTimeStr = slot.start.toLocaleString()
-                const currentTime = new Date().getTime()
+              {availabilitiesIsLoading ? (
+                <div>Chargement...</div>
+              ) : availabilities.length === 0 ? (
+                <div>Aucune disponibilité</div>
+              ) : (
+                <>
+                  {availabilities.map((slot, index) => {
+                    let startTimeStr = slot.start.toLocaleString()
+                    const currentTime = new Date().getTime()
 
-                if (Math.abs(slot.start.getTime() - currentTime) <= 2000) {
-                  startTimeStr = 'Maintenant'
-                }
+                    if (Math.abs(slot.start.getTime() - currentTime) <= 2000) {
+                      startTimeStr = 'Maintenant'
+                    }
 
-                let endTimeStr =
-                  slot.end === 'Indéfiniment'
-                    ? slot.end
-                    : slot.end.toLocaleString()
+                    let endTimeStr =
+                      slot.end === 'Indéfiniment'
+                        ? slot.end
+                        : slot.end.toLocaleString()
 
-                return (
-                  <div key={index}>
-                    {startTimeStr} - {endTimeStr}
-                  </div>
-                )
-              })}
+                    return (
+                      <div key={index}>
+                        {startTimeStr} - {endTimeStr}
+                      </div>
+                    )
+                  })}
+                </>
+              )}
             </form>
           </>
         }
-        isOpen={isModalOpen}
+        isOpen={isModalReservationOpen}
         onClose={() => {
-          setModalOpen(false)
+          setModalReservationOpen(false)
           setSelectedMachinery(null) //Réinitialise la machinerie sélectionnée.
         }}
       />

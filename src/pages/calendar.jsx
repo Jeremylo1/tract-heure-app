@@ -270,9 +270,9 @@ function Calendar() {
             </button>
           </div>
           {/* Barre de recherche */}
-          <div>
+          <div className="columns mb-4">
             <input
-              className="input"
+              className="input column is-half is-offset-one-quarter"
               type="text"
               placeholder="Recherche"
               onChange={handleSearch}
