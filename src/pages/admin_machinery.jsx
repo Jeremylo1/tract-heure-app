@@ -39,6 +39,53 @@ function AdminMachinery() {
   //Pour savoir si c'est un appareil mobile.
   const { isMobile } = useContext(ScreenContext)
 
+  //Permet d'envoyer une requête de mutation (INSERT, UPDATE, DELETE) à Hasura.
+  const { doMutation, error_mutation } = useMutationHasura(LIEN_API)
+
+  /*SUPPRESSION*/
+  //Permet de supprimer une machine.
+  async function deleteMachinery() {
+    //S'il y a erreur, ne pas exécuter la fonction.
+    if (error_mutation) {
+      return
+    }
+
+    //Variables pour la requête de suppression.
+    const variables = {
+      machineryId: selectedMachinery?.[COLUMN_ID],
+    }
+
+    //Vérification de l'existence de réservation(s) pour la machine.
+    const reservationExists = await doMutation(
+      CHECK_MACHINERY_RESERVATION,
+      variables,
+    )
+
+    //Si la machine a (au moins) une réservation.
+    if (reservationExists?.machinerie_reservation?.length > 0) {
+      alert(
+        'Impossible de supprimer cette machine, car elle a une (ou plusieurs) réservation(s).',
+      )
+      //Sinon, si la machine n'a pas de réservation -> Suppression de la machine.
+    } else {
+      const deleteMachinery = await doMutation(DELETE_MACHINERY, variables)
+
+      //Si la suppression a fonctionné.
+      if (deleteMachinery?.delete_machinerie?.affected_rows > 0) {
+        alert('La machine a été supprimée avec succès.')
+      } else {
+        alert("La machine n'a pas été supprimée.")
+      }
+
+      //Fermeture de la modale de suppression.
+      setDelModalOpen(false)
+
+      //Rafraîchissement de la page.
+      window.location.reload()
+    }
+  }
+
+  /*AFFICHAGE*/
   //Affichage des boutons du bas de l'accordéon.
   function groupButtonsAdmin(machinery) {
     return (
@@ -84,52 +131,6 @@ function AdminMachinery() {
         </p>
       </div>
     )
-  }
-
-  //Permet d'envoyer une requête de mutation (INSERT, UPDATE, DELETE) à Hasura.
-  const { doMutation, error_mutation } = useMutationHasura(LIEN_API)
-
-  //Permet de supprimer une machine.
-  async function deleteMachinery() {
-    //S'il y a erreur, ne pas exécuter la fonction.
-    if (error_mutation) {
-      return
-    }
-
-    //Variables pour la requête de suppression.
-    const variables = {
-      machineryId: selectedMachinery?.[COLUMN_ID],
-    }
-
-    //Vérification de l'existence de réservation(s) pour la machine.
-    const reservationExists = await doMutation(
-      CHECK_MACHINERY_RESERVATION,
-      variables,
-    )
-
-    //Si la machine a une (ou plusieurs) réservation.
-    if (reservationExists?.machinerie_reservation?.length > 0) {
-      alert(
-        'Impossible de supprimer cette machine, car elle a une (ou plusieurs) réservation(s).',
-      )
-    } else {
-      //Si la machine n'a pas de réservation.
-      //Suppression de la machine.
-      const deleteMachinery = await doMutation(DELETE_MACHINERY, variables)
-
-      //Si la suppression a fonctionné.
-      if (deleteMachinery?.delete_machinerie?.affected_rows > 0) {
-        alert('La machine a été supprimée avec succès.')
-      } else {
-        alert("La machine n'a pas été supprimée.")
-      }
-
-      //Fermeture de la modale de suppression.
-      setDelModalOpen(false)
-
-      //Rafraîchissement de la page.
-      window.location.reload()
-    }
   }
 
   //Affichage selon le type d'appareil.
