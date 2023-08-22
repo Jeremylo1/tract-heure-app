@@ -8,7 +8,7 @@ function ProtectedRoute() {
 
   // Si AuthProvider n'est pas encore initialisé, affichez simplement un spinner de chargement
   if (!isInitialized) {
-    return <div>Loading...</div>
+    return <div className="loader is-loading"></div>
   }
 
   // Si vous êtes sur la page de login et que vous êtes déjà connecté

@@ -133,7 +133,7 @@ function Home() {
     }
   }, [formatedEvents])
 
-  if (reservation_loading) return <div>Chargement...</div>
+  if (reservation_loading) return <div className="loader is-loading"></div>
   if (reservation_error)
     return <div>Erreur lors du chargement des réservations!</div>
 

@@ -91,7 +91,7 @@ function Test() {
         </div>
       </div>
       {user_loading ? (
-        <div>Chargement des utilisateurs ...</div>
+        <div className="loader is-loading"></div>
       ) : user_error ? (
         <div>Erreur lors du chargement des utilisateurs !</div>
       ) : (
@@ -122,7 +122,7 @@ function Test() {
       {todo_error ? (
         <div>Erreur lors du chargement des todos !</div>
       ) : todo_loading ? (
-        <div>Chargement des todos ...</div>
+        <div className="loader is-loading"></div>
       ) : (
         <TodoList todos={todo_data.todos} showJSON={showJSON} />
       )}

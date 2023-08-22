@@ -188,7 +188,7 @@ function ShowMachinery({ functionButtons }) {
   return (
     <div>
       {category_loading ? (
-        <div>Chargement des catégories ...</div>
+        <div className="loader is-loading"></div>
       ) : category_error ? (
         <div>Erreur lors du chargement des catégories !</div>
       ) : (
@@ -225,7 +225,7 @@ function ShowMachinery({ functionButtons }) {
         </StyledSelect>
       )}
       {machinery_loading ? (
-        <div>Chargement de la machinerie ...</div>
+        <div className="loader is-loading"></div>
       ) : machinery_error ? (
         <div>Erreur lors du chargement de la machinerie !</div>
       ) : (

@@ -294,7 +294,7 @@ function Calendar() {
                     </div>
                     <div className="events">
                       {reservation_loading ? (
-                        <div>Chargement des réservations...</div>
+                        <div className="loader is-loading"></div>
                       ) : reservation_error ? (
                         <div>Erreur lors du chargement des réservations !</div>
                       ) : (

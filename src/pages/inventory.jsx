@@ -290,7 +290,7 @@ function Inventory() {
         content={
           <>
             {availabilitiesIsLoading ? (
-              <div>Chargement...</div>
+              <div className="loader is-loading"></div>
             ) : (
               <AvailabilityTable availabilities={availabilities} />
             )}
@@ -437,7 +437,7 @@ function Inventory() {
 
               <h3>Prochaines disponibilités</h3>
               {availabilitiesIsLoading ? (
-                <div>Chargement...</div>
+                <div className="loader is-loading"></div>
               ) : (
                 <AvailabilityTable availabilities={availabilities} />
               )}
