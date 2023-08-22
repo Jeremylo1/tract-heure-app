@@ -188,6 +188,8 @@ Header.propTypes = {
   userType: PropTypes.string,
   handleLogout: PropTypes.func,
   isMobileTablet: PropTypes.bool,
+  activeTab: PropTypes.string,
+  handleTabClick: PropTypes.func,
 }
 
 export default Header
