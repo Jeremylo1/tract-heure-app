@@ -156,9 +156,34 @@ export function useConnexion() {
 /*Permet de sélectionner un onglet.*/
 export function useTab() {
   const [activeTab, setActiveTab] = useState('accueil')
+
+  //Permet de sélectionner l'onglet actif.
   const handleTabClick = (tabId) => {
     setActiveTab(tabId)
   }
+
+  //Permet de sélectionner l'onglet actif selon le chemin.
+  useEffect(() => {
+    const currentPath = window.location.pathname
+
+    switch (currentPath) {
+      case '/':
+        setActiveTab('accueil')
+        break
+      case '/inventory':
+        setActiveTab('catalogue')
+        break
+      case '/calendar':
+        setActiveTab('calendrier')
+        break
+      case '/admin':
+        setActiveTab('dashboard')
+        break
+      default:
+        setActiveTab('accueil')
+        break
+    }
+  }, [])
 
   return { activeTab, handleTabClick }
 }

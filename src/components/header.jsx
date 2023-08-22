@@ -29,6 +29,13 @@ const StyledLogoDesktop = styled.img`
   width: 150px;
 `
 
+//Style du logo sur ordinateur (centré).
+const StyledCenteredLogoDesktop = styled.img`
+  height: 30px;
+  display: block;
+  margin: auto;
+`
+
 //Entête pour naviguer entre les pages selon le type d'appareil.
 function Header() {
   //Pour savoir si l'utilisateur est connecté et son type.
@@ -109,57 +116,66 @@ function Header() {
           role="navigation"
           aria-label="main navigation"
         >
-          <div className="navbar-brand">
-            <Link to="/" className="navbar-item">
-              <StyledLogoDesktop src={LogoTxt} alt="Logo" />
-            </Link>
-          </div>
-          <div className="navbar-start is-flex-grow-1 is-justify-content-center">
-            <Link to="/" className="navbar-item">
-              Accueil
-            </Link>
-            <Link to="/inventory" className="navbar-item">
-              Catalogue
-            </Link>
-            <Link to="/calendar" className="navbar-item">
-              Calendrier
-            </Link>
-            {userType === 'admin' ? (
-              /*Si admin, on affiche l'onglet "dashboard".*/
-              <Link to="/admin" className="navbar-item">
-                Administrateur
-              </Link>
-            ) : null}
-          </div>
-          <div className="navbar-end">
-            <div className="navbar-item has-dropdown is-hoverable">
-              <div className="narbar-link is-align-self-center">
-                <Icon path={mdiMenu} size={1} color="black" />
-              </div>
-              <div className="navbar-dropdown is-right">
+          {isConnected ? (
+            /*Si l'utilisateur est connecté, alors on affiche le logo et les onglets.*/
+            <>
+              <div className="navbar-brand">
                 <Link to="/" className="navbar-item">
-                  Profil
-                </Link>
-                <Link to="/" className="navbar-item">
-                  Historique
-                </Link>
-                <hr className="navbar-divider" />
-                <Link to="/" className="navbar-item">
-                  Crédits
+                  <StyledLogoDesktop src={LogoTxt} alt="Logo" />
                 </Link>
               </div>
-            </div>
-            <div className="navbar-item">
-              {isConnected ? (
-                /*Si l'utilisateur est connecté, alors déconnexion.*/
-                <div>
-                  <button onClick={handleLogout} className="button is-info">
-                    <strong>Déconnexion</strong>
-                  </button>
+              <div className="navbar-start is-flex-grow-1 is-justify-content-center">
+                <Link to="/" className="navbar-item">
+                  Accueil
+                </Link>
+                <Link to="/inventory" className="navbar-item">
+                  Catalogue
+                </Link>
+                <Link to="/calendar" className="navbar-item">
+                  Calendrier
+                </Link>
+                {userType === 'admin' ? (
+                  /*Si admin, on affiche l'onglet "Tableau de bord".*/
+                  <Link to="/admin" className="navbar-item">
+                    Administrateur
+                  </Link>
+                ) : null}
+              </div>
+              <div className="navbar-end">
+                <div className="navbar-item has-dropdown is-hoverable">
+                  <div className="narbar-link is-align-self-center">
+                    <Icon path={mdiMenu} size={1} color="black" />
+                  </div>
+                  <div className="navbar-dropdown is-right">
+                    <Link to="/" className="navbar-item">
+                      Profil
+                    </Link>
+                    <Link to="/" className="navbar-item">
+                      Historique
+                    </Link>
+                    <hr className="navbar-divider" />
+                    <Link to="/" className="navbar-item">
+                      Crédits
+                    </Link>
+                  </div>
                 </div>
-              ) : null}
-            </div>
-          </div>
+                <div className="navbar-item">
+                  <div>
+                    <button onClick={handleLogout} className="button is-info">
+                      <strong>Déconnexion</strong>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </>
+          ) : (
+            /*Si l'utilisateur est déconnecté, alors on affiche uniquement le logo centré.*/
+            <>
+              <div className="navbar-start is-flex-grow-1 is-justify-content-center">
+                <StyledCenteredLogoDesktop src={LogoTxt} alt="Logo" />
+              </div>
+            </>
+          )}
         </nav>
       )}
     </div>
