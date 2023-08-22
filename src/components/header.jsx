@@ -1,6 +1,6 @@
-import React, { useState, useContext } from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
-import { useConnexion } from '../utils/react/hooks'
+import { useConnexion, useTab } from '../utils/react/hooks'
 import { ScreenContext } from '../utils/react/context'
 import PropTypes from 'prop-types'
 /*Style*/
@@ -35,12 +35,8 @@ function Header() {
   const { isConnected, userType, handleLogout } = useConnexion()
   //Pour savoir si c'est un appareil mobile ou une tablette.
   const { isMobileTablet } = useContext(ScreenContext)
-
-  //Fonction pour changer d'onglet.
-  const [activeTab, setActiveTab] = useState('accueil')
-  const handleTabClick = (tabId) => {
-    setActiveTab(tabId)
-  }
+  //Pour gérer les onglets.
+  const { activeTab, handleTabClick } = useTab()
 
   //Affichage selon le type d'appareil.
   return (
@@ -51,53 +47,60 @@ function Header() {
           <div>
             <StyledLogoTouch src={LogoTxt} alt="Logo" />
           </div>
-          <div className="tabs is-centered">
-            <ul>
-              <li
-                className={activeTab === 'accueil' ? 'is-active' : ''}
-                onClick={() => handleTabClick('accueil')}
-              >
-                <Link to="/" className="navbar-item">
-                  <Icon path={mdiHome} size={1.5} color="black" />
-                </Link>
-              </li>
-              <li
-                className={activeTab === 'catalogue' ? 'is-active' : ''}
-                onClick={() => handleTabClick('catalogue')}
-              >
-                <Link to="/inventory" className="navbar-item">
-                  <Icon path={mdiTractorVariant} size={1.5} color="black" />
-                </Link>
-              </li>
-              <li
-                className={activeTab === 'calendrier' ? 'is-active' : ''}
-                onClick={() => handleTabClick('calendrier')}
-              >
-                <Link to="/calendar" className="navbar-item">
-                  <Icon path={mdiCalendarMonth} size={1.5} color="black" />
-                </Link>
-              </li>
-              {userType === 'admin' ? (
-                /*Si admin, on affiche l'onglet "dashboard".*/
+          {isConnected ? (
+            /*Si l'utilisateur est connecté, alors on affiche les onglets.*/
+            <div className="tabs is-centered">
+              <ul>
                 <li
-                  className={activeTab === 'dashboard' ? 'is-active' : ''}
-                  onClick={() => handleTabClick('dashboard')}
+                  className={activeTab === 'accueil' ? 'is-active' : ''}
+                  onClick={() => handleTabClick('accueil')}
                 >
-                  <Link to="/admin" className="navbar-item">
-                    <Icon path={mdiFileEditOutline} size={1.5} color="black" />
+                  <Link to="/" className="navbar-item">
+                    <Icon path={mdiHome} size={1.5} color="black" />
                   </Link>
                 </li>
-              ) : null}
-              <li
-                className={activeTab === 'burger' ? 'is-active' : ''}
-                onClick={() => handleTabClick('burger')}
-              >
-                <Link to="/others" className="navbar-item">
-                  <Icon path={mdiMenu} size={1.5} color="black" />
-                </Link>
-              </li>
-            </ul>
-          </div>
+                <li
+                  className={activeTab === 'catalogue' ? 'is-active' : ''}
+                  onClick={() => handleTabClick('catalogue')}
+                >
+                  <Link to="/inventory" className="navbar-item">
+                    <Icon path={mdiTractorVariant} size={1.5} color="black" />
+                  </Link>
+                </li>
+                <li
+                  className={activeTab === 'calendrier' ? 'is-active' : ''}
+                  onClick={() => handleTabClick('calendrier')}
+                >
+                  <Link to="/calendar" className="navbar-item">
+                    <Icon path={mdiCalendarMonth} size={1.5} color="black" />
+                  </Link>
+                </li>
+                {userType === 'admin' ? (
+                  /*Si admin, on affiche l'onglet "Tableau de bord".*/
+                  <li
+                    className={activeTab === 'dashboard' ? 'is-active' : ''}
+                    onClick={() => handleTabClick('dashboard')}
+                  >
+                    <Link to="/admin" className="navbar-item">
+                      <Icon
+                        path={mdiFileEditOutline}
+                        size={1.5}
+                        color="black"
+                      />
+                    </Link>
+                  </li>
+                ) : null}
+                <li
+                  className={activeTab === 'burger' ? 'is-active' : ''}
+                  onClick={() => handleTabClick('burger')}
+                >
+                  <Link to="/others" className="navbar-item">
+                    <Icon path={mdiMenu} size={1.5} color="black" />
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          ) : null}
         </div>
       ) : (
         /* DESIGN POUR ORDINATEUR */

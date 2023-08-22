@@ -152,3 +152,13 @@ export function useConnexion() {
 
   return { isConnected, userType, handleLogout }
 }
+
+/*Permet de sélectionner un onglet.*/
+export function useTab() {
+  const [activeTab, setActiveTab] = useState('accueil')
+  const handleTabClick = (tabId) => {
+    setActiveTab(tabId)
+  }
+
+  return { activeTab, handleTabClick }
+}
