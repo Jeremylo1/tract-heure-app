@@ -5,6 +5,7 @@ import { AuthContext } from './context'
 import {
   LIEN_API,
   TABLE_CATEGORY,
+  TABLE_STATUS,
   COLUMN_ID,
   COLUMN_NAME,
 } from '../database/query'
@@ -136,6 +137,39 @@ export function useCategory() {
   }, [category_data])
 
   return { sortedCategories, category_loading, category_error }
+}
+
+/*Permet de récupérer les statuts depuis Hasura.*/
+export function useStatus() {
+  //Pour savoir si c'est la première fois qu'on charge les données.
+  const [firstLoading, setFirstLoading] = useState(true)
+  //Pour stocker les statuts.
+  const [status, setStatus] = useState([])
+
+  //Permet de récupérer la liste des statuts depuis Hasura.
+  const {
+    data: status_data,
+    isLoading: status_loading,
+    error: status_error,
+  } = useFetchHasura(
+    LIEN_API,
+    `{${TABLE_STATUS}{${COLUMN_ID} ${COLUMN_NAME}}}`,
+    firstLoading,
+  )
+
+  //Permet de définir si c'est la première fois qu'on charge la page.
+  useEffect(() => {
+    setFirstLoading(false)
+  }, [])
+
+  //Permet de stocker les statuts dans un tableau.
+  useEffect(() => {
+    if (status_data && status_data[TABLE_STATUS]) {
+      setStatus(status_data[TABLE_STATUS])
+    }
+  }, [status_data])
+
+  return { status, status_loading, status_error }
 }
 
 /*Permet de se déconnecter, de récupérer le type d'utilisateur et de savoir si l'utilisateur est connecté.*/
