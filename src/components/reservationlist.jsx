@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 /*Style*/
 import styled from 'styled-components'
+import '../styles/reservationlist.css'
 import 'bulma/css/bulma.min.css'
 /*Importation des icônes*/
 import Icon from '@mdi/react'
@@ -32,7 +33,27 @@ function ReservationList({
     <div className="tile is-parent">
       <StyledTile color={backgroundColor} className={`tile is-child box`}>
         <div className="content">
-          <StyledTitle>{title}</StyledTitle>
+          <div className="flexContainer">
+            <StyledTitle>{title}</StyledTitle>
+            <div className="buttons">
+              <button
+                onClick={onPrev}
+                className="button is-link"
+                disabled={currentIndex === 0}
+              >
+                <Icon path={mdiArrowLeftThick} size={1} />
+              </button>
+              <span className="is-flex-grow-1"></span>{' '}
+              {/* This will push the buttons to the extremes */}
+              <button
+                onClick={onNext}
+                className="button is-link"
+                disabled={currentIndex + 5 >= cards.length}
+              >
+                <Icon path={mdiArrowRightThick} size={1} />
+              </button>
+            </div>
+          </div>
           {/* Si aucune carte, on affiche un message. */}
           {cards.length === 0 && (
             <p className="no-card">Aucune réservation à afficher.</p>
@@ -40,24 +61,6 @@ function ReservationList({
           {/* Sinon, on affiche les cartes. */}
           <div className="content">
             {cards.slice(currentIndex, currentIndex + 5)}
-          </div>
-          <div className="buttons">
-            <button
-              onClick={onPrev}
-              className="button is-link"
-              disabled={currentIndex === 0}
-            >
-              <Icon path={mdiArrowLeftThick} size={1} />
-            </button>
-            <span className="is-flex-grow-1"></span>{' '}
-            {/* This will push the buttons to the extremes */}
-            <button
-              onClick={onNext}
-              className="button is-link"
-              disabled={currentIndex + 5 >= cards.length}
-            >
-              <Icon path={mdiArrowRightThick} size={1} />
-            </button>
           </div>
         </div>
       </StyledTile>
