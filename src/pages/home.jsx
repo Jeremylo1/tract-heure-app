@@ -5,6 +5,9 @@ import {
   LIEN_API,
   GET_ALL_RESERVATION,
   VUE_RESERVATION,
+  COLUMN_ID,
+  COLUMN_NAME,
+  COLUMN_MODEL,
 } from '../utils/database/query'
 import ReservationList from '../components/reservationlist'
 import { formatShortDate, formatTime } from '../utils/reusable/functions'
@@ -70,12 +73,18 @@ function Home() {
         //Permet de créer la carte.
         const card = (
           <div
-            key={reservation.id}
+            key={reservation[COLUMN_ID]}
             className={`card reservation-card ${cardClass}`}
           >
-            <strong>
-              {reservation.nom} - {reservation.modele}
-            </strong>
+            {reservation[COLUMN_MODEL] ? (
+              /*Si le modèle est défini, on l'affiche.*/
+              <strong>
+                {reservation[COLUMN_NAME]} - {reservation[COLUMN_MODEL]}
+              </strong>
+            ) : (
+              /*Sinon, on affiche seulement le nom.*/
+              <strong>{reservation[COLUMN_NAME]}</strong>
+            )}
             <div className="reservation-card-date">
               {cardDate(startDate)}
               <br />
