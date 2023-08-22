@@ -39,7 +39,7 @@ function Inventory() {
   const [endDate, setEndDate] = useState(new Date())
   const [endTime, setEndTime] = useState(new Date())
   //Pour stocker le type de réservation.
-  const [reservationType, setReservationType] = useState('1') // Par défaut, on met "Réservation".
+  const [reservationType, setReservationType] = useState(null)
   //Pour stocker le commentaire de la réservation.
   const [reservationComment, setReservationComment] = useState('')
   //Pour stocker les disponibilités de la machinerie sélectionnée.
@@ -317,6 +317,7 @@ function Inventory() {
                     name="reservationType"
                     value="1"
                     checked={reservationType === '1'}
+                    required
                     onChange={(e) => setReservationType(e.target.value)}
                   />
                   <label htmlFor="reservation">Réservation</label>
@@ -328,6 +329,7 @@ function Inventory() {
                     name="reservationType"
                     value="2"
                     checked={reservationType === '2'}
+                    required
                     onChange={(e) => setReservationType(e.target.value)}
                   />
                   <label htmlFor="maintenance">Maintenance</label>

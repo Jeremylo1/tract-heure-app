@@ -18,9 +18,12 @@ function Home() {
   document.title = 'Accueil'
   //Pour savoir si c'est la première fois qu'on charge les données.
   const [firstLoading, setFirstLoading] = useState(true)
-
   //Pour savoir si on est sur un mobile ou une tablette.
   const { isMobileTablet } = useContext(ScreenContext)
+  //Pour savoir quelle carte est affichée.
+  const [inProgressIndex, setInProgressIndex] = useState(0)
+  const [upcomingIndex, setUpcomingIndex] = useState(0)
+  const [finishedIndex, setFinishedIndex] = useState(0)
 
   const {
     data: reservation_data,
@@ -111,16 +114,37 @@ function Home() {
             title="En cours"
             cards={inProgressCards}
             backgroundColor={colors.colorPresent}
+            onNext={() =>
+              setInProgressIndex((prev) =>
+                Math.min(prev + 5, inProgressCards.length - 5),
+              )
+            }
+            onPrev={() => setInProgressIndex((prev) => Math.max(prev - 5, 0))}
+            currentIndex={inProgressIndex}
           />
           <ReservationList
             title="À venir"
             cards={upcomingCards}
             backgroundColor={colors.colorFuture}
+            onNext={() =>
+              setUpcomingIndex((prev) =>
+                Math.min(prev + 5, upcomingCards.length - 5),
+              )
+            }
+            onPrev={() => setUpcomingIndex((prev) => Math.max(prev - 5, 0))}
+            currentIndex={upcomingIndex}
           />
           <ReservationList
             title="Terminé"
             cards={finishedCards}
             backgroundColor={colors.colorePast}
+            onNext={() =>
+              setFinishedIndex((prev) =>
+                Math.min(prev + 5, finishedCards.length - 5),
+              )
+            }
+            onPrev={() => setFinishedIndex((prev) => Math.max(prev - 5, 0))}
+            currentIndex={finishedIndex}
           />
         </div>
       </div>

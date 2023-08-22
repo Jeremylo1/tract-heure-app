@@ -3,6 +3,10 @@ import PropTypes from 'prop-types'
 /*Style*/
 import styled from 'styled-components'
 import 'bulma/css/bulma.min.css'
+/*Importation des icônes*/
+import Icon from '@mdi/react'
+import { mdiArrowLeftThick } from '@mdi/js'
+import { mdiArrowRightThick } from '@mdi/js'
 
 //Style de la tuile.
 const StyledTile = styled.article`
@@ -16,7 +20,14 @@ const StyledTitle = styled.p`
 `
 
 //Permet d'afficher une liste de réservations.
-function ReservationList({ title, cards, backgroundColor }) {
+function ReservationList({
+  title,
+  cards,
+  backgroundColor,
+  onNext,
+  onPrev,
+  currentIndex,
+}) {
   return (
     <div className="tile is-parent">
       <StyledTile color={backgroundColor} className={`tile is-child box`}>
@@ -27,7 +38,27 @@ function ReservationList({ title, cards, backgroundColor }) {
             <p className="no-card">Aucune réservation à afficher.</p>
           )}
           {/* Sinon, on affiche les cartes. */}
-          <div className="content">{cards}</div>
+          <div className="content">
+            {cards.slice(currentIndex, currentIndex + 5)}
+          </div>
+          <div className="buttons">
+            <button
+              onClick={onPrev}
+              className="button is-link"
+              disabled={currentIndex === 0}
+            >
+              <Icon path={mdiArrowLeftThick} size={1} />
+            </button>
+            <span className="is-flex-grow-1"></span>{' '}
+            {/* This will push the buttons to the extremes */}
+            <button
+              onClick={onNext}
+              className="button is-link"
+              disabled={currentIndex + 5 >= cards.length}
+            >
+              <Icon path={mdiArrowRightThick} size={1} />
+            </button>
+          </div>
         </div>
       </StyledTile>
     </div>
