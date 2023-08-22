@@ -3,6 +3,7 @@ import { useMutationHasura } from '../utils/react/hooks'
 import Modal from '../components/modal'
 import CustomButton from '../components/button'
 import ShowMachinery from '../components/showmachinery'
+import AvailabilityTable from '../components/availability_table'
 import { ScreenContext } from '../utils/react/context'
 import { toISODateTime } from '../utils/reusable/functions'
 /*Base de données*/
@@ -38,7 +39,7 @@ function Inventory() {
   const [endDate, setEndDate] = useState(new Date())
   const [endTime, setEndTime] = useState(new Date())
   //Pour stocker le type de réservation.
-  const [reservationType, setReservationType] = useState('1') // Par défaut, on met "Réservation".
+  const [reservationType, setReservationType] = useState(null)
   //Pour stocker le commentaire de la réservation.
   const [reservationComment, setReservationComment] = useState('')
   //Pour stocker les disponibilités de la machinerie sélectionnée.
@@ -285,49 +286,10 @@ function Inventory() {
         }`}
         content={
           <>
-            <h2>Disponibilités de machinerie</h2>
             {availabilitiesIsLoading ? (
               <div>Chargement...</div>
-            ) : availabilities.length === 0 ? (
-              <div>Aucune disponibilité</div>
             ) : (
-              <>
-                <p>Voici toutes les disponibilités de la machinerie.</p>
-                <div>
-                  {availabilities.map((slot, index) => {
-                    let startTimeStr = slot.start.toLocaleString()
-                    const currentTime = new Date().getTime()
-
-                    if (Math.abs(slot.start.getTime() - currentTime) <= 2000) {
-                      startTimeStr = 'Maintenant'
-                    }
-
-                    let endTimeStr =
-                      slot.end === 'Indéfiniment'
-                        ? slot.end
-                        : slot.end.toLocaleString()
-
-                    return (
-                      <div key={index}>
-                        {startTimeStr} - {endTimeStr}
-                        {/* <CustomButton
-                          functionclick={() => {
-                            setStartDate(slot.start)
-                            setEndDate(
-                              slot.end === 'Indéfiniment' ? null : slot.end,
-                            )
-                            setModalReservationOpen(true)
-                          }}
-                          color={colors.greenButton}
-                          hovercolor={colors.greenButtonHover}
-                        >
-                          Réserver
-                        </CustomButton> */}
-                      </div>
-                    )
-                  })}
-                </div>
-              </>
+              <AvailabilityTable availabilities={availabilities} />
             )}
           </>
         }
@@ -355,6 +317,7 @@ function Inventory() {
                     name="reservationType"
                     value="1"
                     checked={reservationType === '1'}
+                    required
                     onChange={(e) => setReservationType(e.target.value)}
                   />
                   <label htmlFor="reservation">Réservation</label>
@@ -366,57 +329,87 @@ function Inventory() {
                     name="reservationType"
                     value="2"
                     checked={reservationType === '2'}
+                    required
                     onChange={(e) => setReservationType(e.target.value)}
                   />
                   <label htmlFor="maintenance">Maintenance</label>
                 </div>
               </div>
-              <div className="form-group">
-                <label className="form-label" htmlFor="startDate">
-                  Date de début :
-                </label>
-                <div className="input-wrapper">
-                  <input
-                    id="startDate"
-                    type="date"
-                    className="form-input"
-                    required
-                    onChange={(e) => setStartDate(e.target.value)}
-                  />
+
+              <div className="columns">
+                <div className="column is-6 py-0">
+                  <div className="form-group">
+                    <label className="form-label" htmlFor="startDate">
+                      Date de début :
+                    </label>
+                    <div className="input-wrapper">
+                      <input
+                        id="startDate"
+                        type="date"
+                        className="form-input"
+                        required
+                        onChange={(e) => setStartDate(e.target.value)}
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div className="input-wrapper">
-                  <input
-                    type="time"
-                    className="form-input"
-                    required
-                    onChange={(e) => setStartTime(e.target.value)}
-                  />
-                </div>
-              </div>
-              <div className="form-group">
-                <label className="form-label" htmlFor="endDate">
-                  Date de fin :
-                </label>
-                <div className="input-wrapper">
-                  <input
-                    id="endDate"
-                    type="date"
-                    className="form-input"
-                    required
-                    onChange={(e) => setEndDate(e.target.value)}
-                  />
-                </div>
-                <div className="input-wrapper">
-                  <input
-                    type="time"
-                    className="form-input"
-                    required
-                    onChange={(e) => setEndTime(e.target.value)}
-                  />
+
+                <div className="column is-6 py-0">
+                  <div className="form-group">
+                    <label className="form-label" htmlFor="startTime">
+                      Heure de début :
+                    </label>
+                    <div className="input-wrapper">
+                      <input
+                        id="startTime"
+                        type="time"
+                        className="form-input"
+                        required
+                        onChange={(e) => setStartTime(e.target.value)}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
+
+              <div className="columns">
+                <div className="column is-6 py-0">
+                  <div className="form-group">
+                    <label className="form-label" htmlFor="endDate">
+                      Date de fin :
+                    </label>
+                    <div className="input-wrapper">
+                      <input
+                        id="endDate"
+                        type="date"
+                        className="form-input"
+                        required
+                        onChange={(e) => setEndDate(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="column is-6 py-0">
+                  <div className="form-group">
+                    <label className="form-label" htmlFor="endTime">
+                      Heure de fin :
+                    </label>
+                    <div className="input-wrapper">
+                      <input
+                        id="endTime"
+                        type="time"
+                        className="form-input"
+                        required
+                        onChange={(e) => setEndTime(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div className="form-group">
-                <label className="form-label" htmlFor="reservationComment">
+                <label className="form-label py-0" htmlFor="reservationComment">
                   Commentaire :
                 </label>
                 <textarea
@@ -428,41 +421,22 @@ function Inventory() {
                   value={reservationComment}
                 ></textarea>
               </div>
-              <CustomButton
-                type="submit"
-                color={colors.greenButton}
-                hovercolor={colors.greenButtonHover}
-              >
-                Confirmer la réservation
-              </CustomButton>
+              {/* Centrer le bouton */}
+              <div className="has-text-centered">
+                <CustomButton
+                  type="submit"
+                  color={colors.greenButton}
+                  hovercolor={colors.greenButtonHover}
+                >
+                  Confirmer la réservation
+                </CustomButton>
+              </div>
 
               <h3>Prochaines disponibilités</h3>
               {availabilitiesIsLoading ? (
                 <div>Chargement...</div>
-              ) : availabilities.length === 0 ? (
-                <div>Aucune disponibilité</div>
               ) : (
-                <>
-                  {availabilities.map((slot, index) => {
-                    let startTimeStr = slot.start.toLocaleString()
-                    const currentTime = new Date().getTime()
-
-                    if (Math.abs(slot.start.getTime() - currentTime) <= 2000) {
-                      startTimeStr = 'Maintenant'
-                    }
-
-                    let endTimeStr =
-                      slot.end === 'Indéfiniment'
-                        ? slot.end
-                        : slot.end.toLocaleString()
-
-                    return (
-                      <div key={index}>
-                        {startTimeStr} - {endTimeStr}
-                      </div>
-                    )
-                  })}
-                </>
+                <AvailabilityTable availabilities={availabilities} />
               )}
             </form>
           </>
