@@ -5,15 +5,15 @@
     margin: 0 auto;
 }
 
-/* MOBILE */
-.columns-mobile {
+/* MOBILE ET TABLETTE */
+.columns-mobile-tablet {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-/* TABLETTE ET ORDINATEUR */
-.columns-tablet-desktop {
+/* ORDINATEUR */
+.columns-desktop {
     justify-content: center;
 }
 

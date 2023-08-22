@@ -115,7 +115,7 @@ function Home() {
   //Affichage de la page selon le type d'appareil.
   return (
     <div
-      className={isMobileTablet ? 'columns-mobile' : 'columns-tablet-desktop'}
+      className={isMobileTablet ? 'columns-mobile-tablet' : 'columns-desktop'}
     >
       <div className="columns-size">
         <h1>Mes réservations</h1>

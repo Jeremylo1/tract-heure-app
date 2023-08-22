@@ -10,43 +10,32 @@ function Dashboard() {
   //Titre de la page.
   document.title = 'Tableau de bord'
 
-  //Pour savoir si c'est un appareil mobile.
+  //Pour savoir si c'est un appareil mobile ou tablette.
   const { isMobileTablet } = useContext(ScreenContext)
 
+  //Affichage selon le type d'appareil.
   return (
     <div>
       {/* DESIGN POUR MOBILE : DESIGN POUR TABLETTE ET ORDINATEUR */}
       <div
-        className={isMobileTablet ? 'columns-mobile' : 'columns-tablet-desktop'}
+        className={isMobileTablet ? 'columns-mobile-tablet' : 'columns-desktop'}
       >
         <div className="columns-size">
           <h1>Tableau de bord</h1>
+          <div className="box">
+            <Link to="/admin/category">Gestion des catégories</Link>
+          </div>
+          <div className="box">
+            <Link to="/admin/machinery">Gestion de la machinerie</Link>
+          </div>
         </div>
       </div>
-
-      {/*
-      <div>
-        Calendrier de réservations des utilisateurs avec sélecteur pour choix de
-        l'utilisateur
-      </div>
-      <div>Calendrier</div>
-      <div>
-        <Link to="/test" className="button is-info">
-          Direction TO DO
-        </Link>
-      </div>
-      <div>
-        <Link to="/admin/category" className="button is-link is-rounded">
-          Gestion des catégories
-        </Link>
-      </div>
-      <div>
-        <Link to="/admin/machinery" className="button is-link is-rounded">
-          Gestion de la machinerie
-        </Link>
-        </div>*/}
     </div>
   )
 }
 
 export default Dashboard
+
+/*À FAIRE :
+- Gestion du calendrier.
+- Gestion du calendrier de réservations des utilisateurs avec sélecteur pour choix de l'utilisateur.*/
