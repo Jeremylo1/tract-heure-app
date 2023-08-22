@@ -61,10 +61,10 @@ function Home() {
 
         //Permet de créer la date de la carte.
         const cardDate = (date) => (
-          <strong>
+          <span>
             {formatShortDate(date)}
             <span> ({formatTime(date)}) </span>
-          </strong>
+          </span>
         )
 
         //Permet de créer la carte.
@@ -73,7 +73,9 @@ function Home() {
             key={reservation.id}
             className={`card reservation-card ${cardClass}`}
           >
-            {reservation.nom} - {reservation.modele}
+            <strong>
+              {reservation.nom} - {reservation.modele}
+            </strong>
             <div className="reservation-card-date">
               {cardDate(startDate)}
               <br />

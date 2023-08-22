@@ -94,11 +94,11 @@
 }
 
 .reservation {
-    background-color: #75C2F6;
+    background-color: #51EAEA;
 }
 
 .maintenance {
-    background-color: #EF9F9F;
+    background-color: #FFCD38;
 }
 
 @media only screen and (max-width: 768px) {

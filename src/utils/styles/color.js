@@ -13,8 +13,8 @@ const colors = {
   panelTitle: '#16A085',
   /* Couleurs des listes de réservation */
   colorePast: '#A9A9A9',
-  colorPresent: '#5FD068',
-  colorFuture: '#FAC213',
+  colorPresent: '#6ECB63',
+  colorFuture: '#00B4D8',
 }
 
 export default colors
