@@ -1,8 +1,10 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { ScreenContext } from '../utils/react/context'
 import { useFetchHasura } from '../utils/react/hooks'
-import ReservationList from '../components/reservationlist'
 import { formatShortDate, formatTime } from '../utils/reusable/functions'
+/*Composants*/
+import ReservationList from '../components/reservationlist'
+import EventModal from '../components/eventModal'
 /*Base de données*/
 import {
   LIEN_API,
@@ -11,6 +13,10 @@ import {
   COLUMN_ID,
   COLUMN_NAME,
   COLUMN_MODEL,
+  COLUMN_DESCRIPTION,
+  COLUMN_TYPE,
+  COLUMN_DATE_DEBUT,
+  COLUMN_DATE_FIN,
 } from '../utils/database/query'
 /*Style*/
 import colors from '../utils/styles/color'
@@ -29,6 +35,11 @@ function Home() {
   const [upcomingIndex, setUpcomingIndex] = useState(0)
   const [finishedIndex, setFinishedIndex] = useState(0)
 
+  //useState pour ouvrir/fermer la modale.
+  const [isModalOpen, setModalOpen] = useState(false)
+  //useState pour stocker l'événement sélectionné dans la modale.
+  const [modalEvent, setModalEvent] = useState(null)
+
   const {
     data: reservation_data,
     isLoading: reservation_loading,
@@ -45,23 +56,42 @@ function Home() {
     setFirstLoading(false)
   }, [])
 
+  const formatEvents = (data) => {
+    if (!data || !data[VUE_RESERVATION]) return []
+
+    return data[VUE_RESERVATION].map((event) => {
+      return {
+        id: event[COLUMN_ID],
+        title: `${event[COLUMN_NAME]}`,
+        //La description est vide si elle n'existe pas.
+        description: event[COLUMN_DESCRIPTION] || '',
+        type: event[COLUMN_TYPE],
+        start: new Date(event[COLUMN_DATE_DEBUT]),
+        end: new Date(event[COLUMN_DATE_FIN]),
+      }
+    })
+  }
+
+  // Pour stocker les données formatées.
+  const formatedEvents = formatEvents(reservation_data)
+
   //Permet de créer les cartes à afficher dans les listes.
   useEffect(() => {
     //Si on a des données.
-    if (reservation_data && reservation_data[VUE_RESERVATION]) {
+    if (formatedEvents && formatedEvents.length > 0) {
       const today = new Date()
 
       const inProgress = []
       const upcoming = []
       const finished = []
 
-      //Pour chaque réservation on crée une carte.
-      reservation_data[VUE_RESERVATION].forEach((reservation) => {
-        const startDate = new Date(reservation.date_debut)
-        const endDate = new Date(reservation.date_fin)
+      //Pour chaque événement on crée une carte.
+      formatedEvents.forEach((event) => {
+        const startDate = event.start
+        const endDate = event.end
 
         //On détermine la classe de la carte selon le type de réservation.
-        const cardClass = reservation.type === 2 ? 'maintenance' : 'reservation'
+        const cardClass = event.type === 2 ? 'maintenance' : 'reservation'
 
         //Permet de créer la date de la carte.
         const cardDate = (date) => (
@@ -74,18 +104,11 @@ function Home() {
         //Permet de créer la carte.
         const card = (
           <div
-            key={reservation[COLUMN_ID]}
+            key={event.id}
             className={`card reservation-card ${cardClass}`}
+            onClick={() => openModal(event)}
           >
-            {reservation[COLUMN_MODEL] ? (
-              /*Si le modèle est défini, on l'affiche.*/
-              <strong>
-                {reservation[COLUMN_NAME]} - {reservation[COLUMN_MODEL]}
-              </strong>
-            ) : (
-              /*Sinon, on affiche seulement le nom.*/
-              <strong>{reservation[COLUMN_NAME]}</strong>
-            )}
+            <strong>{event.title}</strong>
             <div className="reservation-card-date">
               {cardDate(startDate)}
               <br />
@@ -107,11 +130,22 @@ function Home() {
       setUpcomingCards(upcoming)
       setFinishedCards(finished)
     }
-  }, [reservation_data])
+  }, [formatedEvents])
 
   if (reservation_loading) return <div>Chargement...</div>
   if (reservation_error)
     return <div>Erreur lors du chargement des réservations!</div>
+
+  //Ouvrir la modale et stocker l'événement sélectionné.
+  const openModal = (data) => {
+    setModalEvent(data)
+    setModalOpen(true)
+  }
+
+  //Fermer la modale.
+  const closeModal = () => {
+    setModalOpen(false)
+  }
 
   //Affichage de la page selon le type d'appareil.
   return (
@@ -162,6 +196,12 @@ function Home() {
           />
         </div>
       </div>
+      {/* Modale pour afficher les détails de l'événement */}
+      <EventModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        event={modalEvent}
+      />
     </div>
   )
 }
