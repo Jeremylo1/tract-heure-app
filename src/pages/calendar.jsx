@@ -86,9 +86,7 @@ function Calendar() {
     return data[VUE_RESERVATION].map((event) => {
       return {
         id: event[COLUMN_ID],
-        title: `${eventType(event[COLUMN_TYPE], 'string')} - ${
-          event[COLUMN_NAME]
-        }`,
+        title: `${event[COLUMN_NAME]}`,
         //La description est vide si elle n'existe pas.
         description: event[COLUMN_DESCRIPTION] || '',
         type: event[COLUMN_TYPE],
@@ -333,25 +331,59 @@ function Calendar() {
                         <div>Erreur lors du chargement des réservations !</div>
                       ) : (
                         <>
-                          {day.events.map((event) => (
-                            <div
-                              className={`box event ${eventType(
-                                event.type,
-                                'class',
-                              )}`}
-                              key={event.id}
-                              style={event.style}
-                              onClick={() => openModal(event)}
-                            >
-                              {event.showTitle && (
-                                <p className="title is-6">{event.title}</p>
-                              )}
-                              {/* Si c'est mobile afficher le titre pour chaque journée */}
-                              {isMobile && !event.showTitle && (
-                                <p className="title is-6">{event.title}</p>
-                              )}
-                            </div>
-                          ))}
+                          {day.events.map((event, index, eventsArray) => {
+                            // Vérifie si l'événement est en chevauchement avec un autre événement
+                            const overlappingEvents = eventsArray.filter(
+                              (otherEvent) =>
+                                (event.start >= otherEvent.start &&
+                                  event.start <= otherEvent.end) ||
+                                (event.end >= otherEvent.start &&
+                                  event.end <= otherEvent.end),
+                            )
+
+                            console.log(overlappingEvents)
+
+                            const isOverlapping = overlappingEvents.length > 1
+
+                            const overlappingIndex =
+                              overlappingEvents.indexOf(event)
+                            const eventWidth = isOverlapping
+                              ? 100 - overlappingIndex * 10
+                              : 100
+
+                            const eventStyle = {
+                              ...event.style,
+                              width: `${eventWidth}%`, // Ajuste la largeur en fonction des événements en chevauchement
+                              //aligner toute la box a droite
+                              left: isOverlapping ? 'auto' : 0,
+                              //ajouter de la transparence aux événements en chevauchement
+                              opacity: isOverlapping ? 0.75 : 1,
+                            }
+
+                            return (
+                              <div
+                                className={`box event ${eventType(
+                                  event.type,
+                                  'class',
+                                )}`}
+                                key={event.id}
+                                style={eventStyle}
+                                onClick={() => openModal(event)}
+                              >
+                                {event.showTitle && (
+                                  <p className="title is-6 is-size-7">
+                                    {event.title}
+                                  </p>
+                                )}
+                                {/* Si c'est mobile afficher le titre pour chaque journée */}
+                                {isMobile && !event.showTitle && (
+                                  <p className="title is-6 is-size-7">
+                                    {event.title}
+                                  </p>
+                                )}
+                              </div>
+                            )
+                          })}
                         </>
                       )}
                     </div>
