@@ -196,6 +196,7 @@ function Inventory() {
         setStartTime(null)
         setEndDate(null)
         setEndTime(null)
+        setReservationType(null)
         setReservationComment('')
 
         //Ferme la modale.
@@ -259,6 +260,7 @@ function Inventory() {
       setStartTime(null)
       setEndDate(null)
       setEndTime(null)
+      setReservationType(null)
       setReservationComment('')
     }
   }
