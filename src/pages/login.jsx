@@ -1,7 +1,8 @@
 import React from 'react'
-import { useState, useEffect, useContext } from 'react'
+import { useState, useContext } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { AuthContext } from '../utils/react/context'
+/*Style*/
 import 'bulma/css/bulma.min.css'
 
 //Permet de se connecter à l'application.

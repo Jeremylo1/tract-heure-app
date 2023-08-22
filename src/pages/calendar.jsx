@@ -2,8 +2,10 @@ import React, { useState, useEffect, useContext, useMemo } from 'react'
 import { useFetchHasura } from '../utils/react/hooks'
 import { useMutationHasura } from '../utils/react/hooks'
 import { ScreenContext } from '../utils/react/context'
+/*Composants*/
 import CustomButton from '../components/button'
 import Modal from '../components/modal'
+/*Base de données*/
 import {
   LIEN_API,
   GET_ALL_RESERVATION,

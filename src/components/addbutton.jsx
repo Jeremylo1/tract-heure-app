@@ -1,12 +1,12 @@
 import React from 'react'
 import CustomButton from './button'
-import colors from '../utils/styles/color'
 import PropTypes from 'prop-types'
 /* Importation de'icône */
 import Icon from '@mdi/react'
 import { mdiPlusCircleOutline } from '@mdi/js'
 /*Style*/
 import '../styles/addbutton.css'
+import colors from '../utils/styles/color'
 
 //Bouton d'ajout.
 function AddButton({ onClick }) {

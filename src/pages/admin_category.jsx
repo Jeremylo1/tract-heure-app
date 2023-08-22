@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { useCategory, useMutationHasura } from '../utils/react/hooks'
 import { ScreenContext } from '../utils/react/context'
+/*Composants*/
 import CustomButton from '../components/button'
 import AddButton from '../components/addbutton'
 import Modal from '../components/modal'
