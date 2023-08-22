@@ -16,7 +16,7 @@ const StyledTile = styled.article`
 `
 
 //Style du titre de la tuile.
-const StyledTitle = styled.p`
+const StyledTitle = styled.span`
   font-size: 1.75em;
 `
 
@@ -38,16 +38,14 @@ function ReservationList({
             <div className="buttons">
               <button
                 onClick={onPrev}
-                className="button is-link"
+                className="button transparentButton"
                 disabled={currentIndex === 0}
               >
                 <Icon path={mdiArrowLeftThick} size={1} />
               </button>
-              <span className="is-flex-grow-1"></span>{' '}
-              {/* This will push the buttons to the extremes */}
               <button
                 onClick={onNext}
-                className="button is-link"
+                className="button transparentButton"
                 disabled={currentIndex + 5 >= cards.length}
               >
                 <Icon path={mdiArrowRightThick} size={1} />

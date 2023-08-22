@@ -37,14 +37,14 @@
 }
 
 .reservation-card.reservation {
-    background-color: #FEE8B0;
-    border-color: #FEE8B0;
+    background-color: #75C2F6;
+    border-color: #75C2F6;
     /* couleur pour les réservations */
 }
 
 .reservation-card.maintenance {
-    background-color: #0CECDD;
-    border-color: #0CECDD;
+    background-color: #EF9F9F;
+    border-color: #EF9F9F;
     /* couleur pour les maintenances */
 }
 

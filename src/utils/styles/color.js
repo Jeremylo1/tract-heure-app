@@ -14,7 +14,7 @@ const colors = {
   /* Couleurs des listes de réservation */
   colorePast: '#A9A9A9',
   colorPresent: '#5FD068',
-  colorFuture: '#FAC213',
+  colorFuture: '#EFD345',
 }
 
 export default colors
