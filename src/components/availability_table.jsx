@@ -11,7 +11,7 @@ const AvailabilityTable = ({ availabilities }) => {
             <tr>
               <th>Heure de début</th>
               <th>Heure de fin</th>
-              <th className="is-narrow"></th> {/* Pour le bouton */}
+              <th className="is-narrow"></th>
             </tr>
           </thead>
           <tbody>
@@ -32,9 +32,7 @@ const AvailabilityTable = ({ availabilities }) => {
                 <tr key={index}>
                   <td>{startTimeStr}</td>
                   <td>{endTimeStr}</td>
-                  <td>
-                    {/* Vous pouvez ajouter ici le bouton si nécessaire */}
-                  </td>
+                  <td>{/* Pour le bouton si nécessaire */}</td>
                 </tr>
               )
             })}
