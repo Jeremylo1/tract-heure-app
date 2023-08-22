@@ -1,0 +1,18 @@
+/* =============== RESPONSIVE =============== */
+
+.columns-size {
+    width: 75%;
+    margin: 0 auto;
+}
+
+/* MOBILE */
+.columns-mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* TABLETTE ET ORDINATEUR */
+.columns-tablet-desktop {
+    justify-content: center;
+}

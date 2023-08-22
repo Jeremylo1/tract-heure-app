@@ -48,12 +48,6 @@
     margin: 0 auto;
 }
 
-
-/* Empêcher la marge inférieure pour le dernier élément */
-/* .content p:not(:last-child) {
-    margin-bottom: 0;
-} */
-
 /* =============== MODALE DE RÉSERVATION =============== */
 .modal-content {
     background-color: #f4f4f4;

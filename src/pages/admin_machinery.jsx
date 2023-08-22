@@ -17,7 +17,6 @@ import {
   DELETE_MACHINERY,
 } from '../utils/database/query'
 /*Style*/
-import '../styles/inventory.css'
 import '../styles/admin_machinery.css'
 import colors from '../utils/styles/color'
 /*Importation des icônes*/

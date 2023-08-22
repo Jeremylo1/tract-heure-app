@@ -1,6 +1,9 @@
 import React, { useContext } from 'react'
 import { ScreenContext } from '../utils/react/context'
 import { Link } from 'react-router-dom'
+/*Style*/
+import colors from '../utils/styles/color'
+import '../styles/admin_dashboard.css'
 
 //Page d'accueil pour l'administrateur.
 function Dashboard() {
@@ -8,11 +11,20 @@ function Dashboard() {
   document.title = 'Tableau de bord'
 
   //Pour savoir si c'est un appareil mobile.
-  const { isMobile } = useContext(ScreenContext)
+  const { isMobileTablet } = useContext(ScreenContext)
 
   return (
     <div>
-      <h1>Tableau de bord</h1>
+      {/* DESIGN POUR MOBILE : DESIGN POUR TABLETTE ET ORDINATEUR */}
+      <div
+        className={isMobileTablet ? 'columns-mobile' : 'columns-tablet-desktop'}
+      >
+        <div className="columns-size">
+          <h1>Tableau de bord</h1>
+        </div>
+      </div>
+
+      {/*
       <div>
         Calendrier de réservations des utilisateurs avec sélecteur pour choix de
         l'utilisateur
@@ -32,7 +44,7 @@ function Dashboard() {
         <Link to="/admin/machinery" className="button is-link is-rounded">
           Gestion de la machinerie
         </Link>
-      </div>
+        </div>*/}
     </div>
   )
 }
