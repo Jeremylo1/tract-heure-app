@@ -5,6 +5,7 @@ export const LIEN_API = 'https://champion-tiger-15.hasura.app/v1/graphql'
 
 /*Nom des tables.*/
 export const TABLE_CATEGORY = 'machinerie_categorie'
+export const TABLE_STATUS = 'machinerie_statut'
 export const VUE_MACHINERY = 'machinerie_view'
 export const VUE_RESERVATION = 'machinerie_reservations_view'
 

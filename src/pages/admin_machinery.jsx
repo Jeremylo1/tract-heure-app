@@ -143,7 +143,7 @@ function AdminMachinery() {
             isMobile ? 'columns-mobile-size' : 'columns-tablet-desktop-size'
           }
         >
-          <h1>Machinerie agricole</h1>
+          <h1>Gestion de la machinerie</h1>
           <AddButton
             onClick={() => {
               setAddModalOpen(true)
