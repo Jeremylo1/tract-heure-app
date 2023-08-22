@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useContext, useMemo } from 'react'
 import { useFetchHasura } from '../utils/react/hooks'
-import { useMutationHasura } from '../utils/react/hooks'
+
 import { ScreenContext } from '../utils/react/context'
 /*Composants*/
-import CustomButton from '../components/button'
-import Modal from '../components/modal'
+import EventModal from '../components/eventModal'
 /*Base de données*/
 import {
   LIEN_API,
@@ -16,11 +15,9 @@ import {
   COLUMN_DATE_FIN,
   COLUMN_TYPE,
   COLUMN_DESCRIPTION,
-  DELETE_RESERVATION,
 } from '../utils/database/query'
 /*Style*/
 import '../styles/calendar.css'
-import colors from '../utils/styles/color'
 /*Importation des icônes*/
 import Icon from '@mdi/react'
 import { mdiArrowLeftThick } from '@mdi/js'
@@ -121,35 +118,6 @@ function Calendar() {
       ),
     )
   }, [eventsJSON, searchValue])
-
-  //Permet d'envoyer une requête de mutation (INSERT, UPDATE, DELETE) à Hasura.
-  const { doMutation } = useMutationHasura(LIEN_API)
-
-  const deleteReservation = async (id) => {
-    try {
-      const responseDataMutation = await doMutation(DELETE_RESERVATION, { id })
-      if (responseDataMutation) {
-        alert('Réservation annulée avec succès!')
-        setModalOpen(false) // Fermer la modale
-        //Stocke la date actuelle dans le localStorage pour recharger la page avec la date actuelle.
-        localStorage.setItem('currentDate', currentDate.toISOString())
-        //Recharger la page
-        window.location.reload()
-      }
-    } catch (err) {
-      console.error(err)
-      alert("Une erreur s'est produite lors de l'annulation de la réservation.")
-    }
-  }
-
-  const confirmDeletion = (id) => {
-    const userConfirmed = window.confirm(
-      'Êtes-vous sûr de vouloir annuler cette réservation?',
-    )
-    if (userConfirmed) {
-      deleteReservation(id)
-    }
-  }
 
   //Fonction pour passer à la semaine/jour suivant(e).
   const nextPeriod = () => {
@@ -394,29 +362,10 @@ function Calendar() {
         </div>
       </div>
       {/* Modale pour afficher les détails de l'événement */}
-      <Modal
-        title={modalEvent?.title || "Détails de l'événement"}
+      <EventModal
         isOpen={isModalOpen}
         onClose={closeModal}
-        content={
-          <>
-            <h2>Description:</h2>
-            <p>{modalEvent?.description}</p>
-            <h3>Type:</h3>
-            <p>{eventType(modalEvent?.type, 'string')}</p>
-            <h3>Date de début:</h3>
-            <p>{modalEvent?.start.toLocaleString()}</p>
-            <h3>Date de fin:</h3>
-            <p>{modalEvent?.end.toLocaleString()}</p>
-            <CustomButton
-              color={colors.redButton}
-              hovercolor={colors.redButtonHover}
-              functionclick={() => confirmDeletion(modalEvent?.id)}
-            >
-              Annuler la réservation
-            </CustomButton>
-          </>
-        }
+        event={modalEvent}
       />
     </div>
   )
