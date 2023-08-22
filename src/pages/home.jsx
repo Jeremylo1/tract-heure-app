@@ -1,6 +1,9 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { ScreenContext } from '../utils/react/context'
 import { useFetchHasura } from '../utils/react/hooks'
+import ReservationList from '../components/reservationlist'
+import { formatShortDate, formatTime } from '../utils/reusable/functions'
+/*Base de données*/
 import {
   LIEN_API,
   GET_ALL_RESERVATION,
@@ -9,8 +12,6 @@ import {
   COLUMN_NAME,
   COLUMN_MODEL,
 } from '../utils/database/query'
-import ReservationList from '../components/reservationlist'
-import { formatShortDate, formatTime } from '../utils/reusable/functions'
 /*Style*/
 import colors from '../utils/styles/color'
 import 'bulma/css/bulma.min.css'

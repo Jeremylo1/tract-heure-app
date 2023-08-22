@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { useMutationHasura } from '../utils/react/hooks'
+import { ScreenContext } from '../utils/react/context'
+import { toISODateTime } from '../utils/reusable/functions'
+/*Composants*/
 import Modal from '../components/modal'
 import CustomButton from '../components/button'
 import ShowMachinery from '../components/showmachinery'
 import AvailabilityTable from '../components/availability_table'
-import { ScreenContext } from '../utils/react/context'
-import { toISODateTime } from '../utils/reusable/functions'
 /*Base de données*/
 import {
   LIEN_API,
