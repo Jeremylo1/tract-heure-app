@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, useMemo } from 'react'
 import { ScreenContext } from '../utils/react/context'
 import { useFetchHasura } from '../utils/react/hooks'
 import { formatShortDate, formatTime } from '../utils/reusable/functions'
@@ -12,7 +12,6 @@ import {
   VUE_RESERVATION,
   COLUMN_ID,
   COLUMN_NAME,
-  COLUMN_MODEL,
   COLUMN_DESCRIPTION,
   COLUMN_TYPE,
   COLUMN_DATE_DEBUT,
@@ -71,9 +70,11 @@ function Home() {
       }
     })
   }
-
   // Pour stocker les données formatées.
-  const formatedEvents = formatEvents(reservation_data)
+  const formatedEvents = useMemo(
+    () => formatEvents(reservation_data),
+    [reservation_data],
+  )
 
   //Permet de créer les cartes à afficher dans les listes.
   useEffect(() => {
@@ -162,11 +163,7 @@ function Home() {
             title="En cours"
             cards={inProgressCards}
             backgroundColor={colors.colorPresent}
-            onNext={() =>
-              setInProgressIndex((prev) =>
-                Math.min(prev + 5, inProgressCards.length - 5),
-              )
-            }
+            onNext={() => setInProgressIndex(inProgressIndex + 5)}
             onPrev={() => setInProgressIndex((prev) => Math.max(prev - 5, 0))}
             currentIndex={inProgressIndex}
           />
@@ -174,11 +171,7 @@ function Home() {
             title="À venir"
             cards={upcomingCards}
             backgroundColor={colors.colorFuture}
-            onNext={() =>
-              setUpcomingIndex((prev) =>
-                Math.min(prev + 5, upcomingCards.length - 5),
-              )
-            }
+            onNext={() => setUpcomingIndex(upcomingIndex + 5)}
             onPrev={() => setUpcomingIndex((prev) => Math.max(prev - 5, 0))}
             currentIndex={upcomingIndex}
           />
@@ -186,22 +179,20 @@ function Home() {
             title="Terminé"
             cards={finishedCards}
             backgroundColor={colors.colorePast}
-            onNext={() =>
-              setFinishedIndex((prev) =>
-                Math.min(prev + 5, finishedCards.length - 5),
-              )
-            }
+            onNext={() => setFinishedIndex(finishedIndex + 5)}
             onPrev={() => setFinishedIndex((prev) => Math.max(prev - 5, 0))}
             currentIndex={finishedIndex}
           />
         </div>
       </div>
       {/* Modale pour afficher les détails de l'événement */}
-      <EventModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        event={modalEvent}
-      />
+      {modalEvent && (
+        <EventModal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          event={modalEvent}
+        />
+      )}
     </div>
   )
 }

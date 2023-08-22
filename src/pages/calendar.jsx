@@ -309,8 +309,6 @@ function Calendar() {
                                   event.end <= otherEvent.end),
                             )
 
-                            console.log(overlappingEvents)
-
                             const isOverlapping = overlappingEvents.length > 1
 
                             const overlappingIndex =
@@ -362,11 +360,13 @@ function Calendar() {
         </div>
       </div>
       {/* Modale pour afficher les détails de l'événement */}
-      <EventModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        event={modalEvent}
-      />
+      {modalEvent && (
+        <EventModal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          event={modalEvent}
+        />
+      )}
     </div>
   )
 }
