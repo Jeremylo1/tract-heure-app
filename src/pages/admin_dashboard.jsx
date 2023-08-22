@@ -25,16 +25,16 @@ function Dashboard() {
         >
           <h1>Tableau de bord</h1>
           <div className="box-container">
-            <div className="box square-box category-box">
-              <Link to="/admin/category">
-                <div className="box-content">Gestion des catégories</div>
-              </Link>
-            </div>
-            <div className="box square-box machinery-box">
-              <Link to="/admin/machinery">
-                <div className="box-content">Gestion de la machinerie</div>
-              </Link>
-            </div>
+            <Link to="/admin/category" className="box square-box category-box">
+              <div className="box-content">Gestion des catégories</div>
+            </Link>
+
+            <Link
+              to="/admin/machinery"
+              className="box square-box machinery-box"
+            >
+              <div className="box-content">Gestion de la machinerie</div>
+            </Link>
           </div>
         </div>
       </div>

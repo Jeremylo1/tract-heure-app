@@ -253,8 +253,10 @@ function Calendar() {
     setModalOpen(false)
   }
 
-  //Obtenir le nom du mois.
-  const monthName = currentDate.toLocaleDateString('fr-FR', { month: 'long' })
+  //Obtenir le nom du mois actuel en français et mettre la première lettre en majuscule.
+  const monthName = currentDate
+    .toLocaleDateString('fr-FR', { month: 'long' })
+    .replace(/^\w/, (char) => char.toUpperCase())
 
   return (
     <div className="calendar section">
