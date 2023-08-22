@@ -1,22 +1,3 @@
-/* =============== RESPONSIVE =============== */
-
-.columns-size {
-    width: 75%;
-    margin: 0 auto;
-}
-
-/* MOBILE ET TABLETTE */
-.columns-mobile-tablet {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* ORDINATEUR */
-.columns-desktop {
-    justify-content: center;
-}
-
 /* =============== CARTE =============== */
 
 .reservation-card {

@@ -22,7 +22,7 @@ function Home() {
   //Pour savoir si c'est la première fois qu'on charge les données.
   const [firstLoading, setFirstLoading] = useState(true)
   //Pour savoir si on est sur un mobile ou une tablette.
-  const { isMobileTablet } = useContext(ScreenContext)
+  const { isMobile } = useContext(ScreenContext)
   //Pour savoir quelle carte est affichée.
   const [inProgressIndex, setInProgressIndex] = useState(0)
   const [upcomingIndex, setUpcomingIndex] = useState(0)
@@ -114,10 +114,12 @@ function Home() {
 
   //Affichage de la page selon le type d'appareil.
   return (
-    <div
-      className={isMobileTablet ? 'columns-mobile-tablet' : 'columns-desktop'}
-    >
-      <div className="columns-size">
+    <div className={isMobile ? 'columns-mobile' : 'columns-tablet-desktop'}>
+      <div
+        className={
+          isMobile ? 'columns-mobile-size' : 'columns-tablet-desktop-size'
+        }
+      >
         <h1>Mes réservations</h1>
         <div className="tile is-ancestor">
           {/* Pour chaque liste on affiche les cartes correspondantes. */}

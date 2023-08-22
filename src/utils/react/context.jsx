@@ -60,7 +60,7 @@ export function ScreenProvider({ children }) {
 
   //Fonction pour savoir si c'est un appareil mobile.
   const handleResize = () => {
-    setIsMobile(window.innerWidth <= 768)
+    setIsMobile(window.innerWidth <= 767)
     setIsTabletMobile(window.innerWidth <= 1023)
   }
 

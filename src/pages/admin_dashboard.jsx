@@ -11,22 +11,30 @@ function Dashboard() {
   document.title = 'Tableau de bord'
 
   //Pour savoir si c'est un appareil mobile ou tablette.
-  const { isMobileTablet } = useContext(ScreenContext)
+  const { isMobile } = useContext(ScreenContext)
 
   //Affichage selon le type d'appareil.
   return (
     <div>
       {/* DESIGN POUR MOBILE : DESIGN POUR TABLETTE ET ORDINATEUR */}
-      <div
-        className={isMobileTablet ? 'columns-mobile-tablet' : 'columns-desktop'}
-      >
-        <div className="columns-size">
+      <div className={isMobile ? 'columns-mobile' : 'columns-tablet-desktop'}>
+        <div
+          className={
+            isMobile ? 'columns-mobile-size' : 'columns-tablet-desktop-size'
+          }
+        >
           <h1>Tableau de bord</h1>
-          <div className="box">
-            <Link to="/admin/category">Gestion des catégories</Link>
-          </div>
-          <div className="box">
-            <Link to="/admin/machinery">Gestion de la machinerie</Link>
+          <div className="box-container">
+            <div className="box square-box category-box">
+              <Link to="/admin/category">
+                <div className="box-content">Gestion des catégories</div>
+              </Link>
+            </div>
+            <div className="box square-box machinery-box">
+              <Link to="/admin/machinery">
+                <div className="box-content">Gestion de la machinerie</div>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
