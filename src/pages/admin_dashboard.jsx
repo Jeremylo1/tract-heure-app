@@ -12,7 +12,7 @@ function Dashboard() {
 
   return (
     <div>
-      <h1>Dashboard pour admin</h1>
+      <h1>Tableau de bord</h1>
       <div>
         Calendrier de réservations des utilisateurs avec sélecteur pour choix de
         l'utilisateur

@@ -216,7 +216,7 @@ function ShowMachinery({ functionButtons }) {
           {/* Barre de recherche */}
           <div>
             <input
-              class="input"
+              className="input"
               type="text"
               placeholder="Recherche"
               onChange={handleSearch}
