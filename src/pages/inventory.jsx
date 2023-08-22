@@ -305,12 +305,12 @@ function Inventory() {
 
       {/* MODALE DE RÉSERVATION */}
       <Modal
-        title={`Réserver : ${selectedMachinery?.nom || 'Non sélectionné'}`}
+        title={`Réservation : ${selectedMachinery?.nom || 'Non sélectionné'}`}
         content={
           <>
-            <h2>Réservation de machinerie</h2>
             <p>Veuillez remplir les informations ci-dessous pour réserver.</p>
             <form onSubmit={handleReservation}>
+              {/*Type de réservation*/}
               <div className="form-group">
                 <label className="form-label">Type de réservation :</label>
                 <div>
@@ -338,7 +338,7 @@ function Inventory() {
                   <label htmlFor="maintenance">Maintenance</label>
                 </div>
               </div>
-
+              {/*Date de début*/}
               <div className="columns">
                 <div className="column is-6 py-0">
                   <div className="form-group">
@@ -356,7 +356,7 @@ function Inventory() {
                     </div>
                   </div>
                 </div>
-
+                {/*Heure de début*/}
                 <div className="column is-6 py-0">
                   <div className="form-group">
                     <label className="form-label" htmlFor="startTime">
@@ -374,7 +374,7 @@ function Inventory() {
                   </div>
                 </div>
               </div>
-
+              {/*Date de fin*/}
               <div className="columns">
                 <div className="column is-6 py-0">
                   <div className="form-group">
@@ -392,7 +392,7 @@ function Inventory() {
                     </div>
                   </div>
                 </div>
-
+                {/*Heure de fin*/}
                 <div className="column is-6 py-0">
                   <div className="form-group">
                     <label className="form-label" htmlFor="endTime">
@@ -410,7 +410,7 @@ function Inventory() {
                   </div>
                 </div>
               </div>
-
+              {/*Commentaire*/}
               <div className="form-group">
                 <label className="form-label py-0" htmlFor="reservationComment">
                   Commentaire :
@@ -431,7 +431,7 @@ function Inventory() {
                   color={colors.greenButton}
                   hovercolor={colors.greenButtonHover}
                 >
-                  Confirmer la réservation
+                  Confirmer
                 </CustomButton>
               </div>
 
