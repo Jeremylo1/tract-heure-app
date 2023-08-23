@@ -16,6 +16,7 @@ const StyledPart = styled.div`
 
 //Formulaire d'ajout d'une machine.
 function FormAddMachinery() {
+  //Erreurs possibles.
   const [errorName, setErrorName] = useState('')
   const [errorTime, setErrorTime] = useState('')
   const [errorPrice, setErrorPrice] = useState('')
@@ -38,7 +39,7 @@ function FormAddMachinery() {
   const { status, status_loading, status_error } = useStatus()
 
   //Pour ajouter une machine.
-  async function handleAddition(e) {
+  async function handleAdditionMachinery(e) {
     e.preventDefault()
 
     //Vérification des champs.
@@ -140,7 +141,7 @@ function FormAddMachinery() {
       <p>
         Veuillez remplir les informations ci-dessous pour ajouter une machine.
       </p>
-      <form onSubmit={handleAddition}>
+      <form onSubmit={handleAdditionMachinery}>
         {/*Nom*/}
         {FormField({
           label: 'Nom',
