@@ -212,7 +212,7 @@ function Calendar() {
                 showTitle,
                 style: {
                   top: `${startHour * 30 + startMinute / 2}px`, // 30px par heure + 0.5px par minute (30 minutes = 15px) (1 heure = 30px)
-                  bottom: `${(24 - endHour) * 30}px`,
+                  bottom: `${(24 - endHour) * 30 - endMinute / 2}px`, // 30px par heure + 0.5px par minute (30 minutes = 15px) (1 heure = 30px)
                 },
               }
             }
