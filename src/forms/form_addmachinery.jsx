@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useCategory, useStatus, useMutationHasura } from '../utils/react/hooks'
 import { toISODateTime } from '../utils/reusable/functions'
 import PropTypes from 'prop-types'
@@ -28,8 +28,8 @@ function FormAddMachinery() {
   const [errorPrice, setErrorPrice] = useState('')
   //Pour stocker les données du formulaire.
   const [nameMachine, setNameMachine] = useState('')
-  const [selectedCategoryId, setSelectedCategoryId] = useState(0)
-  const [selectedStatusId, setSelectedStatusId] = useState(0)
+  const [selectedCategoryId, setSelectedCategoryId] = useState(1)
+  const [selectedStatusId, setSelectedStatusId] = useState(1)
   const [modelMachine, setModelMachine] = useState('')
   const [serialNumber, setSerialNumber] = useState('')
   const [barcode, setBarcode] = useState('')
@@ -38,6 +38,8 @@ function FormAddMachinery() {
   const [dateAcquisition, setDateAcquisition] = useState('')
   const [comment, setComment] = useState('')
   const [location, setLocation] = useState('')
+  //Pour savoir si le bouton est cliqué.
+  const [isClicked, setIsClicked] = useState(false)
 
   //Pour récupérer les catégories.
   const { sortedCategories, category_loading, category_error } = useCategory()
@@ -46,23 +48,25 @@ function FormAddMachinery() {
   //Permet d'envoyer une requête de mutation (INSERT, UPDATE) à Hasura.
   const { doMutation } = useMutationHasura(LIEN_API)
 
-  /*FONCTION AGISSANT À L'ENVOI DU FORMULAIRE*/
-  async function handleClickMachinery(e) {
-    e.preventDefault()
-
-    //Vérification de la présence du nom et du temps d'utilisation.
+  /*VÉRIFICATION DU FORMULAIRE*/
+  useEffect(() => {
+    //Vérification de la présence d'un nom.
     if (!nameMachine) {
       setErrorName('Veuillez entrer le nom de la machine.')
     } else {
       setErrorName('')
     }
+
+    //Vérification de la présence et de la validité du temps d'utilisation.
     if (!totalTime) {
       setErrorTime("Veuillez entrer le nombre d'heures d'utilisation.")
+    } else if (totalTime < 0 || isNaN(parseInt(totalTime))) {
+      setErrorTime("Veuillez entrer un nombre d'heures valide.")
     } else {
       setErrorTime('')
     }
 
-    //S'il y a un prix.
+    //Vérification du prix (s'il y en a un).
     if (price) {
       //Vérification si négatif ou non numérique.
       if (price < 0 || isNaN(parseFloat(price))) {
@@ -71,42 +75,29 @@ function FormAddMachinery() {
     } else {
       setErrorPrice('')
     }
+  }, [nameMachine, totalTime, price])
 
-    console.log('errorName', errorName) //DEBUG !
-    console.log('errorTime', errorTime) //DEBUG !
-    console.log('errorPrice', errorPrice) //DEBUG !
-
-    //Vérification des erreurs.
-    if (errorName || errorTime || errorPrice) {
-      return
-    }
-
-    console.log('resultMutation', e) //DEBUG !
-
-    //Ajout de la machine.
-    addMachinery()
-  }
-
-  /*AJOUT D'UNE MACHINE DANS LA BASE DE DONNÉES*/
+  /*AJOUT DE LA MACHINE DANS LA BASE DE DONNÉES*/
   const addMachinery = async () => {
-    //Essai d'ajout.
     try {
       const resultMutation = await doMutation(INSERT_MACHINERY, {
+        //Obligatoire.
         name: nameMachine,
         categoryId: selectedCategoryId,
         statusId: selectedStatusId,
-        model: modelMachine,
-        serialNumber: serialNumber,
-        barcode: barcode,
-        totalTime: totalTime,
-        price: price,
+        totalTime: parseInt(totalTime), //Transformation en int.
+        //Optionnel.
+        model: modelMachine ? modelMachine : null,
+        serialNumber: serialNumber ? serialNumber : null,
+        barcode: barcode ? barcode : null,
+        price: price ? parseFloat(price) : null, //Transformation en float.
         dateAcquisition: dateAcquisition
           ? toISODateTime(dateAcquisition, '00:00')
           : null,
-        comment: comment,
-        location: location,
+        comment: comment ? comment : null,
+        location: location ? location : null,
       })
-      console.log('resultMutation', resultMutation) //DEBUG !
+      console.log('Résultat ajout', resultMutation) //DEBUG !
 
       //Si l'ajout a fonctionné.
       if (resultMutation) {
@@ -114,8 +105,8 @@ function FormAddMachinery() {
 
         //Réinitialisation des champs.
         setNameMachine('')
-        setSelectedCategoryId(0)
-        setSelectedStatusId(0)
+        setSelectedCategoryId(1)
+        setSelectedStatusId(1)
         setModelMachine('')
         setSerialNumber('')
         setBarcode('')
@@ -137,8 +128,27 @@ function FormAddMachinery() {
     }
   }
 
-  /*AFFICHAGE*/
-  //Template d'un champ du formulaire.
+  /*FONCTION AGISSANT À L'ENVOI DU FORMULAIRE*/
+  async function handleClickMachinery(e) {
+    e.preventDefault()
+    setIsClicked(true) //Si le bouton est cliqué.
+
+    console.log('errorName', errorName) //DEBUG !
+    console.log('errorTime', errorTime) //DEBUG !
+    console.log('errorPrice', errorPrice) //DEBUG !
+
+    //Vérification des erreurs.
+    if (errorName || errorTime || errorPrice) {
+      return
+    }
+
+    console.log('ENFIN !') //DEBUG !
+
+    //Ajout de la machine.
+    await addMachinery()
+  }
+
+  /*COMPOSANT POUR LES CHAMPS DU FORMULAIRE*/
   function FormField({
     label,
     typeInput,
@@ -153,7 +163,10 @@ function FormAddMachinery() {
         <label className="label">{label}</label>
         <div className="control">
           <input
-            className={error ? `input ${error && 'is-danger'}` : 'input'} //Si erreur possible, ajout de la classe 'is-danger'.
+            className={
+              /*Si bouton cliqué + erreur -> cadre rouge.*/
+              isClicked && error ? `input ${error && 'is-danger'}` : 'input'
+            }
             type={typeInput}
             step={hasStep ? '0.1' : null} //Si le champ a un step, on l'ajoute.
             placeholder={placeholder}
@@ -161,8 +174,10 @@ function FormAddMachinery() {
             onChange={(e) => functionOnChange(e.target.value)}
           />
         </div>
-        {/*Si erreur possible, affichage du message d'erreur.*/}
-        {error ? <p className="help is-danger">{error}</p> : null}
+        {isClicked && error ? (
+          /*Si bouton cliqué + erreur -> message d'erreur.*/
+          <p className="help is-danger">{error}</p>
+        ) : null}
       </div>
     )
   }
@@ -178,7 +193,7 @@ function FormAddMachinery() {
     hasStep: PropTypes.bool,
   }
 
-  //Affichage du formulaire.
+  /*AFFICHAGE DU FORMULAIRE*/
   return (
     <div>
       <p>
@@ -318,3 +333,8 @@ function FormAddMachinery() {
 }
 
 export default FormAddMachinery
+
+/*À FAIRE :
+- Notifications au-dessus du formulaire (pour les erreurs).
+- Fermeture de la modale après ajout.
+- Modification d'une machine (template à réutiliser).*/
