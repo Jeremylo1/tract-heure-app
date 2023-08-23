@@ -1,7 +1,9 @@
 import React from 'react'
 import { useMutationHasura } from '../utils/react/hooks'
+/*Composants*/
 import Modal from '../components/modal'
 import CustomButton from '../components/button'
+/*Base de données*/
 import { LIEN_API, DELETE_RESERVATION } from '../utils/database/query'
 /*Style*/
 import '../styles/calendar.css'
@@ -18,8 +20,6 @@ const eventType = (type) => {
 }
 
 function EventModal({ isOpen, onClose, event }) {
-  console.log(event)
-
   //Permet d'envoyer une requête de mutation (INSERT, UPDATE, DELETE) à Hasura.
   const { doMutation } = useMutationHasura(LIEN_API)
 
