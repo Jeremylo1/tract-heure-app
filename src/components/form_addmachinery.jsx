@@ -17,7 +17,8 @@ const StyledPart = styled.div`
 //Formulaire d'ajout d'une machine.
 function FormAddMachinery() {
   const [errorName, setErrorName] = useState('')
-  //const [errorName, setErrorName] = useState('')
+  const [errorTime, setErrorTime] = useState('')
+  const [errorPrice, setErrorPrice] = useState('')
   //Pour stocker les données du formulaire.
   const [nameMachine, setNameMachine] = useState('')
   const [selectedCategoryId, setSelectedCategoryId] = useState(0)
@@ -27,6 +28,7 @@ function FormAddMachinery() {
   const [barcode, setBarcode] = useState('')
   const [totalTime, setTotalTime] = useState()
   const [price, setPrice] = useState()
+  const [dateAcquisition, setDateAcquisition] = useState('')
   const [comment, setComment] = useState('')
   const [location, setLocation] = useState('')
 
@@ -38,11 +40,35 @@ function FormAddMachinery() {
   //Pour ajouter une machine.
   async function handleAddition(e) {
     e.preventDefault()
+
     //Vérification des champs.
     if (!nameMachine) {
       setErrorName('Veuillez entrer le nom de la machine.')
+    } else {
+      setErrorName('')
+    }
+
+    if (!totalTime) {
+      setErrorTime("Veuillez entrer le nombre d'heures d'utilisation.")
+    } else {
+      setErrorTime('')
+    }
+
+    //S'il y a un prix.
+    if (price) {
+      //Si le prix est négatif ou non numérique.
+      if (price < 0 || isNaN(parseFloat(price))) {
+        setErrorPrice("Veuillez entrer un prix d'achat valide ou rien.")
+      }
+    } else {
+      setErrorPrice('')
+    }
+
+    //Vérification des erreurs.
+    if (!nameMachine || !totalTime || !price) {
       return
     }
+
     //Ajout de la machine.
     // const { data, error } = await addMachinery({
     //   name: nameMachine,
@@ -69,36 +95,43 @@ function FormAddMachinery() {
 
   /*AFFICHAGE*/
   //Template d'un champ du formulaire.
-  function TextField({
+  function FormField({
     label,
     typeInput,
     placeholder,
     value,
     functionOnChange,
+    error,
+    hasStep, //Pour savoir si le champ a un step.
   }) {
     return (
       <div className="field">
         <label className="label">{label}</label>
         <div className="control">
           <input
-            className="input"
+            className={error ? `input ${error && 'is-danger'}` : 'input'} //Si erreur possible, ajout de la classe 'is-danger'.
             type={typeInput}
+            step={hasStep ? '0.1' : null} //Si le champ a un step, on l'ajoute.
             placeholder={placeholder}
             value={value}
             onChange={(e) => functionOnChange(e.target.value)}
           />
         </div>
+        {/*Si erreur possible, affichage du message d'erreur.*/}
+        {error ? <p className="help is-danger">{error}</p> : null}
       </div>
     )
   }
 
   //Vérification des types.
-  TextField.propTypes = {
+  FormField.propTypes = {
     label: PropTypes.string.isRequired,
     typeInput: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     functionOnChange: PropTypes.func.isRequired,
+    error: PropTypes.string,
+    hasStep: PropTypes.bool,
   }
 
   //Affichage du formulaire.
@@ -109,20 +142,14 @@ function FormAddMachinery() {
       </p>
       <form onSubmit={handleAddition}>
         {/*Nom*/}
-        <div className="field">
-          <label className="label">Nom</label>
-          <div className="control">
-            <input
-              className={`input ${errorName && 'is-danger'}`}
-              type="text"
-              placeholder="Entrez le nom de la machine"
-              value={nameMachine}
-              onChange={(e) => setNameMachine(e.target.value)}
-              required
-            />
-          </div>
-          {errorName && <p className="help is-danger">{errorName}</p>}
-        </div>
+        {FormField({
+          label: 'Nom',
+          typeInput: 'text',
+          placeholder: 'Entrez le nom de la machine',
+          value: nameMachine,
+          functionOnChange: setNameMachine,
+          error: errorName,
+        })}
         {/*Catégorie*/}
         <StyledPart>
           <label className="label">Catégorie</label>
@@ -162,39 +189,55 @@ function FormAddMachinery() {
           </div>
         </StyledPart>
         {/*Modèle*/}
-        {TextField({
+        {FormField({
           label: 'Modèle',
           typeInput: 'text',
-          placeholder: 'Modèle de la machine',
+          placeholder: 'Entrez le modèle de la machine',
           value: modelMachine,
           functionOnChange: setModelMachine,
         })}
         {/*Numéro de série*/}
-        {TextField({
+        {FormField({
           label: 'Numéro de série',
           typeInput: 'text',
-          placeholder: 'Numéro de série de la machine',
+          placeholder: 'Entrez le numéro de série',
           value: serialNumber,
           functionOnChange: setSerialNumber,
         })}
         {/*Code-barres*/}
-        {TextField({
+        {FormField({
           label: 'Code-barres',
           typeInput: 'text',
-          placeholder: 'Code-barres de la machine',
+          placeholder: 'Entrez le code-barres de la machine',
           value: barcode,
           functionOnChange: setBarcode,
         })}
         {/*Temps d'utilisation total*/}
+        {FormField({
+          label: "Temps d'utilisation total",
+          typeInput: 'number',
+          placeholder: "Entrez le nombre d'heures d'utilisation",
+          value: totalTime,
+          functionOnChange: setTotalTime,
+          error: errorTime,
+        })}
         {/*Prix d'achat*/}
-        {TextField({
+        {FormField({
           label: "Prix d'achat",
           typeInput: 'number',
-          placeholder: "Prix d'achat de la machine",
+          placeholder: "Entrez le prix d'achat (en $)",
           value: price,
           functionOnChange: setPrice,
+          error: errorPrice,
+          hasStep: true, //Pour avoir un step de 0.1.
         })}
         {/*Date d'acquisition*/}
+        {FormField({
+          label: "Date d'acquisition",
+          typeInput: 'date',
+          value: dateAcquisition,
+          functionOnChange: setDateAcquisition,
+        })}
         {/*Commentaire*/}
         <StyledPart>
           <label className="label">Commentaire</label>
@@ -208,7 +251,7 @@ function FormAddMachinery() {
           </div>
         </StyledPart>
         {/*Localisation*/}
-        {TextField({
+        {FormField({
           label: 'Localisation',
           typeInput: 'text',
           placeholder: 'Adresse, lieu, etc.',

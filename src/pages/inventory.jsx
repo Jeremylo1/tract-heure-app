@@ -419,7 +419,7 @@ function Inventory() {
                   id="reservationComment"
                   className="form-input"
                   rows="4"
-                  placeholder="Entrez votre commentaire ici..."
+                  placeholder="Entrez votre commentaire ici ..."
                   onChange={(e) => setReservationComment(e.target.value)}
                   value={reservationComment}
                 ></textarea>
@@ -437,7 +437,7 @@ function Inventory() {
 
               <h3>Prochaines disponibilités</h3>
               {availabilitiesIsLoading ? (
-                <div>Chargement...</div>
+                <div>Chargement ...</div>
               ) : (
                 <AvailabilityTable availabilities={availabilities} />
               )}
