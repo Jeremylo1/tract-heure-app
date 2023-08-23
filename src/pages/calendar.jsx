@@ -194,11 +194,24 @@ function Calendar() {
                   ? event.end.getHours()
                   : 24
 
+              const startMinute =
+                date.getDate() === event.start.getDate() &&
+                date.getMonth() === event.start.getMonth() &&
+                date.getFullYear() === event.start.getFullYear()
+                  ? event.start.getMinutes()
+                  : 0
+              const endMinute =
+                date.getDate() === event.end.getDate() &&
+                date.getMonth() === event.end.getMonth() &&
+                date.getFullYear() === event.end.getFullYear()
+                  ? event.end.getMinutes()
+                  : 0
+
               return {
                 ...event,
                 showTitle,
                 style: {
-                  top: `${startHour * 30}px`,
+                  top: `${startHour * 30 + startMinute / 2}px`, // 30px par heure + 0.5px par minute (30 minutes = 15px) (1 heure = 30px)
                   bottom: `${(24 - endHour) * 30}px`,
                 },
               }
@@ -223,6 +236,12 @@ function Calendar() {
   const monthName = currentDate
     .toLocaleDateString('fr-FR', { month: 'long' })
     .replace(/^\w/, (char) => char.toUpperCase())
+
+  //Obtenir la position actuelle de l'heure et des minutes pour la ligne rouge de l'heure actuelle.
+  const now = new Date()
+  const currentHour = now.getHours()
+  const currentMinute = now.getMinutes()
+  const currentPosition = currentHour * 30 + currentMinute / 2 // 30px par heure + 0.5px par minute (30 minutes = 15px) (1 heure = 30px)
 
   return (
     <div className="calendar section">
@@ -327,27 +346,44 @@ function Calendar() {
                             }
 
                             return (
-                              <div
-                                className={`box event ${eventType(
-                                  event.type,
-                                  'class',
-                                )}`}
-                                key={event.id}
-                                style={eventStyle}
-                                onClick={() => openModal(event)}
-                              >
-                                {event.showTitle && (
-                                  <p className="title is-6 is-size-7">
-                                    {event.title}
-                                  </p>
+                              <>
+                                <div
+                                  className={`box event ${eventType(
+                                    event.type,
+                                    'class',
+                                  )}`}
+                                  key={event.id}
+                                  style={eventStyle}
+                                  onClick={() => openModal(event)}
+                                >
+                                  {event.showTitle && (
+                                    <p className="title is-6 is-size-7">
+                                      {event.title}
+                                    </p>
+                                  )}
+                                  {/* Si c'est mobile afficher le titre pour chaque journée */}
+                                  {isMobile && !event.showTitle && (
+                                    <p className="title is-6 is-size-7">
+                                      {event.title}
+                                    </p>
+                                  )}
+                                </div>
+
+                                {/* Si c'est aujourd'hui */}
+                                {day.dateNum === new Date().getDate() && (
+                                  //Afficher ligne rouge pour indiquer l'heure actuelle
+                                  <div
+                                    className="current-time-line"
+                                    style={{
+                                      position: 'absolute',
+                                      top: `${currentPosition}px`,
+                                      width: '100%',
+                                      height: '2px',
+                                      backgroundColor: 'red',
+                                    }}
+                                  ></div>
                                 )}
-                                {/* Si c'est mobile afficher le titre pour chaque journée */}
-                                {isMobile && !event.showTitle && (
-                                  <p className="title is-6 is-size-7">
-                                    {event.title}
-                                  </p>
-                                )}
-                              </div>
+                              </>
                             )
                           })}
                         </>
