@@ -27,14 +27,14 @@ function Dashboard() {
           <div className="box-container">
             <Link
               to="/admin/category"
-              className="box square-box category-box mr-2" //mr-2 pour margin-right: 2rem;
+              className="box square-box category-box mx-2" //mx-2 pour margin-left et margin-right: 0.5rem.
             >
               <div className="box-content">Gestion des catégories</div>
             </Link>
 
             <Link
               to="/admin/machinery"
-              className="box square-box machinery-box mr-2" //mr-2 pour margin-right: 2rem;
+              className="box square-box machinery-box mx-2"
             >
               <div className="box-content">Gestion de la machinerie</div>
             </Link>
