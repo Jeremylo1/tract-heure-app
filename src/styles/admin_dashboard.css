@@ -5,10 +5,6 @@
     flex-direction: row;
 }
 
-/* .box {
-    margin-right: 20px;
-} */
-
 .square-box {
     width: 250px;
     height: 150px;
@@ -22,10 +18,18 @@
 
 .category-box {
     background-color: #ff99cc;
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
 }
 
 .machinery-box {
     background-color: #66ccff;
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
 }
 
 /* Médias queries pour les écrans plus petits */
