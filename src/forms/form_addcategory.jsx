@@ -28,7 +28,7 @@ function FormAddCategory() {
 
   /*VÉRIFICATION DU FORMULAIRE*/
   useEffect(() => {
-    //Vérification du champ.
+    //Vérification de la présence d'un nom.
     if (!nameCategory) {
       setError('Veuillez entrer le nom de la catégorie.')
     } else {
@@ -64,7 +64,6 @@ function FormAddCategory() {
 
   /*AJOUT DE LA CATÉGORIE DANS LA BASE DE DONNÉES*/
   const addCategory = async () => {
-    //Essai d'ajout.
     try {
       const resultMutation = await doMutation(INSERT_CATEGORY, {
         name: nameCategory,
@@ -74,10 +73,8 @@ function FormAddCategory() {
       if (resultMutation) {
         alert('Catégorie ajoutée avec succès.')
 
-        //Réinitialisation du champ.
+        //Réinitialisation du champ et de l'erreur.
         setNameCategory('')
-
-        //Réinitialisation de l'erreur.
         setError('')
       }
 
@@ -93,9 +90,7 @@ function FormAddCategory() {
   /*FONCTION AGISSANT À L'ENVOI DU FORMULAIRE*/
   async function handleClickCategory(e) {
     e.preventDefault()
-
-    //Si le bouton est cliqué.
-    setIsClicked(true)
+    setIsClicked(true) //Si le bouton est cliqué.
 
     //Si erreur, ne pas exécuter la fonction.
     if (error) {
