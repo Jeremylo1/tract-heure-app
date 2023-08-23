@@ -112,7 +112,7 @@ function FormAddCategory() {
     error: PropTypes.string,
   }
 
-  /*AFFICHAGE*/
+  /*AFFICHAGE DU FORMULAIRE*/
   return (
     <div>
       <p>Veuillez entrer le nom de la catégorie à ajouter.</p>
@@ -153,3 +153,9 @@ function FormAddCategory() {
 }
 
 export default FormAddCategory
+
+/*À FAIRE :
+- Notifications au-dessus du formulaire (pour les erreurs).
+- Fermeture de la modale après ajout.
+- Vérification si catégories exactement identiques (même si espaces différents).
+- Modification d'une catégorie (template à réutiliser).*/

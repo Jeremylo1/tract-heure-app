@@ -35,7 +35,7 @@ function FormAddReservation({
   //Permet d'envoyer une requête de mutation (INSERT, GET) à Hasura.
   const { doMutation } = useMutationHasura(LIEN_API)
 
-  //Permet d'ajouter une réservation à la base de données.
+  /*AJOUT DE LA RÉSERVATION À LA BASE DE DONNÉES*/
   const addReservation = async () => {
     try {
       const responseDataMutation = await doMutation(INSERT_RESERVATION, {
@@ -67,6 +67,7 @@ function FormAddReservation({
     }
   }
 
+  /*VÉRIFICATION DE CONFLIT DE RÉSERVATION*/
   //Permet de vérifier si la réservation est en conflit avec une autre réservation existante.
   const checkReservationConflict = async (startDateTime, endDateTime) => {
     const variables = {
@@ -82,7 +83,7 @@ function FormAddReservation({
     return reservations?.machinerie_reservation?.length > 0
   }
 
-  //Gestion de réservation de la machinerie.
+  /*FONCTION AGISSANT À L'ENVOI DU FORMULAIRE*/
   async function handleReservation(e) {
     e.preventDefault()
 
@@ -126,6 +127,7 @@ function FormAddReservation({
     }
   }
 
+  /*AFFICHAGE DU FORMULAIRE*/
   return (
     <div>
       <p>Veuillez remplir les informations ci-dessous pour réserver.</p>
