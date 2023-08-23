@@ -17,18 +17,18 @@
 }
 
 .category-box {
-    background-color: #ff99cc;
+    background-color: #80CBC4;
 
     &:hover {
-        background-color: rgba(0, 0, 0, 0.1);
+        background-color: #4DB6AC;
     }
 }
 
 .machinery-box {
-    background-color: #66ccff;
+    background-color: #80DEEA;
 
     &:hover {
-        background-color: rgba(0, 0, 0, 0.1);
+        background-color: #4DD0E1;
     }
 }
 
