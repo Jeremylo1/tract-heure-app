@@ -22,7 +22,6 @@ function FormAddReservation({
   availabilitiesIsLoading,
   availabilities,
 }) {
-  console.log('availabilities', availabilities)
   //Pour stocker les dates et heures de réservation.
   const [startDate, setStartDate] = useState(new Date())
   const [startTime, setStartTime] = useState(new Date())
@@ -33,7 +32,7 @@ function FormAddReservation({
   //Pour stocker le commentaire de la réservation.
   const [reservationComment, setReservationComment] = useState('')
 
-  //Permet d'envoyer une requête de mutation (INSERT, UPDATE, DELETE) à Hasura.
+  //Permet d'envoyer une requête de mutation (INSERT, GET) à Hasura.
   const { doMutation } = useMutationHasura(LIEN_API)
 
   //Permet d'ajouter une réservation à la base de données.
@@ -59,7 +58,6 @@ function FormAddReservation({
 
         //Ferme la modale.
         onClose()
-        // setModalReservationOpen(false)
       }
     } catch (err) {
       console.error(err)
@@ -125,7 +123,6 @@ function FormAddReservation({
       return
     } else {
       addReservation()
-      /*!!!!!!!!!!! ICI PLUS DE DOUBLON !!!!!!!!!!!*/
     }
   }
 
