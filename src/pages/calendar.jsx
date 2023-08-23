@@ -294,7 +294,7 @@ function Calendar() {
                     </div>
                     <div className="events">
                       {reservation_loading ? (
-                        <div>Chargement des réservations...</div>
+                        <div className="loader is-loading"></div>
                       ) : reservation_error ? (
                         <div>Erreur lors du chargement des réservations !</div>
                       ) : (
@@ -308,8 +308,6 @@ function Calendar() {
                                 (event.end >= otherEvent.start &&
                                   event.end <= otherEvent.end),
                             )
-
-                            console.log(overlappingEvents)
 
                             const isOverlapping = overlappingEvents.length > 1
 
@@ -362,11 +360,13 @@ function Calendar() {
         </div>
       </div>
       {/* Modale pour afficher les détails de l'événement */}
-      <EventModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        event={modalEvent}
-      />
+      {modalEvent && (
+        <EventModal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          event={modalEvent}
+        />
+      )}
     </div>
   )
 }
