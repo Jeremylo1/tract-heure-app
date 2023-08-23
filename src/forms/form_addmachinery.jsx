@@ -100,7 +100,7 @@ function FormAddMachinery() {
         barcode: barcode,
         totalTime: totalTime,
         price: price,
-        dateAcquisition: toISODateTime(dateAcquisition, '10:09'), //Formatage de la date d'acquisition.
+        dateAcquisition: toISODateTime(dateAcquisition, '00:00'), //Formatage de la date d'acquisition.
         comment: comment,
         location: location,
       })

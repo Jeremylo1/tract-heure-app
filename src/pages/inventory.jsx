@@ -9,13 +9,7 @@ import AvailabilityTable from '../components/availability_table'
 /*Formulaire*/
 import FormAddReservation from '../forms/form_addreservation'
 /*Base de données*/
-import {
-  LIEN_API,
-  INSERT_RESERVATION,
-  CHECK_RESERVATION_TIME_CONFLICT,
-  GET_UPCOMING_RESERVATIONS,
-  COLUMN_ID,
-} from '../utils/database/query'
+import { LIEN_API, GET_UPCOMING_RESERVATIONS } from '../utils/database/query'
 /*Style*/
 import '../styles/inventory.css'
 import colors from '../utils/styles/color'
