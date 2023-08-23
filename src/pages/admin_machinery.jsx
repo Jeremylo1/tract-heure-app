@@ -6,7 +6,8 @@ import CustomButton from '../components/button'
 import AddButton from '../components/addbutton'
 import ShowMachinery from '../components/showmachinery'
 import Modal from '../components/modal'
-import FormAddMachinery from '../components/form_addmachinery'
+/*Formulaire*/
+import FormAddMachinery from '../forms/form_addmachinery'
 /*Base de données*/
 import {
   LIEN_API,

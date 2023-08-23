@@ -31,7 +31,11 @@ export const COLUMN_DESCRIPTION = 'description'
 /*Requêtes GraphQL.*/
 //Permet d'ajouter une machine.
 export const INSERT_MACHINERY = `
-  
+  mutation InsertMachinery($name: String!, $model: String, $serialNumber: String, $statusId: Int!, $categoryId: Int!, $dateAcquisition: date, $price: numeric, $totalTime: numeric!, $comment: String, $barcode: String, $location: String) {
+        insert_machinerie(objects: {nom: $name, modele: $model, num_serie: $serialNumber, statut_id: $statusId, categorie_id: $categoryId, date_acquisition: $dateAcquisition, prix_achat: $price, heure_utilisation: $totalTime, commentaire: $comment, code_barre: $barcode, localisation: $location}) {
+            affected_rows
+        }
+    }
 `
 
 //Permet de supprimer une machine.
@@ -60,7 +64,11 @@ export const UPDATE_MACHINERY = `
 
 //Permet d'ajouter une catégorie.
 export const INSERT_CATEGORY = `
-  
+    mutation InsertCategory($name: String!) {
+        insert_machinerie_categorie(objects: {nom: $name}) {
+        affected_rows
+        }
+    }
 `
 
 //Permet de supprimer une catégorie.

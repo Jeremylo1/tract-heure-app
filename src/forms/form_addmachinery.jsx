@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
 import { useCategory, useStatus } from '../utils/react/hooks'
 import PropTypes from 'prop-types'
-import CustomButton from './button'
+import CustomButton from '../components/button'
 /*Base de données*/
-import { COLUMN_ID, COLUMN_NAME } from '../utils/database/query'
+import {
+  COLUMN_ID,
+  COLUMN_NAME,
+  INSERT_MACHINERY,
+} from '../utils/database/query'
 /*Style*/
 import colors from '../utils/styles/color'
 import 'bulma/css/bulma.min.css'

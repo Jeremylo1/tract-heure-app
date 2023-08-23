@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
-import CustomButton from './button'
+import CustomButton from '../components/button'
 import PropTypes from 'prop-types'
+/*Base de données*/
+import { INSERT_CATEGORY } from '../utils/database/query'
 /*Style*/
 import colors from '../utils/styles/color'
 

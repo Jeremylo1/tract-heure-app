@@ -5,7 +5,8 @@ import { ScreenContext } from '../utils/react/context'
 import CustomButton from '../components/button'
 import AddButton from '../components/addbutton'
 import Modal from '../components/modal'
-import FormAddCategory from '../components/form_addcategory'
+/*Formulaire*/
+import FormAddCategory from '../forms/form_addcategory'
 /*Base de données*/
 import {
   LIEN_API,
