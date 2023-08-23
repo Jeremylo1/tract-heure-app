@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
-import { useCategory, useStatus } from '../utils/react/hooks'
+import { useCategory, useStatus, useMutationHasura } from '../utils/react/hooks'
+import { toISODateTime } from '../utils/reusable/functions'
 import PropTypes from 'prop-types'
 import CustomButton from '../components/button'
 /*Base de données*/
 import {
+  LIEN_API,
   COLUMN_ID,
   COLUMN_NAME,
   INSERT_MACHINERY,
@@ -31,8 +33,8 @@ function FormAddMachinery() {
   const [modelMachine, setModelMachine] = useState('')
   const [serialNumber, setSerialNumber] = useState('')
   const [barcode, setBarcode] = useState('')
-  const [totalTime, setTotalTime] = useState()
-  const [price, setPrice] = useState()
+  const [totalTime, setTotalTime] = useState('')
+  const [price, setPrice] = useState('')
   const [dateAcquisition, setDateAcquisition] = useState('')
   const [comment, setComment] = useState('')
   const [location, setLocation] = useState('')
@@ -41,18 +43,19 @@ function FormAddMachinery() {
   const { sortedCategories, category_loading, category_error } = useCategory()
   //Pour récupérer les statuts.
   const { status, status_loading, status_error } = useStatus()
+  //Permet d'envoyer une requête de mutation (INSERT, UPDATE) à Hasura.
+  const { doMutation } = useMutationHasura(LIEN_API)
 
-  //Pour ajouter une machine.
-  async function handleAdditionMachinery(e) {
+  /*FONCTION AGISSANT À L'ENVOI DU FORMULAIRE*/
+  async function handleClickMachinery(e) {
     e.preventDefault()
 
-    //Vérification des champs.
+    //Vérification de la présence du nom et du temps d'utilisation.
     if (!nameMachine) {
       setErrorName('Veuillez entrer le nom de la machine.')
     } else {
       setErrorName('')
     }
-
     if (!totalTime) {
       setErrorTime("Veuillez entrer le nombre d'heures d'utilisation.")
     } else {
@@ -61,7 +64,7 @@ function FormAddMachinery() {
 
     //S'il y a un prix.
     if (price) {
-      //Si le prix est négatif ou non numérique.
+      //Vérification si négatif ou non numérique.
       if (price < 0 || isNaN(parseFloat(price))) {
         setErrorPrice("Veuillez entrer un prix d'achat valide ou rien.")
       }
@@ -69,33 +72,67 @@ function FormAddMachinery() {
       setErrorPrice('')
     }
 
+    console.log('errorName', errorName) //DEBUG !
+    console.log('errorTime', errorTime) //DEBUG !
+    console.log('errorPrice', errorPrice) //DEBUG !
+
     //Vérification des erreurs.
-    if (!nameMachine || !totalTime || !price) {
+    if (errorName || errorTime || errorPrice) {
       return
     }
 
+    console.log('resultMutation', e) //DEBUG !
+
     //Ajout de la machine.
-    // const { data, error } = await addMachinery({
-    //   name: nameMachine,
-    //   categoryId: selectedCategoryId,
-    //   statusId: selectedStatusId,
-    //   model: modelMachine,
-    //   serialNumber: serialNumber,
-    //   comment: comment,
-    // })
-    // if (error) {
-    //   setError(error.message)
-    //   return
-    // }
-    // if (data) {
-    //   //Réinitialisation des champs.
-    //   setNameMachine('')
-    //   setSelectedCategoryId(0)
-    //   setSelectedStatusId(0)
-    //   setModelMachine('')
-    //   setSerialNumber('')
-    //   setComment('')
-    // }
+    addMachinery()
+  }
+
+  /*AJOUT D'UNE MACHINE DANS LA BASE DE DONNÉES*/
+  const addMachinery = async () => {
+    //Essai d'ajout.
+    try {
+      const resultMutation = await doMutation(INSERT_MACHINERY, {
+        name: nameMachine,
+        categoryId: selectedCategoryId,
+        statusId: selectedStatusId,
+        model: modelMachine,
+        serialNumber: serialNumber,
+        barcode: barcode,
+        totalTime: totalTime,
+        price: price,
+        dateAcquisition: toISODateTime(dateAcquisition, '10:09'), //Formatage de la date d'acquisition.
+        comment: comment,
+        location: location,
+      })
+      console.log('resultMutation', resultMutation) //DEBUG !
+
+      //Si l'ajout a fonctionné.
+      if (resultMutation) {
+        alert('Machine ajoutée avec succès.')
+
+        //Réinitialisation des champs.
+        setNameMachine('')
+        setSelectedCategoryId(0)
+        setSelectedStatusId(0)
+        setModelMachine('')
+        setSerialNumber('')
+        setBarcode('')
+        setTotalTime('')
+        setPrice('')
+        setDateAcquisition('')
+        setComment('')
+        setLocation('')
+
+        //Réinitialisation des erreurs.
+        setErrorName('')
+        setErrorTime('')
+        setErrorPrice('')
+      }
+      //Si l'ajout n'a pas fonctionné.
+    } catch (err) {
+      console.error(err)
+      alert("Une erreur s'est produite lors de l'enregistrement de la machine.")
+    }
   }
 
   /*AFFICHAGE*/
@@ -145,7 +182,7 @@ function FormAddMachinery() {
       <p>
         Veuillez remplir les informations ci-dessous pour ajouter une machine.
       </p>
-      <form onSubmit={handleAdditionMachinery}>
+      <form onSubmit={handleClickMachinery}>
         {/*Nom*/}
         {FormField({
           label: 'Nom',

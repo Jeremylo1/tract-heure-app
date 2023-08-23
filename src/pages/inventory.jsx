@@ -179,7 +179,7 @@ function Inventory() {
   //Permet d'envoyer une requête de mutation (INSERT, UPDATE, DELETE) à Hasura.
   const { doMutation } = useMutationHasura(LIEN_API)
 
-  // Permet d'ajouter une réservation à la base de données
+  //Permet d'ajouter une réservation à la base de données.
   const addReservation = async () => {
     try {
       const responseDataMutation = await doMutation(INSERT_RESERVATION, {
@@ -252,17 +252,7 @@ function Inventory() {
       return
     } else {
       addReservation()
-
-      //Ferme la modale.
-      setModalReservationOpen(false)
-
-      //Réinitialise les valeurs APRÈS la soumission.
-      setStartDate(null)
-      setStartTime(null)
-      setEndDate(null)
-      setEndTime(null)
-      setReservationType(null)
-      setReservationComment('')
+      /*!!!!!!!!!!! ICI PLUS DE DOUBLON !!!!!!!!!!!*/
     }
   }
 
