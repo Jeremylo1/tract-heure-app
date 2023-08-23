@@ -13,6 +13,8 @@ function FormAddCategory() {
   const [error, setError] = useState('')
   //Pour stocker la donnée du formulaire.
   const [nameCategory, setNameCategory] = useState('')
+  //Pour savoir si le bouton est cliqué.
+  const [isClicked, setIsClicked] = useState(false)
 
   //Pour récupérer les catégories existantes (pour comparaison).
   const { sortedCategories, category_error } = useCategory()
@@ -92,6 +94,9 @@ function FormAddCategory() {
   async function handleClickCategory(e) {
     e.preventDefault()
 
+    //Si le bouton est cliqué.
+    setIsClicked(true)
+
     //Si erreur, ne pas exécuter la fonction.
     if (error) {
       return
@@ -122,15 +127,20 @@ function FormAddCategory() {
           <label className="label">Nom de la catégorie</label>
           <div className="control">
             <input
-              className={error ? `input ${error && 'is-danger'}` : 'input'} //Si erreur, ajout de la classe 'is-danger'.
+              className={
+                /*Si bouton cliqué + erreur -> cadre rouge.*/
+                isClicked && error ? `input ${error && 'is-danger'}` : 'input'
+              }
               type="text"
               placeholder="Entrez le nom de la catégorie"
               value={nameCategory}
               onChange={(e) => setNameCategory(e.target.value)}
             />
           </div>
-          {/*Si erreur, affichage du message d'erreur.*/}
-          {error ? <p className="help is-danger">{error}</p> : null}
+          {isClicked && error ? (
+            /*Si bouton cliqué + erreur -> message d'erreur.*/
+            <p className="help is-danger">{error}</p>
+          ) : null}
         </div>
         {/*Bouton d'ajout*/}
         <div className="has-text-centered">
