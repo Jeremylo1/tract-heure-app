@@ -56,8 +56,13 @@ function EventModal({ isOpen, onClose, event }) {
         <>
           {event && (
             <div>
-              <h2>Description:</h2>
-              <p>{event?.description}</p>
+              {event?.description ? (
+                <>
+                  <h2>Description:</h2>
+                  <p>{event?.description}</p>
+                </>
+              ) : null}
+
               <h3>Type:</h3>
               <p>{eventType(event?.type)}</p>
               <h3>Date de début:</h3>

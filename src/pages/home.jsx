@@ -129,7 +129,7 @@ function Home() {
 
       setInProgressCards(inProgress)
       setUpcomingCards(upcoming)
-      setFinishedCards(finished)
+      setFinishedCards(finished.reverse())
     }
   }, [formatedEvents])
 
