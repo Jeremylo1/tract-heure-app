@@ -336,5 +336,7 @@ export default FormAddMachinery
 
 /*À FAIRE :
 - Notifications au-dessus du formulaire (pour les erreurs).
+- Gestion d'erreurs (category_error, status_error) + loading.
 - Fermeture de la modale après ajout.
+- Rafraîchissement de la page.
 - Modification d'une machine (template à réutiliser).*/
