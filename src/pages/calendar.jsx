@@ -340,9 +340,9 @@ function Calendar() {
                               ...event.style,
                               width: `${eventWidth}%`, // Ajuste la largeur en fonction des événements en chevauchement
                               //aligner toute la box a droite
-                              left: isOverlapping ? 'auto' : 0,
+                              left: eventWidth !== 100 ? 'auto' : 0,
                               //ajouter de la transparence aux événements en chevauchement
-                              opacity: isOverlapping ? 0.75 : 1,
+                              opacity: eventWidth !== 100 ? 0.75 : 1,
                             }
 
                             return (

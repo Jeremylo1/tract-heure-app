@@ -45,7 +45,7 @@ function FormAddReservation({
         startDate: toISODateTime(startDate, startTime),
         endDate: toISODateTime(endDate, endTime),
         typeId: reservationType,
-        userReservationComment: reservationComment,
+        userReservationComment: reservationComment ? reservationComment : null,
       })
       if (responseDataMutation) {
         //Réinitialise les valeurs après la soumission.
