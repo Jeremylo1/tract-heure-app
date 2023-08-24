@@ -17,10 +17,10 @@
 }
 
 .category-box {
-    background-color: #80CBC4;
+    background-color: #FFA07A;
 
     &:hover {
-        background-color: #4DB6AC;
+        background-color: #FF7F50;
     }
 }
 
