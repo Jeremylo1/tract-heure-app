@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import CustomButton from '../components/button'
 import { useCategory, useMutationHasura } from '../utils/react/hooks'
 import PropTypes from 'prop-types'
+/*Toast*/
+import { toast } from 'react-toastify'
 /*Base de données*/
 import { LIEN_API, COLUMN_NAME, INSERT_CATEGORY } from '../utils/database/query'
 /*Style*/

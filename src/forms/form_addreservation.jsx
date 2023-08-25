@@ -4,6 +4,8 @@ import { toISODateTime } from '../utils/reusable/functions'
 /*Composants*/
 import CustomButton from '../components/button'
 import AvailabilityTable from '../components/availability_table'
+/*Toast*/
+import { toast } from 'react-toastify'
 /*Base de données*/
 import {
   LIEN_API,

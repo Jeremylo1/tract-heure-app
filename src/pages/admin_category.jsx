@@ -7,6 +7,8 @@ import AddButton from '../components/addbutton'
 import Modal from '../components/modal'
 /*Formulaire*/
 import FormCategory from '../forms/form_category'
+/*Toast*/
+import { toast } from 'react-toastify'
 /*Base de données*/
 import {
   LIEN_API,
