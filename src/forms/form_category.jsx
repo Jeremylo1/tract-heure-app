@@ -67,7 +67,7 @@ function FormCategory({ closeModal, selectedCategory }) {
       toast.error('Erreur lors de la récupération des catégories.')
     }
     if (sameCategory) {
-      toast.error('La catégorie existe déjà.')
+      toast.error('Catégorie déjà existante.')
       setSameCategory(false) //Pour pouvoir afficher le toast à nouveau.
     }
     if (errorMutation) {
