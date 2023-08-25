@@ -6,7 +6,7 @@ import CustomButton from '../components/button'
 import AddButton from '../components/addbutton'
 import Modal from '../components/modal'
 /*Formulaire*/
-import FormAddCategory from '../forms/form_addcategory'
+import FormCategory from '../forms/form_category'
 /*Base de données*/
 import {
   LIEN_API,
@@ -35,6 +35,8 @@ function AdminCategory() {
   const [selectedCategory, setSelectedCategory] = useState(null)
   //Hook pour la gestion de la modale d'ajout.
   const [isAddModalOpen, setAddModalOpen] = useState(false)
+  //Hook pour la gestion de la modale de modification.
+  const [isEditModalOpen, setEditModalOpen] = useState(false)
   //Hook pour la gestion de la modale de suppression.
   const [isDelModalOpen, setDelModalOpen] = useState(false)
 
@@ -134,6 +136,9 @@ function AdminCategory() {
                       color={colors.greenButton}
                       hovercolor={colors.greenButtonHover}
                       functionclick={() => {
+                        setEditModalOpen(
+                          true,
+                        ) /*Pour la modale de modification.*/
                         setSelectedCategory(category)
                       }}
                     >
@@ -176,17 +181,32 @@ function AdminCategory() {
       <Modal
         title={'Ajouter une catégorie'}
         content={
-          <FormAddCategory
+          <FormCategory
             closeModal={() => {
-              setAddModalOpen(false)
-              window.location.reload()
+              setAddModalOpen(false) //Fermeture de la modale.
+              window.location.reload() //Rafraîchissement de la page.
             }}
           />
         }
         isOpen={isAddModalOpen}
         onClose={() => {
           setAddModalOpen(false)
-          window.location.reload() //Rafraîchissement de la page.
+        }}
+      />
+      {/* MODALE POUR MODIFIER UNE CATÉGORIE */}
+      <Modal
+        title={'Modifier une catégorie'}
+        content={
+          <FormCategory
+            closeModal={() => {
+              setEditModalOpen(false) //Fermeture de la modale.
+              window.location.reload() //Rafraîchissement de la page.
+            }}
+          />
+        }
+        isOpen={isEditModalOpen}
+        onClose={() => {
+          setEditModalOpen(false)
         }}
       />
       {/* MODALE POUR SUPPRIMER UNE CATÉGORIE */}
