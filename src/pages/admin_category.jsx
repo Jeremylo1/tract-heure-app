@@ -6,7 +6,7 @@ import CustomButton from '../components/button'
 import AddButton from '../components/addbutton'
 import Modal from '../components/modal'
 /*Formulaire*/
-import FormAddCategory from '../forms/form_addcategory'
+import FormCategory from '../forms/form_category'
 /*Base de données*/
 import {
   LIEN_API,
@@ -15,6 +15,9 @@ import {
   CHECK_CATEGORY_MACHINERY,
   DELETE_CATEGORY,
 } from '../utils/database/query'
+/*Toast*/
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 /*Style*/
 import colors from '../utils/styles/color'
 import '../styles/admin_category.css'
@@ -32,6 +35,8 @@ function AdminCategory() {
   const [selectedCategory, setSelectedCategory] = useState(null)
   //Hook pour la gestion de la modale d'ajout.
   const [isAddModalOpen, setAddModalOpen] = useState(false)
+  //Hook pour la gestion de la modale de modification.
+  const [isEditModalOpen, setEditModalOpen] = useState(false)
   //Hook pour la gestion de la modale de suppression.
   const [isDelModalOpen, setDelModalOpen] = useState(false)
 
@@ -64,8 +69,8 @@ function AdminCategory() {
 
     //Si la catégorie contient (au moins) une machine.
     if (machineryExists?.machinerie?.length > 0) {
-      alert(
-        'Impossible de supprimer cette catégorie, car elle contient une (ou plusieurs) machine(s).',
+      toast.error(
+        'Impossible de supprimer cette catégorie car elle contient au moins une machine.',
       )
       //Sinon, si la catégorie est vide -> Suppression de la catégorie.
     } else {
@@ -73,16 +78,16 @@ function AdminCategory() {
 
       //Si la suppression a fonctionné.
       if (deleteCategory?.delete_machinerie_categorie?.affected_rows > 0) {
-        alert('La catégorie a été supprimée avec succès.')
+        toast.success('Catégorie supprimée.')
       } else {
-        alert("La catégorie n'a pas été supprimée.")
+        toast.error("La catégorie n'a pas été supprimée.")
       }
 
-      //Fermeture de la modale de suppression.
-      setDelModalOpen(false)
-
-      //Rafraîchissement de la page.
-      window.location.reload()
+      //Fermeture de la modale + rafraîchissement de la page après 2s.
+      setTimeout(() => {
+        setDelModalOpen(false)
+        window.location.reload()
+      }, 3000)
     }
   }
 
@@ -131,6 +136,9 @@ function AdminCategory() {
                       color={colors.greenButton}
                       hovercolor={colors.greenButtonHover}
                       functionclick={() => {
+                        setEditModalOpen(
+                          true,
+                        ) /*Pour la modale de modification.*/
                         setSelectedCategory(category)
                       }}
                     >
@@ -169,17 +177,38 @@ function AdminCategory() {
           <div>{tableCategory()}</div>
         </div>
       </div>
-
       {/* MODALE POUR AJOUTER UNE CATÉGORIE */}
       <Modal
         title={'Ajouter une catégorie'}
-        content={<FormAddCategory />}
+        content={
+          <FormCategory
+            closeModal={() => {
+              setAddModalOpen(false) //Fermeture de la modale.
+              window.location.reload() //Rafraîchissement de la page.
+            }}
+          />
+        }
         isOpen={isAddModalOpen}
         onClose={() => {
           setAddModalOpen(false)
         }}
       />
-
+      {/* MODALE POUR MODIFIER UNE CATÉGORIE */}
+      <Modal
+        title={'Modifier une catégorie'}
+        content={
+          <FormCategory
+            closeModal={() => {
+              setEditModalOpen(false) //Fermeture de la modale.
+              window.location.reload() //Rafraîchissement de la page.
+            }}
+          />
+        }
+        isOpen={isEditModalOpen}
+        onClose={() => {
+          setEditModalOpen(false)
+        }}
+      />
       {/* MODALE POUR SUPPRIMER UNE CATÉGORIE */}
       <Modal
         title={'Supprimer une catégorie'}
@@ -191,7 +220,6 @@ function AdminCategory() {
               <li>{selectedCategory?.[COLUMN_NAME]}</li>
             </ul>
             <div className="delete-buttons">
-              {/*CSS à revoir !!!!!!*/}
               <CustomButton
                 functionclick={() => {
                   deleteCategory()
@@ -218,6 +246,8 @@ function AdminCategory() {
           setDelModalOpen(false)
         }}
       />
+      <ToastContainer hideProgressBar={true} autoClose={2000} />
+      {/*Pour les toasts.*/}
     </div>
   )
 }

@@ -40,6 +40,8 @@ function FormAddMachinery() {
   const [location, setLocation] = useState('')
   //Pour savoir si le bouton est cliqué.
   const [isClicked, setIsClicked] = useState(false)
+  //Pour afficher une notification.
+  const [notification, setNotification] = useState('')
 
   //Pour récupérer les catégories.
   const { sortedCategories, category_loading, category_error } = useCategory()
@@ -48,7 +50,27 @@ function FormAddMachinery() {
   //Permet d'envoyer une requête de mutation (INSERT, UPDATE) à Hasura.
   const { doMutation } = useMutationHasura(LIEN_API)
 
-  /*VÉRIFICATION DU FORMULAIRE*/
+  /*FONCTION AGISSANT À L'ENVOI DU FORMULAIRE*/
+  async function handleClickMachinery(e) {
+    e.preventDefault()
+    setIsClicked(true) //Si le bouton est cliqué.
+
+    console.log('errorName', errorName) //DEBUG !
+    console.log('errorTime', errorTime) //DEBUG !
+    console.log('errorPrice', errorPrice) //DEBUG !
+
+    //Vérification des erreurs.
+    if (errorName || errorTime || errorPrice) {
+      return
+    }
+
+    console.log('ENFIN !') //DEBUG !
+
+    //Ajout de la machine.
+    await addMachinery()
+  }
+
+  /*VÉRIFICATION DES CHAMPS DU FORMULAIRE*/
   useEffect(() => {
     //Vérification de la présence d'un nom.
     if (!nameMachine) {
@@ -128,26 +150,6 @@ function FormAddMachinery() {
     }
   }
 
-  /*FONCTION AGISSANT À L'ENVOI DU FORMULAIRE*/
-  async function handleClickMachinery(e) {
-    e.preventDefault()
-    setIsClicked(true) //Si le bouton est cliqué.
-
-    console.log('errorName', errorName) //DEBUG !
-    console.log('errorTime', errorTime) //DEBUG !
-    console.log('errorPrice', errorPrice) //DEBUG !
-
-    //Vérification des erreurs.
-    if (errorName || errorTime || errorPrice) {
-      return
-    }
-
-    console.log('ENFIN !') //DEBUG !
-
-    //Ajout de la machine.
-    await addMachinery()
-  }
-
   /*COMPOSANT POUR LES CHAMPS DU FORMULAIRE*/
   function FormField({
     label,
@@ -196,6 +198,10 @@ function FormAddMachinery() {
   /*AFFICHAGE DU FORMULAIRE*/
   return (
     <div>
+      <div className="notification">
+        {notification}
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit lorem ipsum.
+      </div>
       <p>
         Veuillez remplir les informations ci-dessous pour ajouter une machine.
       </p>

@@ -87,7 +87,7 @@ function Inventory() {
   //Permet d'envoyer une requête de mutation (INSERT, UPDATE, DELETE) à Hasura.
   const { doMutation } = useMutationHasura(LIEN_API)
 
-  // Permet de récupérer les prochaines disponibilités de la machinerie sélectionnée
+  //Permet de récupérer les prochaines disponibilités de la machinerie sélectionnée.
   useEffect(() => {
     const getNextAvailabilitiesCallback = async (
       machineryId,
@@ -118,7 +118,7 @@ function Inventory() {
         },
       )
 
-      // Si la dernière réservation se termine dans le futur, on ajoute un slot (date x - Indéfiniment)
+      //Si la dernière réservation se termine dans le futur, on ajoute un slot (date x - Indéfiniment).
       if (
         currentDate !== new Date() ||
         (slots.length === 0 &&
