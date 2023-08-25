@@ -8,7 +8,7 @@ import EventModal from '../components/eventModal'
 /*Base de données*/
 import {
   LIEN_API,
-  GET_ALL_RESERVATION,
+  GET_RESERVATION,
   VUE_RESERVATION,
   COLUMN_ID,
   COLUMN_NAME,
@@ -39,11 +39,16 @@ function Home() {
   //useState pour stocker l'événement sélectionné dans la modale.
   const [modalEvent, setModalEvent] = useState(null)
 
+  //Recupérer l'id de l'utilisateur.
+  const userId = localStorage.getItem('userId')
+  const userVariables = useMemo(() => ({ userId }), [userId])
+
+  //Pour obtenir les réservations de l'utilisateur.
   const {
     data: reservation_data,
     isLoading: reservation_loading,
     error: reservation_error,
-  } = useFetchHasura(LIEN_API, GET_ALL_RESERVATION, firstLoading)
+  } = useFetchHasura(LIEN_API, GET_RESERVATION, firstLoading, userVariables)
 
   //Les cartes à afficher dans les listes.
   const [inProgressCards, setInProgressCards] = useState([])

@@ -36,7 +36,8 @@ function FormAddReservation({
   const [reservationComment, setReservationComment] = useState('')
   //Succès lors de l'enregistrement.
   const [successMutation, setSuccessMutation] = useState(false)
-
+  //Cacher la modale.
+  const [isVisible, setIsVisible] = useState(true)
   //Permet d'envoyer une requête de mutation (INSERT, GET) à Hasura.
   const { doMutation } = useMutationHasura(LIEN_API)
 
@@ -76,11 +77,12 @@ function FormAddReservation({
       setReservationComment('')
       setSuccessMutation(false)
 
+      setIsVisible(false)
+
       //Fermeture de la modale.
-      onClose()
-      // setTimeout(() => {
-      //   onClose()
-      // }, 3000)
+      setTimeout(() => {
+        onClose()
+      }, 3000)
     }
   }, [successMutation, onClose])
 
@@ -146,7 +148,7 @@ function FormAddReservation({
 
   /*AFFICHAGE DU FORMULAIRE*/
   return (
-    <div>
+    <div style={{ display: isVisible ? 'block' : 'none' }}>
       <p>Veuillez remplir les informations ci-dessous pour réserver.</p>
       <form onSubmit={handleReservation}>
         {/*Type de réservation*/}

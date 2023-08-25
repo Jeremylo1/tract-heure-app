@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext, useMemo } from 'react'
 import { ScreenContext } from '../utils/react/context'
-import { useMutationHasura } from '../utils/react/hooks'
+import { useFetchHasura } from '../utils/react/hooks'
 /*Composants*/
 import Modal from '../components/modal'
 import CustomButton from '../components/button'
@@ -86,45 +86,41 @@ function Inventory() {
     )
   }
 
-  //Permet d'envoyer une requête de mutation (INSERT, UPDATE, DELETE) à Hasura.
-  const { doMutation } = useMutationHasura(LIEN_API)
+  //Variables pour la requête.
+  const machineryVariables = useMemo(
+    () => ({
+      machineryId: selectedMachinery ? selectedMachinery.id : null,
+      currentDateTime: new Date().toISOString(),
+    }),
+    [selectedMachinery],
+  )
+  //Pour récupérer les prochaines disponibilités de la machinerie sélectionnée.
+  const { isLoading, data, error } = useFetchHasura(
+    LIEN_API,
+    GET_UPCOMING_RESERVATIONS,
+    false,
+    machineryVariables,
+  )
 
   //Permet de récupérer les prochaines disponibilités de la machinerie sélectionnée.
   useEffect(() => {
-    const getNextAvailabilitiesCallback = async (
-      machineryId,
-      limit = Infinity,
-    ) => {
-      const variables = {
-        machineryId,
-        currentDateTime: new Date().toISOString(),
-      }
-
-      const upcomingReservations = await doMutation(
-        GET_UPCOMING_RESERVATIONS,
-        variables,
-      )
+    if (data) {
       const slots = []
-
       let currentDate = new Date()
 
-      upcomingReservations.machinerie_reservation.forEach(
-        (reservation, index) => {
-          if (new Date(reservation.date_debut) - currentDate > 0) {
-            slots.push({
-              start: currentDate,
-              end: new Date(reservation.date_debut),
-            })
-          }
-          currentDate = new Date(reservation.date_fin)
-        },
-      )
+      data.machinerie_reservation.forEach((reservation, index) => {
+        if (new Date(reservation.date_debut) - currentDate > 0) {
+          slots.push({
+            start: currentDate,
+            end: new Date(reservation.date_debut),
+          })
+        }
+        currentDate = new Date(reservation.date_fin)
+      })
 
-      //Si la dernière réservation se termine dans le futur, on ajoute un slot (date x - Indéfiniment).
       if (
         currentDate !== new Date() ||
-        (slots.length === 0 &&
-          upcomingReservations.machinerie_reservation.length === 0)
+        (slots.length === 0 && data.machinerie_reservation.length === 0)
       ) {
         slots.push({
           start: currentDate,
@@ -132,26 +128,11 @@ function Inventory() {
         })
       }
 
-      return slots.slice(0, limit)
+      setAvailabilities(slots)
     }
 
-    const fetchAvailabilities = async () => {
-      setAvailabilitiesIsLoading(true) //Pour afficher le message de chargement.
-      if (selectedMachinery) {
-        const limit = isModalReservationOpen ? 3 : Infinity
-        const slots = await getNextAvailabilitiesCallback(
-          selectedMachinery.id,
-          limit,
-        )
-        setAvailabilities(slots)
-      }
-      setAvailabilitiesIsLoading(false)
-    }
-
-    fetchAvailabilities()
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isModalReservationOpen, isModalAvailabilityOpen, selectedMachinery])
+    // vous pourriez gérer des erreurs ici si nécessaire, en utilisant la variable 'error'
+  }, [data])
 
   //Affichage selon le type d'appareil.
   return (
@@ -176,7 +157,7 @@ function Inventory() {
         }`}
         content={
           <>
-            {availabilitiesIsLoading ? (
+            {isLoading ? (
               <div className="loader is-loading"></div>
             ) : (
               <AvailabilityTable availabilities={availabilities} />
@@ -186,7 +167,6 @@ function Inventory() {
         isOpen={isModalAvailabilityOpen}
         onClose={() => {
           setModalAvailabilityOpen(false)
-          setSelectedMachinery(null) //Réinitialise la machinerie sélectionnée.
         }}
       />
 
@@ -197,14 +177,13 @@ function Inventory() {
           <FormAddReservation
             machinery={selectedMachinery}
             onClose={() => setModalReservationOpen(false)}
-            availabilitiesIsLoading={availabilitiesIsLoading}
+            availabilitiesIsLoading={isLoading}
             availabilities={availabilities}
           />
         }
         isOpen={isModalReservationOpen}
         onClose={() => {
           setModalReservationOpen(false)
-          setSelectedMachinery(null) //Réinitialise la machinerie sélectionnée.
         }}
       />
     </div>
