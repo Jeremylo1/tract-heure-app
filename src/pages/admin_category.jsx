@@ -246,8 +246,6 @@ function AdminCategory() {
           setDelModalOpen(false)
         }}
       />
-      <ToastContainer hideProgressBar={true} autoClose={2000} />
-      {/*Pour les toasts.*/}
     </div>
   )
 }
