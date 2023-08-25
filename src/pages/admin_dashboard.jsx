@@ -2,7 +2,6 @@ import React, { useContext } from 'react'
 import { ScreenContext } from '../utils/react/context'
 import { Link } from 'react-router-dom'
 /*Style*/
-import colors from '../utils/styles/color'
 import '../styles/admin_dashboard.css'
 
 //Page d'accueil pour l'administrateur.

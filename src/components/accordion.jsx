@@ -1,5 +1,5 @@
-import React from 'react'
-import { useState } from 'react'
+import React, { useState } from 'react'
+/*Types*/
 import PropTypes from 'prop-types'
 /*Style*/
 import styled from 'styled-components'

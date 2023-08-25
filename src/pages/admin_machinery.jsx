@@ -7,7 +7,7 @@ import AddButton from '../components/addbutton'
 import ShowMachinery from '../components/showmachinery'
 import Modal from '../components/modal'
 /*Formulaire*/
-import FormAddMachinery from '../forms/form_addmachinery'
+import FormMachinery from '../forms/form_machinery'
 /*Base de données*/
 import {
   LIEN_API,
@@ -157,7 +157,7 @@ function AdminMachinery() {
       {/* MODALE POUR AJOUTER UNE MACHINE */}
       <Modal
         title={'Ajouter une machine'}
-        content={<FormAddMachinery />}
+        content={<FormMachinery />}
         isOpen={isAddModalOpen}
         onClose={() => {
           setAddModalOpen(false)

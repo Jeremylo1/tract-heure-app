@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useCategory, useStatus, useMutationHasura } from '../utils/react/hooks'
 import { toISODateTime } from '../utils/reusable/functions'
-import PropTypes from 'prop-types'
 import CustomButton from '../components/button'
+/*Types*/
+import PropTypes from 'prop-types'
 /*Base de données*/
 import {
   LIEN_API,
@@ -21,7 +22,7 @@ const StyledPart = styled.div`
 `
 
 //Formulaire d'ajout d'une machine.
-function FormAddMachinery() {
+function FormMachinery() {
   //Erreurs possibles.
   const [errorName, setErrorName] = useState('')
   const [errorTime, setErrorTime] = useState('')
@@ -338,7 +339,10 @@ function FormAddMachinery() {
   )
 }
 
-export default FormAddMachinery
+//Vérification des types des props.
+FormMachinery.propTypes = {}
+
+export default FormMachinery
 
 /*À FAIRE :
 - Notifications au-dessus du formulaire (pour les erreurs).

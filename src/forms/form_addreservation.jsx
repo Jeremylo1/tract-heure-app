@@ -6,7 +6,6 @@ import CustomButton from '../components/button'
 import AvailabilityTable from '../components/availability_table'
 /*Toast*/
 import { toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 /*Base de données*/
 import {
   LIEN_API,
@@ -113,14 +112,14 @@ function FormAddReservation({
 
     //Vérifier si la date/heure de début est dans le passé.
     if (startDateTime < currentDateTime) {
-      toast.error('Date/heure de la réservation déjà passée !')
+      toast.error('Date et/ou heure de la réservation déjà passée !')
       return
     }
 
     //Vérifier si la date/heure de début est supérieure à la date/heure de fin.
     if (startDateTime >= endDateTime) {
       toast.error(
-        "La date et l'heure de début doivent être antérieures à la date et à l'heure de fin !",
+        "La date et l'heure de début doivent être antérieures à celles de fin !",
       )
       return
     }

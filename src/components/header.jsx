@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useConnexion, useTab } from '../utils/react/hooks'
 import { ScreenContext } from '../utils/react/context'
+/*Types*/
 import PropTypes from 'prop-types'
 /*Style*/
 import LogoTxt from '../assets/logo-texte.png'

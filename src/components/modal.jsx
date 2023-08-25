@@ -1,4 +1,5 @@
 import React from 'react'
+/*Types*/
 import PropTypes from 'prop-types'
 
 //Composant de la modale.

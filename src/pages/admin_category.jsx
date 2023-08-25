@@ -7,6 +7,8 @@ import AddButton from '../components/addbutton'
 import Modal from '../components/modal'
 /*Formulaire*/
 import FormCategory from '../forms/form_category'
+/*Toast*/
+import { toast } from 'react-toastify'
 /*Base de données*/
 import {
   LIEN_API,
@@ -15,9 +17,6 @@ import {
   CHECK_CATEGORY_MACHINERY,
   DELETE_CATEGORY,
 } from '../utils/database/query'
-/*Toast*/
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 /*Style*/
 import colors from '../utils/styles/color'
 import '../styles/admin_category.css'
@@ -202,6 +201,7 @@ function AdminCategory() {
               setEditModalOpen(false) //Fermeture de la modale.
               window.location.reload() //Rafraîchissement de la page.
             }}
+            selectedCategory={selectedCategory}
           />
         }
         isOpen={isEditModalOpen}
