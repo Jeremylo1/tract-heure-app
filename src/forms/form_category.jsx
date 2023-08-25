@@ -144,9 +144,13 @@ function FormCategory({ closeModal }) {
       //Désactivation du champ pendant le délai.
       setIsDisabled(true)
 
-      //Fermeture de la modale avec un délai de 3s.
+      //Dans un délai de 3s.
       setTimeout(() => {
+        //Fermeture de la modale.
         closeModal()
+        //Réinitialisation des variables restantes.
+        setNameCategory('')
+        setIsDisabled(false)
       }, 3000)
     }
   }, [successMutation, closeModal])
@@ -199,8 +203,6 @@ function FormCategory({ closeModal }) {
           </CustomButton>
         </div>
       </form>
-      <ToastContainer hideProgressBar={true} autoClose={2000} />
-      {/*Pour les toasts.*/}
     </div>
   )
 }
