@@ -15,9 +15,6 @@ import {
   CHECK_CATEGORY_MACHINERY,
   DELETE_CATEGORY,
 } from '../utils/database/query'
-/*Toast*/
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 /*Style*/
 import colors from '../utils/styles/color'
 import '../styles/admin_category.css'

@@ -18,6 +18,7 @@ import Footer from './components/footer'
 import Error from './components/error'
 /*Toast*/
 import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 /*Utils*/
 import { AuthProvider } from './utils/react/context'
 import { ScreenProvider } from './utils/react/context'
@@ -88,7 +89,13 @@ root.render(
                 </Route>
                 <Route path="*" element={<Error />} />
               </Routes>
-              <ToastContainer hideProgressBar={true} autoClose={2000} />
+              {/* Toast */}
+              <ToastContainer
+                position="top-center"
+                theme="colored"
+                hideProgressBar={true}
+                autoClose={2000}
+              />
             </div>
             <StyledFooter>
               {/* Footer en bas de page */}
