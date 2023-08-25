@@ -8,6 +8,8 @@ import { LIEN_API, DELETE_RESERVATION } from '../utils/database/query'
 /*Style*/
 import '../styles/calendar.css'
 import colors from '../utils/styles/color'
+
+//Permet de déterminer le type d'événement.
 const eventType = (type) => {
   switch (type) {
     case 1:

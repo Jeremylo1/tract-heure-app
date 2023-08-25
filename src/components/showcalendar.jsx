@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext, useMemo } from 'react'
-import PropTypes from 'prop-types'
 import { useFetchHasura } from '../utils/react/hooks'
-
 import { ScreenContext } from '../utils/react/context'
+/*Types*/
+import PropTypes from 'prop-types'
 /*Composants*/
 import EventModal from '../components/eventModal'
 /*Base de données*/

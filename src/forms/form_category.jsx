@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import CustomButton from '../components/button'
 import { useCategory, useMutationHasura } from '../utils/react/hooks'
+/*Types*/
 import PropTypes from 'prop-types'
 /*Toast*/
 import { toast } from 'react-toastify'

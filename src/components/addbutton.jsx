@@ -1,7 +1,8 @@
 import React from 'react'
 import CustomButton from './button'
+/*Types*/
 import PropTypes from 'prop-types'
-/* Importation de'icône */
+/*Importation de l'icône*/
 import Icon from '@mdi/react'
 import { mdiPlusCircleOutline } from '@mdi/js'
 /*Style*/

@@ -1,5 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+/*Types*/
 import PropTypes from 'prop-types'
 /*Style*/
 import styled from 'styled-components'

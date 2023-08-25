@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
 import { useFetchHasura, useCategory } from '../utils/react/hooks'
 import { formatDate } from '../utils/reusable/functions'
+/*Composants*/
 import Accordion from './accordion'
+/*Types*/
+import PropTypes from 'prop-types'
 /*Base de données*/
 import {
   LIEN_API,

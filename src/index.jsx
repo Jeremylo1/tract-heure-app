@@ -9,9 +9,9 @@ import Dashboard from './pages/admin_dashboard'
 import Burger from './pages/burger'
 import Login from './pages/login'
 import Test from './trash-test/test' //! À SUPPRIMER
-import AdminCategory from './pages/admin_category' //! À MODIFIER PEUT-ÊTRE
-import AdminMachinery from './pages/admin_machinery' //! À MODIFIER PEUT-ÊTRE
-import AdminCalendar from './pages/admin_calendar' //! À MODIFIER PEUT-ÊTRE
+import AdminCategory from './pages/admin_category'
+import AdminMachinery from './pages/admin_machinery'
+import AdminCalendar from './pages/admin_calendar'
 /*Components*/
 import Header from './components/header'
 import Footer from './components/footer'
@@ -70,20 +70,18 @@ root.render(
                   <Route index element={<Dashboard />} />
                 </Route>
                 <Route path="/admin/category" element={<ProtectedRoute />}>
-                  {/* À MODIFIER PEUT-ÊTRE */}
                   <Route index element={<AdminCategory />} />
                 </Route>
                 <Route path="/admin/machinery" element={<ProtectedRoute />}>
-                  {/* À MODIFIER PEUT-ÊTRE */}
                   <Route index element={<AdminMachinery />} />
                 </Route>
                 <Route path="/admin/calendar" element={<ProtectedRoute />}>
-                  {/* À MODIFIER PEUT-ÊTRE */}
                   <Route index element={<AdminCalendar />} />
                 </Route>
                 <Route path="/others" element={<ProtectedRoute />}>
                   <Route index element={<Burger />} />
                 </Route>
+                {/* À SUPPRIMER */}
                 <Route path="/test" element={<ProtectedRoute />}>
                   <Route index element={<Test />} />
                 </Route>
