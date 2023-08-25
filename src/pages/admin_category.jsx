@@ -15,6 +15,9 @@ import {
   CHECK_CATEGORY_MACHINERY,
   DELETE_CATEGORY,
 } from '../utils/database/query'
+/*Toast*/
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 /*Style*/
 import colors from '../utils/styles/color'
 import '../styles/admin_category.css'
@@ -64,25 +67,25 @@ function AdminCategory() {
 
     //Si la catégorie contient (au moins) une machine.
     if (machineryExists?.machinerie?.length > 0) {
-      alert(
-        'Impossible de supprimer cette catégorie, car elle contient une (ou plusieurs) machine(s).',
-      ) /*TODO: Toast !!!*/
+      toast.error(
+        'Impossible de supprimer cette catégorie car elle contient au moins une machine.',
+      )
       //Sinon, si la catégorie est vide -> Suppression de la catégorie.
     } else {
       const deleteCategory = await doMutation(DELETE_CATEGORY, variables)
 
       //Si la suppression a fonctionné.
       if (deleteCategory?.delete_machinerie_categorie?.affected_rows > 0) {
-        alert('La catégorie a été supprimée avec succès.') /*TODO: Rien !!!*/
+        toast.success('Catégorie supprimée.')
       } else {
-        alert("La catégorie n'a pas été supprimée.") /*TODO: Toast !!!*/
+        toast.error("La catégorie n'a pas été supprimée.")
       }
 
-      //Fermeture de la modale de suppression.
-      setDelModalOpen(false)
-
-      //Rafraîchissement de la page.
-      window.location.reload()
+      //Fermeture de la modale + rafraîchissement de la page après 2s.
+      setTimeout(() => {
+        setDelModalOpen(false)
+        window.location.reload()
+      }, 3000)
     }
   }
 
@@ -169,7 +172,6 @@ function AdminCategory() {
           <div>{tableCategory()}</div>
         </div>
       </div>
-
       {/* MODALE POUR AJOUTER UNE CATÉGORIE */}
       <Modal
         title={'Ajouter une catégorie'}
@@ -187,7 +189,6 @@ function AdminCategory() {
           window.location.reload() //Rafraîchissement de la page.
         }}
       />
-
       {/* MODALE POUR SUPPRIMER UNE CATÉGORIE */}
       <Modal
         title={'Supprimer une catégorie'}
@@ -225,6 +226,8 @@ function AdminCategory() {
           setDelModalOpen(false)
         }}
       />
+      <ToastContainer hideProgressBar={true} autoClose={2000} />
+      {/*Pour les toasts.*/}
     </div>
   )
 }

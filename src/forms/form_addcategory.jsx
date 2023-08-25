@@ -24,6 +24,8 @@ function FormAddCategory({ closeModal }) {
   const [errorMutation, setErrorMutation] = useState(false)
   //Succès lors de l'enregistrement.
   const [successMutation, setSuccessMutation] = useState(false)
+  //Pour savoir si le champ est désactivé.
+  const [isDisabled, setIsDisabled] = useState(false)
 
   //Pour récupérer les catégories existantes (pour comparaison).
   const { sortedCategories, category_error } = useCategory()
@@ -128,22 +130,28 @@ function FormAddCategory({ closeModal }) {
   useEffect(() => {
     if (successMutation) {
       //Toast de succès.
-      toast.success('Catégorie ajoutée avec succès.')
+      toast.success('Catégorie ajoutée.')
 
       //Réinitialisation des variables.
-      setNameCategory('')
+      //NOTE : le rafraîchissement de la page réinitialise les variables.
+      //Pas de réinitialisation de nameCategory pour que l'utilisateur puisse le voir dans le champ désactivé.
       setError('')
       setIsClicked(false)
       setSameCategory(false)
       setErrorMutation(false)
       setSuccessMutation(false)
 
-      //Fermeture de la modale (pour rafraîchissement de la page).
-      closeModal()
+      //Désactivation du champ pendant le délai.
+      setIsDisabled(true)
+
+      //Fermeture de la modale avec un délai de 3s.
+      setTimeout(() => {
+        closeModal()
+      }, 3000)
     }
   }, [successMutation, closeModal])
 
-  //Vérification des types.
+  //Vérification des types des variables.
   FormAddCategory.propTypes = {
     nameCategory: PropTypes.string,
     error: PropTypes.string,
@@ -151,6 +159,7 @@ function FormAddCategory({ closeModal }) {
     sameCategory: PropTypes.bool,
     errorMutation: PropTypes.bool,
     successMutation: PropTypes.bool,
+    isDisabled: PropTypes.bool,
   }
 
   /*AFFICHAGE DU FORMULAIRE*/
@@ -168,9 +177,10 @@ function FormAddCategory({ closeModal }) {
                 isClicked && error ? `input ${error && 'is-danger'}` : 'input'
               }
               type="text"
-              placeholder="Entrez le nom de la catégorie"
+              placeholder={isDisabled ? '' : 'Entrez le nom de la catégorie'}
               value={nameCategory}
               onChange={(e) => setNameCategory(e.target.value)}
+              disabled={isDisabled}
             />
           </div>
           {isClicked && error ? (
@@ -189,9 +199,15 @@ function FormAddCategory({ closeModal }) {
           </CustomButton>
         </div>
       </form>
-      <ToastContainer /> {/*Pour les toasts.*/}
+      <ToastContainer hideProgressBar={true} autoClose={2000} />
+      {/*Pour les toasts.*/}
     </div>
   )
+}
+
+//Vérification des types des props.
+FormAddCategory.propTypes = {
+  closeModal: PropTypes.func,
 }
 
 export default FormAddCategory

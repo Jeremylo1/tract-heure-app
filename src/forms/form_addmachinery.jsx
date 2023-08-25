@@ -50,7 +50,27 @@ function FormAddMachinery() {
   //Permet d'envoyer une requête de mutation (INSERT, UPDATE) à Hasura.
   const { doMutation } = useMutationHasura(LIEN_API)
 
-  /*VÉRIFICATION DU FORMULAIRE*/
+  /*FONCTION AGISSANT À L'ENVOI DU FORMULAIRE*/
+  async function handleClickMachinery(e) {
+    e.preventDefault()
+    setIsClicked(true) //Si le bouton est cliqué.
+
+    console.log('errorName', errorName) //DEBUG !
+    console.log('errorTime', errorTime) //DEBUG !
+    console.log('errorPrice', errorPrice) //DEBUG !
+
+    //Vérification des erreurs.
+    if (errorName || errorTime || errorPrice) {
+      return
+    }
+
+    console.log('ENFIN !') //DEBUG !
+
+    //Ajout de la machine.
+    await addMachinery()
+  }
+
+  /*VÉRIFICATION DES CHAMPS DU FORMULAIRE*/
   useEffect(() => {
     //Vérification de la présence d'un nom.
     if (!nameMachine) {
@@ -128,26 +148,6 @@ function FormAddMachinery() {
       console.error(err)
       alert("Une erreur s'est produite lors de l'enregistrement de la machine.")
     }
-  }
-
-  /*FONCTION AGISSANT À L'ENVOI DU FORMULAIRE*/
-  async function handleClickMachinery(e) {
-    e.preventDefault()
-    setIsClicked(true) //Si le bouton est cliqué.
-
-    console.log('errorName', errorName) //DEBUG !
-    console.log('errorTime', errorTime) //DEBUG !
-    console.log('errorPrice', errorPrice) //DEBUG !
-
-    //Vérification des erreurs.
-    if (errorName || errorTime || errorPrice) {
-      return
-    }
-
-    console.log('ENFIN !') //DEBUG !
-
-    //Ajout de la machine.
-    await addMachinery()
   }
 
   /*COMPOSANT POUR LES CHAMPS DU FORMULAIRE*/
