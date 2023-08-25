@@ -43,14 +43,6 @@ const StyledGlobalStyle = createGlobalStyle`
     width: 65%;
     margin: 0 auto;
 }
-
-/* =============== NOTIFICATION =============== */
-
-/* Notification modifiée de Bulma */
-.notification {
-    margin-bottom: 0.5rem !important;
-    padding: 0.75rem 1rem !important;
-}
 `
 
 function GlobalStyle() {

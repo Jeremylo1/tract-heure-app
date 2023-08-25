@@ -66,16 +66,16 @@ function AdminCategory() {
     if (machineryExists?.machinerie?.length > 0) {
       alert(
         'Impossible de supprimer cette catégorie, car elle contient une (ou plusieurs) machine(s).',
-      )
+      ) /*TODO: Toast !!!*/
       //Sinon, si la catégorie est vide -> Suppression de la catégorie.
     } else {
       const deleteCategory = await doMutation(DELETE_CATEGORY, variables)
 
       //Si la suppression a fonctionné.
       if (deleteCategory?.delete_machinerie_categorie?.affected_rows > 0) {
-        alert('La catégorie a été supprimée avec succès.')
+        alert('La catégorie a été supprimée avec succès.') /*TODO: Rien !!!*/
       } else {
-        alert("La catégorie n'a pas été supprimée.")
+        alert("La catégorie n'a pas été supprimée.") /*TODO: Toast !!!*/
       }
 
       //Fermeture de la modale de suppression.
@@ -173,7 +173,14 @@ function AdminCategory() {
       {/* MODALE POUR AJOUTER UNE CATÉGORIE */}
       <Modal
         title={'Ajouter une catégorie'}
-        content={<FormAddCategory />}
+        content={
+          <FormAddCategory
+            closeModal={() => {
+              setAddModalOpen(false)
+              window.location.reload()
+            }}
+          />
+        }
         isOpen={isAddModalOpen}
         onClose={() => {
           setAddModalOpen(false)
@@ -192,7 +199,6 @@ function AdminCategory() {
               <li>{selectedCategory?.[COLUMN_NAME]}</li>
             </ul>
             <div className="delete-buttons">
-              {/*CSS à revoir !!!!!!*/}
               <CustomButton
                 functionclick={() => {
                   deleteCategory()

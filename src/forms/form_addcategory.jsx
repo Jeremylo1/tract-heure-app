@@ -11,7 +11,7 @@ import { LIEN_API, COLUMN_NAME, INSERT_CATEGORY } from '../utils/database/query'
 import colors from '../utils/styles/color'
 
 //Formulaire d'ajout d'une catégorie.
-function FormAddCategory() {
+function FormAddCategory({ closeModal }) {
   //Pour stocker la donnée du formulaire.
   const [nameCategory, setNameCategory] = useState('')
   //Erreur dans la donnée du formulaire.
@@ -121,15 +121,7 @@ function FormAddCategory() {
     } catch (err) {
       console.error(err)
       setErrorMutation(true) //Pour afficher un toast.
-    } /*finally {
-      //Réinitialisation des variables.
-      setNameCategory('')
-      setError('')
-      setIsClicked(false)
-      setSameCategory(false)
-      setErrorMutation(false)
-      setSuccessMutation(false)
-    }*/
+    }
   }
 
   /*TOAST DE SUCCÈS ET RÉINITIALISATION DES VARIABLES*/
@@ -145,8 +137,11 @@ function FormAddCategory() {
       setSameCategory(false)
       setErrorMutation(false)
       setSuccessMutation(false)
+
+      //Fermeture de la modale (pour rafraîchissement de la page).
+      closeModal()
     }
-  }, [successMutation])
+  }, [successMutation, closeModal])
 
   //Vérification des types.
   FormAddCategory.propTypes = {
