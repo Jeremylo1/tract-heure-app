@@ -201,6 +201,7 @@ function AdminCategory() {
               setEditModalOpen(false) //Fermeture de la modale.
               window.location.reload() //Rafraîchissement de la page.
             }}
+            selectedCategory={selectedCategory}
           />
         }
         isOpen={isEditModalOpen}

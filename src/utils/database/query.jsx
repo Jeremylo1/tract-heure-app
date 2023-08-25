@@ -93,7 +93,11 @@ export const CHECK_CATEGORY_MACHINERY = `
 
 //Permet de modifier une catégorie.
 export const UPDATE_CATEGORY = `
-  
+    mutation UpdateCategory($categoryId: Int!, $name: String!) {
+        update_machinerie_categorie(where: {id: {_eq: $categoryId}}, _set: {nom: $name}) {
+        affected_rows
+        }
+    }
 `
 
 //Permet de supprimer une réservation.

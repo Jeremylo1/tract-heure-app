@@ -5,14 +5,24 @@ import PropTypes from 'prop-types'
 /*Toast*/
 import { toast } from 'react-toastify'
 /*Base de données*/
-import { LIEN_API, COLUMN_NAME, INSERT_CATEGORY } from '../utils/database/query'
+import {
+  LIEN_API,
+  COLUMN_ID,
+  COLUMN_NAME,
+  INSERT_CATEGORY,
+  UPDATE_CATEGORY,
+} from '../utils/database/query'
 /*Style*/
 import colors from '../utils/styles/color'
 
+/*NOTE : si il y a 'selectedCategory', c'est une modification, sinon c'est un ajout.*/
+
 //Formulaire d'ajout d'une catégorie.
-function FormCategory({ closeModal }) {
+function FormCategory({ closeModal, selectedCategory }) {
   //Pour stocker la donnée du formulaire.
-  const [nameCategory, setNameCategory] = useState('')
+  const [nameCategory, setNameCategory] = useState(
+    selectedCategory ? selectedCategory[COLUMN_NAME] : '',
+  )
   //Erreur dans la donnée du formulaire.
   const [error, setError] = useState('')
   //Pour savoir si le bouton est cliqué.
@@ -21,7 +31,7 @@ function FormCategory({ closeModal }) {
   const [sameCategory, setSameCategory] = useState(false)
   //Erreur lors de l'enregistrement.
   const [errorMutation, setErrorMutation] = useState(false)
-  //Succès lors de l'enregistrement.
+  //Succès lors de l'ajout.
   const [successMutation, setSuccessMutation] = useState(false)
   //Pour savoir si le champ est désactivé.
   const [isDisabled, setIsDisabled] = useState(false)
@@ -109,16 +119,34 @@ function FormCategory({ closeModal }) {
   /*AJOUT OU MODIFICATION DE LA CATÉGORIE DANS LA BASE DE DONNÉES*/
   const addEditCategory = async () => {
     try {
-      const resultMutation = await doMutation(INSERT_CATEGORY, {
-        name: nameCategory,
-      })
+      /*VERSION POUR LA MODIFICATION*/
+      if (selectedCategory) {
+        //Variables pour la requête de modification.
+        const variables = {
+          categoryId: selectedCategory?.[COLUMN_ID],
+          name: nameCategory,
+        }
 
-      //Si l'ajout a fonctionné.
-      if (resultMutation) {
-        setSuccessMutation(true) //Pour toast + réinitialisation des variables.
+        //Modification de la catégorie.
+        const resultMutation = await doMutation(UPDATE_CATEGORY, variables)
+
+        //Si la modification a fonctionné.
+        if (resultMutation?.update_machinerie_categorie?.affected_rows > 0) {
+          setSuccessMutation(true) //Pour toast + réinitialisation des variables.
+        }
+        /*VERSION POUR L'AJOUT*/
+      } else {
+        //Ajout de la catégorie.
+        const resultMutation = await doMutation(INSERT_CATEGORY, {
+          name: nameCategory,
+        })
+
+        //Si l'ajout a fonctionné.
+        if (resultMutation?.insert_machinerie_categorie?.affected_rows > 0) {
+          setSuccessMutation(true) //Pour toast + réinitialisation des variables.
+        }
       }
-
-      //Si l'ajout n'a pas fonctionné.
+      /*ERREUR*/
     } catch (err) {
       console.error(err)
       setErrorMutation(true) //Pour afficher un toast.
@@ -128,8 +156,12 @@ function FormCategory({ closeModal }) {
   /*TOAST DE SUCCÈS ET RÉINITIALISATION DES VARIABLES*/
   useEffect(() => {
     if (successMutation) {
-      //Toast de succès.
-      toast.success('Catégorie ajoutée.')
+      //Toast de succès selon l'action.
+      if (selectedCategory) {
+        toast.success('Catégorie modifiée.')
+      } else {
+        toast.success('Catégorie ajoutée.')
+      }
 
       //Réinitialisation des variables.
       //NOTE : le rafraîchissement de la page réinitialise les variables.
@@ -152,7 +184,7 @@ function FormCategory({ closeModal }) {
         setIsDisabled(false)
       }, 3000)
     }
-  }, [successMutation, closeModal])
+  }, [successMutation, selectedCategory, closeModal])
 
   //Vérification des types des variables.
   FormCategory.propTypes = {
@@ -209,10 +241,10 @@ function FormCategory({ closeModal }) {
 //Vérification des types des props.
 FormCategory.propTypes = {
   closeModal: PropTypes.func,
+  selectedCategory: PropTypes.object /*Pour la modification.*/,
 }
 
 export default FormCategory
 
 /*À FAIRE :
-- Vérification si catégories exactement identiques (même si espaces différents).
-- Modification d'une catégorie (template à réutiliser).*/
+- Vérification si catégories exactement identiques (même si espaces différents).*/
