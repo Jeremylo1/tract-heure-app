@@ -11,7 +11,13 @@ import {
 } from '../database/query'
 
 /*Permet de récupérer (SELECT) des données depuis Hasura.*/
-export function useFetchHasura(url, query, stopFetch = false) {
+const defaultVariables = {}
+export function useFetchHasura(
+  url,
+  query,
+  stopFetch = false,
+  variables = defaultVariables,
+) {
   const [data, setData] = useState(null)
   const [isLoading, setLoading] = useState(true)
   const [error, setError] = useState(false)
@@ -30,8 +36,12 @@ export function useFetchHasura(url, query, stopFetch = false) {
           headers: {
             'Content-Type': 'application/json',
             'x-hasura-admin-secret': process.env.REACT_APP_HASURA_API_KEY,
+            'x-hasura-role': 'user', //TEMPORAIRE.
           },
-          body: JSON.stringify({ query }),
+          body: JSON.stringify({
+            query,
+            variables,
+          }),
         })
 
         //Erreur si on ne reçoit pas de réponse.
@@ -56,7 +66,7 @@ export function useFetchHasura(url, query, stopFetch = false) {
       }
     }
     fetchData()
-  }, [url, query, stopFetch]) //Recharge les données si l'url, la requête ou le timestamp de rechargement change.
+  }, [url, query, stopFetch, variables]) //Recharge les données si l'url, la requête ou le timestamp de rechargement change.
 
   return { isLoading, data, error, reload }
 }
@@ -75,6 +85,7 @@ export function useMutationHasura(url) {
         headers: {
           'Content-Type': 'application/json',
           'x-hasura-admin-secret': process.env.REACT_APP_HASURA_API_KEY,
+          'x-hasura-role': 'user', //TEMPORAIRE.
         },
         body: JSON.stringify({ query: mutation, variables }),
       })

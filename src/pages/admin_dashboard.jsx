@@ -38,6 +38,13 @@ function Dashboard() {
             >
               <div className="box-content">Gestion de la machinerie</div>
             </Link>
+
+            <Link
+              to="/admin/calendar"
+              className="box square-box calendar-box mx-2"
+            >
+              <div className="box-content">Gestion des réservations</div>
+            </Link>
           </div>
         </div>
       </div>

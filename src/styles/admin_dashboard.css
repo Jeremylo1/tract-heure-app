@@ -32,6 +32,14 @@
     }
 }
 
+.calendar-box {
+    background-color: #FFD54F;
+
+    &:hover {
+        background-color: #FFCA28;
+    }
+}
+
 /* Médias queries pour les écrans plus petits */
 @media (max-width: 768px) {
     .box-container {

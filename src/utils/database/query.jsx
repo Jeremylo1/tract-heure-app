@@ -120,6 +120,21 @@ export const GET_ALL_RESERVATION = `
     }
 `
 
+//Permet d'obtenir les réservations d'un utilisateur (récent à ancien).
+export const GET_RESERVATION = `
+    query GetReservation($userId: String!) {
+        ${VUE_RESERVATION}(where: {utilisateur_id: {_eq: $userId}}, order_by: {${COLUMN_DATE_DEBUT}: asc}) {
+            ${COLUMN_ID}
+            ${COLUMN_NAME}
+            ${COLUMN_DATE_DEBUT}
+            ${COLUMN_DATE_FIN}
+            ${COLUMN_TYPE}
+            ${COLUMN_DESCRIPTION}
+            ${COLUMN_MODEL}
+        }
+    }
+`
+
 //Permet de créer une réservation.
 export const INSERT_RESERVATION = `
     mutation InsertMachinerieReservation($machineryId: Int!, $userId: String!, $startDate: timestamptz!, $endDate: timestamptz!, $typeId: Int!, $userReservationComment: String) {
