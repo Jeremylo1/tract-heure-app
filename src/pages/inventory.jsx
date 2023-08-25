@@ -6,6 +6,8 @@ import Modal from '../components/modal'
 import CustomButton from '../components/button'
 import ShowMachinery from '../components/showmachinery'
 import AvailabilityTable from '../components/availability_table'
+/*Toast*/
+import { ToastContainer } from 'react-toastify'
 /*Formulaire*/
 import FormAddReservation from '../forms/form_addreservation'
 /*Base de données*/

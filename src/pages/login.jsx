@@ -5,6 +5,28 @@ import { AuthContext } from '../utils/react/context'
 /*Style*/
 import 'bulma/css/bulma.min.css'
 
+//Json pour les utilisateurs.
+const users = [
+  {
+    userId: 1,
+    username: 'admin',
+    password: 'admin',
+    userType: 'admin',
+  },
+  {
+    userId: 2,
+    username: 'user',
+    password: 'user',
+    userType: 'user',
+  },
+  {
+    userId: 3,
+    username: 'user2',
+    password: 'user2',
+    userType: 'user',
+  },
+]
+
 //Permet de se connecter à l'application.
 function Connection() {
   const [username, setUsername] = useState('')
@@ -30,13 +52,14 @@ function Connection() {
         setConnectionTryCount(0)
       }
 
+      // Trouvez l'utilisateur qui correspond au nom d'utilisateur et au mot de passe saisis
+      const user = users.find(
+        (user) => user.username === username && user.password === password,
+      )
+
       //Si le nom d'utilisateur et le mot de passe sont corrects, alors on se connecte et on est redirigé vers la page d'accueil.
-      if (
-        (username === 'admin' && password === 'admin') ||
-        (username === 'user' && password === 'user') ||
-        (username === 'user2' && password === 'user2')
-      ) {
-        setLogin(username)
+      if (user) {
+        setLogin(user.userType, user.userId)
         setError('')
 
         const from = location.state?.from || '/'

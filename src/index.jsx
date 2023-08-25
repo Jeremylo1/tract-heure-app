@@ -16,6 +16,8 @@ import AdminCalendar from './pages/admin_calendar' //! À MODIFIER PEUT-ÊTRE
 import Header from './components/header'
 import Footer from './components/footer'
 import Error from './components/error'
+/*Toast*/
+import { ToastContainer } from 'react-toastify'
 /*Utils*/
 import { AuthProvider } from './utils/react/context'
 import { ScreenProvider } from './utils/react/context'
@@ -86,6 +88,7 @@ root.render(
                 </Route>
                 <Route path="*" element={<Error />} />
               </Routes>
+              <ToastContainer hideProgressBar={true} autoClose={2000} />
             </div>
             <StyledFooter>
               {/* Footer en bas de page */}

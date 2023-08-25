@@ -20,11 +20,12 @@ export function AuthProvider({ children }) {
   }, [])
 
   //Fonction pour se connecter.
-  const setLogin = (userType) => {
+  const setLogin = (userType, userId) => {
     setIsConnected(true)
     localStorage.setItem('isConnected', 'true')
     setUserType(userType) //TEMPORAIRE.
     localStorage.setItem('userType', userType) //TEMPORAIRE.
+    localStorage.setItem('userId', userId) //TEMPORAIRE.
   }
 
   //Fonction pour se déconnecter.
@@ -41,7 +42,14 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ userType, isConnected, isInitialized, setLogin, setLogout }}
+      value={{
+        userType,
+        isConnected,
+        isInitialized,
+        setLogin,
+        setLogout,
+        userId: localStorage.getItem('userId'),
+      }} // exposez l'ID de l'utilisateur
     >
       {children}
     </AuthContext.Provider>
