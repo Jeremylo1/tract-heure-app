@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useMutationHasura } from '../utils/react/hooks'
 import { toISODateTime } from '../utils/reusable/functions'
 /*Composants*/
 import CustomButton from '../components/button'
 import AvailabilityTable from '../components/availability_table'
+/*Toast*/
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 /*Base de données*/
 import {
   LIEN_API,
@@ -31,6 +34,8 @@ function FormAddReservation({
   const [reservationType, setReservationType] = useState(null)
   //Pour stocker le commentaire de la réservation.
   const [reservationComment, setReservationComment] = useState('')
+  //Succès lors de l'enregistrement.
+  const [successMutation, setSuccessMutation] = useState(false)
 
   //Permet d'envoyer une requête de mutation (INSERT, GET) à Hasura.
   const { doMutation } = useMutationHasura(LIEN_API)
@@ -40,7 +45,7 @@ function FormAddReservation({
     try {
       const responseDataMutation = await doMutation(INSERT_RESERVATION, {
         machineryId: machinery.id,
-        userId: '1', // TODO: Remplacer par l'ID de l'utilisateur connecté
+        userId: localStorage.getItem('userId'), //TEMPORAIRE.
         //Convertir les dates et heures en objets Date format ISO pour faciliter la comparaison avec " ".
         startDate: toISODateTime(startDate, startTime),
         endDate: toISODateTime(endDate, endTime),
@@ -48,24 +53,36 @@ function FormAddReservation({
         userReservationComment: reservationComment ? reservationComment : null,
       })
       if (responseDataMutation) {
-        //Réinitialise les valeurs après la soumission.
-        setStartDate(null)
-        setStartTime(null)
-        setEndDate(null)
-        setEndTime(null)
-        setReservationType(null)
-        setReservationComment('')
-
-        //Ferme la modale.
-        onClose()
+        setSuccessMutation(true) //Pour toast + réinitialisation +fermeture modale.
       }
     } catch (err) {
       console.error(err)
-      alert(
-        "Une erreur s'est produite lors de l'enregistrement de la réservation.",
-      )
+      toast.error("Erreur lors de l'enregistrement de la réservation.")
     }
   }
+
+  /*TOAST DE SUCCÈS ET RÉINITIALISATION DES VARIABLES*/
+  useEffect(() => {
+    if (successMutation) {
+      //Toast de succès.
+      toast.success('Réservation ajoutée.')
+
+      //Réinitialise les valeurs après la soumission.
+      setStartDate(null)
+      setStartTime(null)
+      setEndDate(null)
+      setEndTime(null)
+      setReservationType(null)
+      setReservationComment('')
+      setSuccessMutation(false)
+
+      //Fermeture de la modale.
+      onClose()
+      // setTimeout(() => {
+      //   onClose()
+      // }, 3000)
+    }
+  }, [successMutation, onClose])
 
   /*VÉRIFICATION DE CONFLIT DE RÉSERVATION*/
   //Permet de vérifier si la réservation est en conflit avec une autre réservation existante.
@@ -94,14 +111,14 @@ function FormAddReservation({
 
     //Vérifier si la date/heure de début est dans le passé.
     if (startDateTime < currentDateTime) {
-      alert('Vous ne pouvez pas réserver à une date/heure déjà passée !')
+      toast.error('Date/heure de la réservation déjà passée !')
       return
     }
 
     //Vérifier si la date/heure de début est supérieure à la date/heure de fin.
     if (startDateTime >= endDateTime) {
-      alert(
-        "La date et l'heure de début doivent être antérieures à la date et l'heure de fin!",
+      toast.error(
+        "La date et l'heure de début doivent être antérieures à la date et à l'heure de fin !",
       )
       return
     }
@@ -109,7 +126,7 @@ function FormAddReservation({
     //Vérifier si la durée de la réservation est au moins de 30 minutes.
     const duration = (endDateTime - startDateTime) / (1000 * 60) //Durée en minutes.
     if (duration < 30) {
-      alert("La réservation doit être d'une durée minimale de 30 minutes!")
+      toast.error('Réservation minimale de 30 minutes !')
       return
     }
 
@@ -120,7 +137,7 @@ function FormAddReservation({
     )
 
     if (conflictExists) {
-      alert('Cette machinerie est déjà réservée pour la période sélectionnée.')
+      toast.error('Machine déjà réservée pour la période sélectionnée.')
       return
     } else {
       addReservation()

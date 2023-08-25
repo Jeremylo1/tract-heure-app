@@ -25,7 +25,7 @@ import Icon from '@mdi/react'
 import { mdiArrowLeftThick } from '@mdi/js'
 import { mdiArrowRightThick } from '@mdi/js'
 
-function ShowCalendar({ isAdmin }) {
+function ShowCalendar({ isAdmin = false }) {
   //Pour savoir si c'est la première fois qu'on charge les données.
   const [firstLoading, setFirstLoading] = useState(true)
   //Obtenir la date du LocalStorage ou utilisez la date actuelle si elle n'existe pas
@@ -41,12 +41,20 @@ function ShowCalendar({ isAdmin }) {
 
   const API_REQUEST = isAdmin ? GET_ALL_RESERVATION : GET_RESERVATION
 
+  const userId = localStorage.getItem('userId')
   //Permet de récupérer la liste des réservations.
+  const adminVariables = useMemo(() => ({}), [])
+  const userVariables = useMemo(() => ({ userId }), [userId])
   const {
     data: reservation_data,
     isLoading: reservation_loading,
     error: reservation_error,
-  } = useFetchHasura(LIEN_API, API_REQUEST, firstLoading)
+  } = useFetchHasura(
+    LIEN_API,
+    API_REQUEST,
+    firstLoading,
+    isAdmin ? adminVariables : userVariables,
+  )
 
   //Permet de définir si c'est la première fois qu'on charge la page.
   useEffect(() => {

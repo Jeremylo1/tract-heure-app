@@ -10,7 +10,7 @@ function Calendar() {
 
   return (
     <div>
-      <ShowCalendar isAdmin={true} />
+      <ShowCalendar isAdmin={false} />
     </div>
   )
 }
