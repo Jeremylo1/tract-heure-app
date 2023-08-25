@@ -59,7 +59,11 @@ export const CHECK_MACHINERY_RESERVATION = `
 
 //Permet de modifier une machine.
 export const UPDATE_MACHINERY = `
-  
+    mutation UpdateMachinery($machineryId: Int!, $name: String!, $model: String, $serialNumber: String, $statusId: Int!, $categoryId: Int!, $dateAcquisition: timestamptz, $price: numeric, $totalTime: numeric!, $comment: String, $barcode: String, $location: String) {
+        update_machinerie(where: {id: {_eq: $machineryId}}, _set: {nom: $name, modele: $model, num_serie: $serialNumber, statut_id: $statusId, categorie_id: $categoryId, date_acquisition: $dateAcquisition, prix_achat: $price, heure_utilisation: $totalTime, commentaire: $comment, code_barres: $barcode, localisation: $location}) {
+        affected_rows
+        }
+    }
 `
 
 //Permet d'ajouter une catégorie.
