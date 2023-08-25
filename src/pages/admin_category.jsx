@@ -177,6 +177,7 @@ function AdminCategory() {
         isOpen={isAddModalOpen}
         onClose={() => {
           setAddModalOpen(false)
+          window.location.reload() //Rafraîchissement de la page.
         }}
       />
 

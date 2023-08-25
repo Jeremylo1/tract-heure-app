@@ -40,6 +40,8 @@ function FormAddMachinery() {
   const [location, setLocation] = useState('')
   //Pour savoir si le bouton est cliqué.
   const [isClicked, setIsClicked] = useState(false)
+  //Pour afficher une notification.
+  const [notification, setNotification] = useState('')
 
   //Pour récupérer les catégories.
   const { sortedCategories, category_loading, category_error } = useCategory()
@@ -196,6 +198,10 @@ function FormAddMachinery() {
   /*AFFICHAGE DU FORMULAIRE*/
   return (
     <div>
+      <div className="notification">
+        {notification}
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit lorem ipsum.
+      </div>
       <p>
         Veuillez remplir les informations ci-dessous pour ajouter une machine.
       </p>
