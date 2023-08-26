@@ -40,6 +40,11 @@ export { formatShortDate }
 //Permet de formater une date et de l'afficher en format simple.
 //Par exemple: 2021-03-01T15:00:00.000Z => yyyy-mm-dd.
 function formatInputDate(dateString) {
+  //Si la date est nulle ou indéfinie, retourner null.
+  if (dateString === null || undefined) {
+    return null
+  }
+  //Sinon, retourner la date formatée.
   const date = new Date(dateString)
   let month = '' + (date.getMonth() + 1)
   let day = '' + date.getDate()
@@ -47,7 +52,6 @@ function formatInputDate(dateString) {
 
   if (month.length < 2) month = '0' + month
   if (day.length < 2) day = '0' + day
-
   return [year, month, day].join('-')
 }
 

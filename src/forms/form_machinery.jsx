@@ -13,8 +13,8 @@ import {
   LIEN_API,
   COLUMN_ID,
   COLUMN_NAME,
-  COLUMN_CATEGORY,
-  COLUMN_STATUS,
+  COLUMN_CATEGORY_ID,
+  COLUMN_STATUS_ID,
   COLUMN_MODEL,
   COLUMN_SERIAL_NUMBER,
   COLUMN_BARCODE,
@@ -45,10 +45,10 @@ function FormMachinery({ closeModal, selectedMachinery }) {
     selectedMachinery ? selectedMachinery[COLUMN_NAME] : '',
   )
   const [selectedCategoryId, setSelectedCategoryId] = useState(
-    selectedMachinery ? selectedMachinery[COLUMN_CATEGORY] : 1,
+    selectedMachinery ? selectedMachinery[COLUMN_CATEGORY_ID] : 1,
   )
   const [selectedStatusId, setSelectedStatusId] = useState(
-    selectedMachinery ? selectedMachinery[COLUMN_STATUS] : 1,
+    selectedMachinery ? selectedMachinery[COLUMN_STATUS_ID] : 1,
   )
   const [modelMachine, setModelMachine] = useState(
     selectedMachinery ? selectedMachinery[COLUMN_MODEL] : '',
@@ -414,7 +414,7 @@ function FormMachinery({ closeModal, selectedMachinery }) {
             {FormField({
               label: "Date d'acquisition",
               typeInput: 'date',
-              value: formatInputDate(dateAcquisition),
+              value: formatInputDate(dateAcquisition), //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
               functionOnChange: setDateAcquisition,
             })}
             {/*Commentaire*/}
@@ -424,7 +424,7 @@ function FormMachinery({ closeModal, selectedMachinery }) {
                 <textarea
                   className="textarea"
                   placeholder="Commentaire à propos de la machine"
-                  value={comment}
+                  value={comment ? comment : ''}
                   onChange={(e) => setComment(e.target.value)}
                 />
               </div>
@@ -466,5 +466,4 @@ FormMachinery.propTypes = {
 export default FormMachinery
 
 /*À FAIRE :
-- Gestions des erreurs pour la modification (date au mauvais format, etc.).
-- Bouton qui change en fonction de modification ou ajout (pour catégorie aussi).*/
+- Gestions des erreurs pour la modification (date au mauvais format, etc.).*/

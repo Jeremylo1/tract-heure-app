@@ -14,7 +14,8 @@ import {
   COLUMN_MODEL,
   COLUMN_SERIAL_NUMBER,
   COLUMN_STATUS,
-  COLUMN_CATEGORY,
+  COLUMN_STATUS_ID,
+  COLUMN_CATEGORY_ID,
   COLUMN_DATE,
   COLUMN_PRICE,
   COLUMN_HOURS,
@@ -71,8 +72,9 @@ function ShowMachinery({ functionButtons }) {
       ${VUE_MACHINERY} {
         ${COLUMN_ID}
         ${COLUMN_NAME}
-        ${COLUMN_CATEGORY}
+        ${COLUMN_CATEGORY_ID}
         ${COLUMN_STATUS}
+        ${COLUMN_STATUS_ID}
         ${COLUMN_MODEL}
         ${COLUMN_SERIAL_NUMBER}
         ${COLUMN_DATE}
@@ -105,7 +107,7 @@ function ShowMachinery({ functionButtons }) {
         //Autres catégories (ordre alphabétique).
       } else {
         filteredData = filteredData.filter(
-          (machine) => machine[COLUMN_CATEGORY] === selectedCategoryId,
+          (machine) => machine[COLUMN_CATEGORY_ID] === selectedCategoryId,
         )
         setFilteredMachineryData(filteredData.sort(sortByMachineName))
       }
