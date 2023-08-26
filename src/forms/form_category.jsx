@@ -199,7 +199,11 @@ function FormCategory({ closeModal, selectedCategory }) {
       {showForm ? (
         /*Formulaire à remplir.*/
         <>
-          <p>Veuillez entrer le nom de la catégorie.</p>
+          <p>
+            {selectedCategory
+              ? 'Veuillez modifier le nom de la catégorie.'
+              : 'Veuillez entrer le nom de la catégorie.'}
+          </p>
           <form onSubmit={handleClickCategory}>
             {/*Nom de la catégorie*/}
             <div className="field">
@@ -223,14 +227,14 @@ function FormCategory({ closeModal, selectedCategory }) {
                 <p className="help is-danger">{error}</p>
               ) : null}
             </div>
-            {/*Bouton d'ajout*/}
+            {/*Bouton de confirmation*/}
             <div className="has-text-centered">
               <CustomButton
                 type="submit"
                 color={colors.greenButton}
                 hovercolor={colors.greenButtonHover}
               >
-                Ajouter
+                {selectedCategory ? 'Modifier' : 'Ajouter'}
               </CustomButton>
             </div>
           </form>

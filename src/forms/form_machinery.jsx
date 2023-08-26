@@ -311,8 +311,9 @@ function FormMachinery({ closeModal, selectedMachinery }) {
         /*Formulaire à remplir.*/
         <>
           <p>
-            Veuillez remplir les informations ci-dessous pour ajouter une
-            machine.
+            {selectedMachinery
+              ? 'Vous pouvez modifier les informations ci-dessous.'
+              : 'Veuillez remplir les informations ci-dessous.'}
           </p>
           <form onSubmit={handleClickMachinery}>
             {/*Nom*/}
@@ -436,14 +437,14 @@ function FormMachinery({ closeModal, selectedMachinery }) {
               value: location,
               functionOnChange: setLocation,
             })}
-            {/*Bouton d'ajout*/}
+            {/*Bouton de confirmation*/}
             <div className="has-text-centered">
               <CustomButton
                 type="submit"
                 color={colors.greenButton}
                 hovercolor={colors.greenButtonHover}
               >
-                Ajouter
+                {selectedMachinery ? 'Modifier' : 'Ajouter'}
               </CustomButton>
             </div>
           </form>
