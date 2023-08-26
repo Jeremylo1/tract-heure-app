@@ -17,9 +17,21 @@ const StyledButton = styled.button`
 `
 
 //Bouton personnalisé pour naviguer vers une autre page ou exécuter une fonction.
-function CustomButton({ to, functionclick, color, hovercolor, children }) {
+function CustomButton({
+  to,
+  functionclick,
+  color,
+  hovercolor,
+  disabled,
+  children,
+}) {
   const navigate = useNavigate()
   function handleClick() {
+    //Si le bouton est désactivé, ne rien faire.
+    if (disabled) {
+      return
+    }
+
     //Si la prop "to" est définie, naviguer vers la page correspondante.
     if (to) {
       navigate(to)
@@ -36,17 +48,20 @@ function CustomButton({ to, functionclick, color, hovercolor, children }) {
       color={color}
       hovercolor={hovercolor}
       aria-label={children}
+      disabled={disabled}
     >
       {children}
     </StyledButton>
   )
 }
 
-//Définition des props du bouton.
+//Vérification des props.
 CustomButton.propTypes = {
   to: PropTypes.string,
   functionclick: PropTypes.func,
   color: PropTypes.string,
+  hovercolor: PropTypes.string,
+  disabled: PropTypes.bool, //Pour savoir si le bouton est désactivé.
   children: PropTypes.node.isRequired,
 }
 
