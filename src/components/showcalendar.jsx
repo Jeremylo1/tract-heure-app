@@ -355,7 +355,7 @@ function ShowCalendar({ isAdmin = false }) {
                             }
 
                             return (
-                              <>
+                              <React.Fragment key={event.id}>
                                 <div
                                   className={`box event ${eventType(
                                     event.type,
@@ -392,7 +392,7 @@ function ShowCalendar({ isAdmin = false }) {
                                     }}
                                   ></div>
                                 )}
-                              </>
+                              </React.Fragment>
                             )
                           })}
                         </>

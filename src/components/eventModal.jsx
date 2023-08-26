@@ -60,16 +60,16 @@ function EventModal({ isOpen, onClose, event }) {
             <div>
               {event?.description ? (
                 <>
-                  <h2>Description:</h2>
+                  <h2>Commentaire</h2>
                   <p>{event?.description}</p>
                 </>
               ) : null}
 
-              <h3>Type:</h3>
+              <h3>Type</h3>
               <p>{eventType(event?.type)}</p>
-              <h3>Date de début:</h3>
+              <h3>Date de début</h3>
               <p>{event?.start?.toLocaleString()}</p>
-              <h3>Date de fin:</h3>
+              <h3>Date de fin</h3>
               <p>{event?.end?.toLocaleString()}</p>
               <CustomButton
                 color={colors.redButton}
