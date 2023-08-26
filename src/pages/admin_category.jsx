@@ -38,6 +38,8 @@ function AdminCategory() {
   const [isEditModalOpen, setEditModalOpen] = useState(false)
   //Hook pour la gestion de la modale de suppression.
   const [isDelModalOpen, setDelModalOpen] = useState(false)
+  //Pour savoir si on affiche l'icône de succès.
+  const [isSuccess, setIsSuccess] = useState(false)
 
   //Pour savoir si c'est un appareil mobile.
   const { isMobile } = useContext(ScreenContext)
@@ -78,15 +80,20 @@ function AdminCategory() {
       //Si la suppression a fonctionné.
       if (deleteCategory?.delete_machinerie_categorie?.affected_rows > 0) {
         toast.success('Catégorie supprimée.')
+        //Affichage de l'icône de succès.
+        setIsSuccess(true)
+        //Fermeture de la modale + rafraîchissement de la page après 3s.
+        setTimeout(() => {
+          setDelModalOpen(false)
+          window.location.reload()
+        }, 3000)
       } else {
         toast.error("La catégorie n'a pas été supprimée.")
+        //Fermeture de la modale.
+        setTimeout(() => {
+          setDelModalOpen(false)
+        }, 3000)
       }
-
-      //Fermeture de la modale + rafraîchissement de la page après 2s.
-      setTimeout(() => {
-        setDelModalOpen(false)
-        window.location.reload()
-      }, 3000)
     }
   }
 

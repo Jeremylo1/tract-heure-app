@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useCategory, useMutationHasura } from '../utils/react/hooks'
 /*Composants*/
 import CustomButton from '../components/button'
+import ModalSuccess from '../components/message_success_modal'
 /*Types*/
 import PropTypes from 'prop-types'
 /*Toast*/
@@ -34,8 +35,8 @@ function FormCategory({ closeModal, selectedCategory }) {
   //Erreur et succès lors de l'enregistrement.
   const [errorMutation, setErrorMutation] = useState(false)
   const [successMutation, setSuccessMutation] = useState(false)
-  //Pour savoir si le champ est désactivé.
-  const [isDisabled, setIsDisabled] = useState(false)
+  //Pour savoir si on affiche le formulaire ou l'icône de succès.
+  const [showForm, setShowForm] = useState(true)
 
   //Pour récupérer les catégories existantes (pour comparaison).
   const { sortedCategories, category_error } = useCategory()
@@ -165,24 +166,19 @@ function FormCategory({ closeModal, selectedCategory }) {
       }
 
       //Réinitialisation des variables.
-      //NOTE : le rafraîchissement de la page réinitialise les variables.
-      //Pas de réinitialisation de nameCategory pour que l'utilisateur puisse le voir dans le champ désactivé.
+      setNameCategory('')
       setError('')
       setIsClicked(false)
       setSameCategory(false)
       setErrorMutation(false)
       setSuccessMutation(false)
 
-      //Désactivation du champ pendant le délai.
-      setIsDisabled(true)
+      //Affichage de l'icône de succès.
+      setShowForm(false)
 
-      //Dans un délai de 3s.
+      //Fermeture de la modale après 3s.
       setTimeout(() => {
-        //Fermeture de la modale.
         closeModal()
-        //Réinitialisation des variables restantes.
-        setNameCategory('')
-        setIsDisabled(false)
       }, 3000)
     }
   }, [successMutation, selectedCategory, closeModal])
@@ -195,46 +191,54 @@ function FormCategory({ closeModal, selectedCategory }) {
     sameCategory: PropTypes.bool,
     errorMutation: PropTypes.bool,
     successMutation: PropTypes.bool,
-    isDisabled: PropTypes.bool,
   }
 
   /*AFFICHAGE DU FORMULAIRE*/
   return (
     <div>
-      <p>Veuillez entrer le nom de la catégorie.</p>
-      <form onSubmit={handleClickCategory}>
-        {/*Nom de la catégorie*/}
-        <div className="field">
-          <label className="label">Nom de la catégorie</label>
-          <div className="control">
-            <input
-              className={
-                /*Si bouton cliqué + erreur -> cadre rouge.*/
-                isClicked && error ? `input ${error && 'is-danger'}` : 'input'
-              }
-              type="text"
-              placeholder={isDisabled ? '' : 'Entrez le nom de la catégorie'}
-              value={nameCategory}
-              onChange={(e) => setNameCategory(e.target.value)}
-              disabled={isDisabled}
-            />
-          </div>
-          {isClicked && error ? (
-            /*Si bouton cliqué + erreur -> message d'erreur.*/
-            <p className="help is-danger">{error}</p>
-          ) : null}
-        </div>
-        {/*Bouton d'ajout*/}
-        <div className="has-text-centered">
-          <CustomButton
-            type="submit"
-            color={colors.greenButton}
-            hovercolor={colors.greenButtonHover}
-          >
-            Ajouter
-          </CustomButton>
-        </div>
-      </form>
+      {showForm ? (
+        /*Formulaire à remplir.*/
+        <>
+          <p>Veuillez entrer le nom de la catégorie.</p>
+          <form onSubmit={handleClickCategory}>
+            {/*Nom de la catégorie*/}
+            <div className="field">
+              <label className="label">Nom de la catégorie</label>
+              <div className="control">
+                <input
+                  className={
+                    /*Si bouton cliqué + erreur -> cadre rouge.*/
+                    isClicked && error
+                      ? `input ${error && 'is-danger'}`
+                      : 'input'
+                  }
+                  type="text"
+                  placeholder="Entrez le nom de la catégorie"
+                  value={nameCategory}
+                  onChange={(e) => setNameCategory(e.target.value)}
+                />
+              </div>
+              {isClicked && error ? (
+                /*Si bouton cliqué + erreur -> message d'erreur.*/
+                <p className="help is-danger">{error}</p>
+              ) : null}
+            </div>
+            {/*Bouton d'ajout*/}
+            <div className="has-text-centered">
+              <CustomButton
+                type="submit"
+                color={colors.greenButton}
+                hovercolor={colors.greenButtonHover}
+              >
+                Ajouter
+              </CustomButton>
+            </div>
+          </form>
+        </>
+      ) : (
+        /*Icône de succès.*/
+        <ModalSuccess />
+      )}
     </div>
   )
 }

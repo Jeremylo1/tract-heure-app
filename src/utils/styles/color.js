@@ -15,6 +15,8 @@ const colors = {
   colorePast: '#A9A9A9',
   colorPresent: '#6ECB63',
   colorFuture: '#00B4D8',
+  /* Couleur de l'icône de succès */
+  colorSuccess: '#07BC0C',
 }
 
 export default colors

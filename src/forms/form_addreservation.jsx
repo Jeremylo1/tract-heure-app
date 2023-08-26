@@ -77,6 +77,7 @@ function FormAddReservation({
       setReservationComment('')
       setSuccessMutation(false)
 
+      //Affichage du message de succès.
       setShowForm(false)
 
       //Fermeture de la modale.
