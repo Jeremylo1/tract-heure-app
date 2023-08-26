@@ -39,7 +39,7 @@ export { formatShortDate }
 
 //Permet de formater une date et de l'afficher en format simple.
 //Par exemple: 2021-03-01T15:00:00.000Z => yyyy-mm-dd.
-function formatDateSimple(dateString) {
+function formatSimpleDate(dateString) {
   return dateString.toLocaleDateString('fr-FR', {
     year: 'numeric',
     month: '2-digit',
@@ -47,7 +47,7 @@ function formatDateSimple(dateString) {
   })
 }
 
-export { formatDateSimple }
+export { formatSimpleDate }
 
 //Permet de formater une heure et de l'afficher.
 //Par exemple: 2021-03-01T15:00:00.000Z => 11:00.
