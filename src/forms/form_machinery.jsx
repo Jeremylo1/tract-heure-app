@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useCategory, useStatus, useMutationHasura } from '../utils/react/hooks'
 import { toISODateTime } from '../utils/reusable/functions'
+/*Composants*/
 import CustomButton from '../components/button'
 /*Types*/
 import PropTypes from 'prop-types'
@@ -10,6 +11,7 @@ import {
   COLUMN_ID,
   COLUMN_NAME,
   INSERT_MACHINERY,
+  UPDATE_MACHINERY,
 } from '../utils/database/query'
 /*Style*/
 import colors from '../utils/styles/color'
@@ -21,8 +23,10 @@ const StyledPart = styled.div`
   margin-bottom: 15px;
 `
 
-//Formulaire d'ajout d'une machine.
-function FormMachinery() {
+/*NOTE : si il y a 'selectedMachinery', c'est une modification, sinon c'est un ajout.*/
+
+//Formulaire d'ajout et de modification de machine.
+function FormMachinery({ closeModal, selectedMachinery }) {
   //Erreurs possibles.
   const [errorName, setErrorName] = useState('')
   const [errorTime, setErrorTime] = useState('')
@@ -41,13 +45,11 @@ function FormMachinery() {
   const [location, setLocation] = useState('')
   //Pour savoir si le bouton est cliqué.
   const [isClicked, setIsClicked] = useState(false)
-  //Pour afficher une notification.
-  const [notification, setNotification] = useState('')
 
   //Pour récupérer les catégories.
-  const { sortedCategories, category_loading, category_error } = useCategory()
+  const { sortedCategories, category_error } = useCategory()
   //Pour récupérer les statuts.
-  const { status, status_loading, status_error } = useStatus()
+  const { status, status_error } = useStatus()
   //Permet d'envoyer une requête de mutation (INSERT, UPDATE) à Hasura.
   const { doMutation } = useMutationHasura(LIEN_API)
 
@@ -199,10 +201,6 @@ function FormMachinery() {
   /*AFFICHAGE DU FORMULAIRE*/
   return (
     <div>
-      <div className="notification">
-        {notification}
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit lorem ipsum.
-      </div>
       <p>
         Veuillez remplir les informations ci-dessous pour ajouter une machine.
       </p>
@@ -345,7 +343,7 @@ FormMachinery.propTypes = {}
 export default FormMachinery
 
 /*À FAIRE :
-- Notifications au-dessus du formulaire (pour les erreurs).
+- Toasts pour les erreurs et les succès.
 - Gestion d'erreurs (category_error, status_error) + loading.
 - Fermeture de la modale après ajout.
 - Rafraîchissement de la page.

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import CustomButton from '../components/button'
 import { useCategory, useMutationHasura } from '../utils/react/hooks'
+/*Composants*/
+import CustomButton from '../components/button'
 /*Types*/
 import PropTypes from 'prop-types'
 /*Toast*/
@@ -18,7 +19,7 @@ import colors from '../utils/styles/color'
 
 /*NOTE : si il y a 'selectedCategory', c'est une modification, sinon c'est un ajout.*/
 
-//Formulaire d'ajout d'une catégorie.
+//Formulaire d'ajout et de modification de catégorie.
 function FormCategory({ closeModal, selectedCategory }) {
   //Pour stocker la donnée du formulaire.
   const [nameCategory, setNameCategory] = useState(
@@ -32,7 +33,7 @@ function FormCategory({ closeModal, selectedCategory }) {
   const [sameCategory, setSameCategory] = useState(false)
   //Erreur lors de l'enregistrement.
   const [errorMutation, setErrorMutation] = useState(false)
-  //Succès lors de l'ajout.
+  //Succès lors de l'enregistrement.
   const [successMutation, setSuccessMutation] = useState(false)
   //Pour savoir si le champ est désactivé.
   const [isDisabled, setIsDisabled] = useState(false)
