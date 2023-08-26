@@ -28,7 +28,7 @@ function FormDelCategory({ closeModal, selectedCategory }) {
   //Pour savoir si on affiche le formulaire ou l'icône de succès.
   const [showForm, setShowForm] = useState(true)
 
-  //Permet d'envoyer une requête de mutation (INSERT, UPDATE, DELETE) à Hasura.
+  //Permet d'envoyer une requête de mutation (DELETE) à Hasura.
   const { doMutation } = useMutationHasura(LIEN_API)
 
   /*FONCTION AGISSANT À L'ENVOI DU FORMULAIRE*/

@@ -34,6 +34,8 @@ function AdminMachinery() {
   const [selectedMachinery, setSelectedMachinery] = useState(null)
   //Hook pour la gestion de la modale d'ajout.
   const [isAddModalOpen, setAddModalOpen] = useState(false)
+  //Hook pour la gestion de la modale de modification.
+  const [isEditModalOpen, setEditModalOpen] = useState(false)
   //Hook pour la gestion de la modale de suppression.
   const [isDelModalOpen, setDelModalOpen] = useState(false)
 
@@ -122,8 +124,10 @@ function AdminMachinery() {
         </p>
         <p className="control">
           <CustomButton
-            /*functionclick={() => {
-            }}*/
+            functionclick={() => {
+              setEditModalOpen(true) /*Pour la modale de modification.*/
+              setSelectedMachinery(machinery)
+            }}
             color={colors.greenButton}
             hovercolor={colors.greenButtonHover}
           >
@@ -161,13 +165,29 @@ function AdminMachinery() {
           <FormMachinery
             closeModal={() => {
               setAddModalOpen(false) //Fermeture de la modale.
-              window.location.reload() //Rafraîchissement de la page.
             }}
           />
         }
         isOpen={isAddModalOpen}
         onClose={() => {
           setAddModalOpen(false)
+        }}
+      />
+
+      {/* MODALE POUR MODIFIER UNE MACHINE */}
+      <Modal
+        title={'Modifier une machine'}
+        content={
+          <FormMachinery
+            closeModal={() => {
+              setEditModalOpen(false) //Fermeture de la modale.
+            }}
+            selectedMachinery={selectedMachinery}
+          />
+        }
+        isOpen={isEditModalOpen}
+        onClose={() => {
+          setEditModalOpen(false)
         }}
       />
 

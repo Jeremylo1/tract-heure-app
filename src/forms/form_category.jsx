@@ -181,7 +181,7 @@ function FormCategory({ closeModal, selectedCategory }) {
         window.location.reload()
       }, 3000)
     }
-  }, [successMutation, selectedCategory, closeModal])
+  }, [successMutation, closeModal, selectedCategory])
 
   //Vérification des types des variables.
   FormCategory.propTypes = {

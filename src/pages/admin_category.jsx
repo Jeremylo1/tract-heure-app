@@ -123,6 +123,7 @@ function AdminCategory() {
           <div>{tableCategory()}</div>
         </div>
       </div>
+
       {/* MODALE POUR AJOUTER UNE CATÉGORIE */}
       <Modal
         title={'Ajouter une catégorie'}
@@ -130,7 +131,6 @@ function AdminCategory() {
           <FormCategory
             closeModal={() => {
               setAddModalOpen(false) //Fermeture de la modale.
-              window.location.reload() //Rafraîchissement de la page.
             }}
           />
         }
@@ -139,6 +139,7 @@ function AdminCategory() {
           setAddModalOpen(false)
         }}
       />
+
       {/* MODALE POUR MODIFIER UNE CATÉGORIE */}
       <Modal
         title={'Modifier une catégorie'}
@@ -155,6 +156,7 @@ function AdminCategory() {
           setEditModalOpen(false)
         }}
       />
+
       {/* MODALE POUR SUPPRIMER UNE CATÉGORIE */}
       <Modal
         title={'Supprimer une catégorie'}

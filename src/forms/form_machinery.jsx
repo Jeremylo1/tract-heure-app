@@ -13,6 +13,16 @@ import {
   LIEN_API,
   COLUMN_ID,
   COLUMN_NAME,
+  COLUMN_CATEGORY,
+  COLUMN_STATUS,
+  COLUMN_MODEL,
+  COLUMN_SERIAL_NUMBER,
+  COLUMN_BARCODE,
+  COLUMN_DATE,
+  COLUMN_PRICE,
+  COLUMN_HOURS,
+  COLUMN_COMMENT,
+  COLUMN_LOCATION,
   INSERT_MACHINERY,
   UPDATE_MACHINERY,
 } from '../utils/database/query'
@@ -31,17 +41,39 @@ const StyledPart = styled.div`
 //Formulaire d'ajout et de modification de machine.
 function FormMachinery({ closeModal, selectedMachinery }) {
   //Pour stocker les données du formulaire.
-  const [nameMachine, setNameMachine] = useState('')
-  const [selectedCategoryId, setSelectedCategoryId] = useState(1)
-  const [selectedStatusId, setSelectedStatusId] = useState(1)
-  const [modelMachine, setModelMachine] = useState('')
-  const [serialNumber, setSerialNumber] = useState('')
-  const [barcode, setBarcode] = useState('')
-  const [totalTime, setTotalTime] = useState('')
-  const [price, setPrice] = useState('')
-  const [dateAcquisition, setDateAcquisition] = useState('')
-  const [comment, setComment] = useState('')
-  const [location, setLocation] = useState('')
+  const [nameMachine, setNameMachine] = useState(
+    selectedMachinery ? selectedMachinery[COLUMN_NAME] : '',
+  )
+  const [selectedCategoryId, setSelectedCategoryId] = useState(
+    selectedMachinery ? selectedMachinery[COLUMN_CATEGORY] : 1,
+  )
+  const [selectedStatusId, setSelectedStatusId] = useState(
+    selectedMachinery ? selectedMachinery[COLUMN_STATUS] : 1,
+  )
+  const [modelMachine, setModelMachine] = useState(
+    selectedMachinery ? selectedMachinery[COLUMN_MODEL] : '',
+  )
+  const [serialNumber, setSerialNumber] = useState(
+    selectedMachinery ? selectedMachinery[COLUMN_SERIAL_NUMBER] : '',
+  )
+  const [barcode, setBarcode] = useState(
+    selectedMachinery ? selectedMachinery[COLUMN_BARCODE] : '',
+  )
+  const [totalTime, setTotalTime] = useState(
+    selectedMachinery ? selectedMachinery[COLUMN_HOURS] : '',
+  )
+  const [price, setPrice] = useState(
+    selectedMachinery ? selectedMachinery[COLUMN_PRICE] : '',
+  )
+  const [dateAcquisition, setDateAcquisition] = useState(
+    selectedMachinery ? selectedMachinery[COLUMN_DATE] : '',
+  )
+  const [comment, setComment] = useState(
+    selectedMachinery ? selectedMachinery[COLUMN_COMMENT] : '',
+  )
+  const [location, setLocation] = useState(
+    selectedMachinery ? selectedMachinery[COLUMN_LOCATION] : '',
+  )
   //Erreurs dans les données du formulaire.
   const [errorName, setErrorName] = useState('')
   const [errorTime, setErrorTime] = useState('')
@@ -127,7 +159,8 @@ function FormMachinery({ closeModal, selectedMachinery }) {
   /*AJOUT DE LA MACHINE DANS LA BASE DE DONNÉES*/
   const addMachinery = async () => {
     try {
-      const resultMutation = await doMutation(INSERT_MACHINERY, {
+      /*VARIABLES POUR LES REQUÊTES*/
+      const variables = {
         //Obligatoire.
         name: nameMachine,
         categoryId: selectedCategoryId,
@@ -143,11 +176,29 @@ function FormMachinery({ closeModal, selectedMachinery }) {
           : null,
         comment: comment ? comment : null,
         location: location ? location : null,
-      })
+      }
+      /*VERSION POUR MODIFICATION*/
+      if (selectedMachinery) {
+        const resultMutation = await doMutation(UPDATE_MACHINERY, {
+          machineryId: selectedMachinery?.[COLUMN_ID],
+          ...variables,
+        })
 
-      //Si l'ajout a fonctionné.
-      if (resultMutation?.insert_machinerie?.affected_rows > 0) {
-        setSuccessMutation(true) //Pour toast + réinitialisation des variables.
+        //Si la modification a fonctionné.
+        if (resultMutation?.update_machinerie?.affected_rows > 0) {
+          setSuccessMutation(true) //Pour toast + réinitialisation des variables.
+        }
+
+        /*VERSION POUR AJOUT*/
+      } else {
+        const resultMutation = await doMutation(INSERT_MACHINERY, {
+          ...variables,
+        })
+
+        //Si l'ajout a fonctionné.
+        if (resultMutation?.insert_machinerie?.affected_rows > 0) {
+          setSuccessMutation(true) //Pour toast + réinitialisation des variables.
+        }
       }
       /*ERREUR*/
     } catch (err) {
@@ -159,8 +210,12 @@ function FormMachinery({ closeModal, selectedMachinery }) {
   /*TOAST DE SUCCÈS ET RÉINITIALISATION DES VARIABLES*/
   useEffect(() => {
     if (successMutation) {
-      //Toast de succès.
-      toast.success('Machine ajoutée.')
+      //Toast de succès selon l'action.
+      if (selectedMachinery) {
+        toast.success('Machine modifiée.')
+      } else {
+        toast.success('Machine ajoutée.')
+      }
 
       //Réinitialisation des champs.
       setNameMachine('')
@@ -192,7 +247,17 @@ function FormMachinery({ closeModal, selectedMachinery }) {
         window.location.reload()
       }, 3000)
     }
-  }, [successMutation, closeModal])
+  }, [successMutation, closeModal, selectedMachinery])
+
+  //Vérification des types des variables.
+  FormMachinery.propTypes = {
+    errorName: PropTypes.string,
+    errorTime: PropTypes.string,
+    errorPrice: PropTypes.string,
+    isClicked: PropTypes.bool,
+    errorMutation: PropTypes.bool,
+    successMutation: PropTypes.bool,
+  }
 
   /*COMPOSANT POUR LES CHAMPS DU FORMULAIRE*/
   function FormField({
@@ -216,7 +281,7 @@ function FormMachinery({ closeModal, selectedMachinery }) {
             type={typeInput}
             step={hasStep ? '0.1' : null} //Si le champ a un step, on l'ajoute.
             placeholder={placeholder}
-            value={value}
+            value={value ? value : ''}
             onChange={(e) => functionOnChange(e.target.value)}
           />
         </div>
@@ -228,7 +293,7 @@ function FormMachinery({ closeModal, selectedMachinery }) {
     )
   }
 
-  //Vérification des types.
+  //Vérification des types des variables.
   FormField.propTypes = {
     label: PropTypes.string.isRequired,
     typeInput: PropTypes.string.isRequired,
@@ -400,6 +465,5 @@ FormMachinery.propTypes = {
 export default FormMachinery
 
 /*À FAIRE :
-- Fermeture de la modale après ajout.
-- Rafraîchissement de la page.
-- Modification d'une machine (template à réutiliser).*/
+- Gestions des erreurs pour la modification (date au mauvais format, etc.).
+- Bouton qui change en fonction de modification ou ajout (pour catégorie aussi).*/
