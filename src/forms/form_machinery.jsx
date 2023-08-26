@@ -3,8 +3,11 @@ import { useCategory, useStatus, useMutationHasura } from '../utils/react/hooks'
 import { toISODateTime } from '../utils/reusable/functions'
 /*Composants*/
 import CustomButton from '../components/button'
+import ModalSuccess from '../components/message_success_modal'
 /*Types*/
 import PropTypes from 'prop-types'
+/*Toast*/
+import { toast } from 'react-toastify'
 /*Base de données*/
 import {
   LIEN_API,
@@ -48,6 +51,8 @@ function FormMachinery({ closeModal, selectedMachinery }) {
   //Erreur et succès lors de l'enregistrement.
   const [errorMutation, setErrorMutation] = useState(false)
   const [successMutation, setSuccessMutation] = useState(false)
+  //Pour savoir si on affiche le formulaire ou l'icône de succès.
+  const [showForm, setShowForm] = useState(true)
 
   //Pour récupérer les catégories (pour le sélecteur).
   const { sortedCategories, category_error } = useCategory()
@@ -61,16 +66,15 @@ function FormMachinery({ closeModal, selectedMachinery }) {
     e.preventDefault()
     setIsClicked(true) //Si le bouton est cliqué.
 
-    console.log('errorName', errorName) //DEBUG !
-    console.log('errorTime', errorTime) //DEBUG !
-    console.log('errorPrice', errorPrice) //DEBUG !
-
-    //Vérification des erreurs.
+    //Si erreur, ne pas exécuter la fonction.
     if (errorName || errorTime || errorPrice) {
       return
     }
 
-    console.log('ENFIN !') //DEBUG !
+    //Si erreur de base de données, ne pas exécuter la fonction.
+    if (category_error || status_error) {
+      return
+    }
 
     //Ajout de la machine.
     await addMachinery()
@@ -105,6 +109,21 @@ function FormMachinery({ closeModal, selectedMachinery }) {
     }
   }, [nameMachine, totalTime, price])
 
+  /*VÉRIFICATION POUR LE TOAST D'ERREUR*/
+  useEffect(() => {
+    //Affichage d'un toast en cas d'erreur.
+    if (category_error) {
+      toast.error('Erreur lors de la récupération des catégories.')
+    }
+    if (status_error) {
+      toast.error('Erreur lors de la récupération des statuts.')
+    }
+    if (errorMutation) {
+      toast.error("Erreur lors de l'enregistrement de la machine.")
+      setErrorMutation(false) //Pour pouvoir afficher le toast à nouveau.
+    }
+  }, [category_error, status_error, errorMutation])
+
   /*AJOUT DE LA MACHINE DANS LA BASE DE DONNÉES*/
   const addMachinery = async () => {
     try {
@@ -125,36 +144,55 @@ function FormMachinery({ closeModal, selectedMachinery }) {
         comment: comment ? comment : null,
         location: location ? location : null,
       })
-      console.log('Résultat ajout', resultMutation) //DEBUG !
 
       //Si l'ajout a fonctionné.
-      if (resultMutation) {
-        alert('Machine ajoutée avec succès.')
-
-        //Réinitialisation des champs.
-        setNameMachine('')
-        setSelectedCategoryId(1)
-        setSelectedStatusId(1)
-        setModelMachine('')
-        setSerialNumber('')
-        setBarcode('')
-        setTotalTime('')
-        setPrice('')
-        setDateAcquisition('')
-        setComment('')
-        setLocation('')
-
-        //Réinitialisation des erreurs.
-        setErrorName('')
-        setErrorTime('')
-        setErrorPrice('')
+      if (resultMutation?.insert_machinerie?.affected_rows > 0) {
+        setSuccessMutation(true) //Pour toast + réinitialisation des variables.
       }
-      //Si l'ajout n'a pas fonctionné.
+      /*ERREUR*/
     } catch (err) {
       console.error(err)
-      alert("Une erreur s'est produite lors de l'enregistrement de la machine.")
+      setErrorMutation(true) //Pour afficher un toast.
     }
   }
+
+  /*TOAST DE SUCCÈS ET RÉINITIALISATION DES VARIABLES*/
+  useEffect(() => {
+    if (successMutation) {
+      //Toast de succès.
+      toast.success('Machine ajoutée.')
+
+      //Réinitialisation des champs.
+      setNameMachine('')
+      setSelectedCategoryId(1)
+      setSelectedStatusId(1)
+      setModelMachine('')
+      setSerialNumber('')
+      setBarcode('')
+      setTotalTime('')
+      setPrice('')
+      setDateAcquisition('')
+      setComment('')
+      setLocation('')
+
+      //Réinitialisation des autres variables.
+      setErrorName('')
+      setErrorTime('')
+      setErrorPrice('')
+      setIsClicked(false)
+      setErrorMutation(false)
+      setSuccessMutation(false)
+
+      //Affichage de l'icône de succès.
+      setShowForm(false)
+
+      //Fermeture de la modale + rafraîchissement après 3s.
+      setTimeout(() => {
+        closeModal()
+        window.location.reload()
+      }, 3000)
+    }
+  }, [successMutation, closeModal])
 
   /*COMPOSANT POUR LES CHAMPS DU FORMULAIRE*/
   function FormField({
@@ -204,150 +242,164 @@ function FormMachinery({ closeModal, selectedMachinery }) {
   /*AFFICHAGE DU FORMULAIRE*/
   return (
     <div>
-      <p>
-        Veuillez remplir les informations ci-dessous pour ajouter une machine.
-      </p>
-      <form onSubmit={handleClickMachinery}>
-        {/*Nom*/}
-        {FormField({
-          label: 'Nom',
-          typeInput: 'text',
-          placeholder: 'Entrez le nom de la machine',
-          value: nameMachine,
-          functionOnChange: setNameMachine,
-          error: errorName,
-        })}
-        {/*Catégorie*/}
-        <StyledPart>
-          <label className="label">Catégorie</label>
-          <div className="select">
-            <select
-              value={selectedCategoryId}
-              onChange={(e) => setSelectedCategoryId(parseInt(e.target.value))}
-            >
-              {sortedCategories.map((category) => (
-                <option
-                  key={`${category[COLUMN_NAME]}-${category[COLUMN_ID]}`}
-                  value={parseInt(category[COLUMN_ID])}
+      {showForm ? (
+        /*Formulaire à remplir.*/
+        <>
+          <p>
+            Veuillez remplir les informations ci-dessous pour ajouter une
+            machine.
+          </p>
+          <form onSubmit={handleClickMachinery}>
+            {/*Nom*/}
+            {FormField({
+              label: 'Nom',
+              typeInput: 'text',
+              placeholder: 'Entrez le nom de la machine',
+              value: nameMachine,
+              functionOnChange: setNameMachine,
+              error: errorName,
+            })}
+            {/*Catégorie*/}
+            <StyledPart>
+              <label className="label">Catégorie</label>
+              <div className="select">
+                <select
+                  value={selectedCategoryId}
+                  onChange={(e) =>
+                    setSelectedCategoryId(parseInt(e.target.value))
+                  }
                 >
-                  {category[COLUMN_NAME]}
-                </option>
-              ))}
-            </select>
-          </div>
-        </StyledPart>
-        {/*Statut*/}
-        <StyledPart>
-          <label className="label">Statut</label>
-          <div className="select">
-            <select
-              value={selectedStatusId}
-              onChange={(e) => setSelectedStatusId(parseInt(e.target.value))}
-            >
-              {status.map((status) => (
-                <option
-                  key={`${status[COLUMN_NAME]}-${status[COLUMN_ID]}`}
-                  value={parseInt(status[COLUMN_ID])}
+                  {sortedCategories.map((category) => (
+                    <option
+                      key={`${category[COLUMN_NAME]}-${category[COLUMN_ID]}`}
+                      value={parseInt(category[COLUMN_ID])}
+                    >
+                      {category[COLUMN_NAME]}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </StyledPart>
+            {/*Statut*/}
+            <StyledPart>
+              <label className="label">Statut</label>
+              <div className="select">
+                <select
+                  value={selectedStatusId}
+                  onChange={(e) =>
+                    setSelectedStatusId(parseInt(e.target.value))
+                  }
                 >
-                  {status[COLUMN_NAME]}
-                </option>
-              ))}
-            </select>
-          </div>
-        </StyledPart>
-        {/*Modèle*/}
-        {FormField({
-          label: 'Modèle',
-          typeInput: 'text',
-          placeholder: 'Entrez le modèle de la machine',
-          value: modelMachine,
-          functionOnChange: setModelMachine,
-        })}
-        {/*Numéro de série*/}
-        {FormField({
-          label: 'Numéro de série',
-          typeInput: 'text',
-          placeholder: 'Entrez le numéro de série',
-          value: serialNumber,
-          functionOnChange: setSerialNumber,
-        })}
-        {/*Code-barres*/}
-        {FormField({
-          label: 'Code-barres',
-          typeInput: 'text',
-          placeholder: 'Entrez le code-barres de la machine',
-          value: barcode,
-          functionOnChange: setBarcode,
-        })}
-        {/*Temps d'utilisation total*/}
-        {FormField({
-          label: "Temps d'utilisation total",
-          typeInput: 'number',
-          placeholder: "Entrez le nombre d'heures d'utilisation",
-          value: totalTime,
-          functionOnChange: setTotalTime,
-          error: errorTime,
-        })}
-        {/*Prix d'achat*/}
-        {FormField({
-          label: "Prix d'achat",
-          typeInput: 'number',
-          placeholder: "Entrez le prix d'achat (en $)",
-          value: price,
-          functionOnChange: setPrice,
-          error: errorPrice,
-          hasStep: true, //Pour avoir un step de 0.1.
-        })}
-        {/*Date d'acquisition*/}
-        {FormField({
-          label: "Date d'acquisition",
-          typeInput: 'date',
-          value: dateAcquisition,
-          functionOnChange: setDateAcquisition,
-        })}
-        {/*Commentaire*/}
-        <StyledPart>
-          <label className="label">Commentaire</label>
-          <div className="control">
-            <textarea
-              className="textarea"
-              placeholder="Commentaire à propos de la machine"
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-            />
-          </div>
-        </StyledPart>
-        {/*Localisation*/}
-        {FormField({
-          label: 'Localisation',
-          typeInput: 'text',
-          placeholder: 'Adresse, lieu, etc.',
-          value: location,
-          functionOnChange: setLocation,
-        })}
-        {/*Bouton d'ajout*/}
-        <div className="has-text-centered">
-          <CustomButton
-            type="submit"
-            color={colors.greenButton}
-            hovercolor={colors.greenButtonHover}
-          >
-            Ajouter
-          </CustomButton>
-        </div>
-      </form>
+                  {status.map((status) => (
+                    <option
+                      key={`${status[COLUMN_NAME]}-${status[COLUMN_ID]}`}
+                      value={parseInt(status[COLUMN_ID])}
+                    >
+                      {status[COLUMN_NAME]}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </StyledPart>
+            {/*Modèle*/}
+            {FormField({
+              label: 'Modèle',
+              typeInput: 'text',
+              placeholder: 'Entrez le modèle de la machine',
+              value: modelMachine,
+              functionOnChange: setModelMachine,
+            })}
+            {/*Numéro de série*/}
+            {FormField({
+              label: 'Numéro de série',
+              typeInput: 'text',
+              placeholder: 'Entrez le numéro de série',
+              value: serialNumber,
+              functionOnChange: setSerialNumber,
+            })}
+            {/*Code-barres*/}
+            {FormField({
+              label: 'Code-barres',
+              typeInput: 'text',
+              placeholder: 'Entrez le code-barres de la machine',
+              value: barcode,
+              functionOnChange: setBarcode,
+            })}
+            {/*Temps d'utilisation total*/}
+            {FormField({
+              label: "Temps d'utilisation total",
+              typeInput: 'number',
+              placeholder: "Entrez le nombre d'heures d'utilisation",
+              value: totalTime,
+              functionOnChange: setTotalTime,
+              error: errorTime,
+            })}
+            {/*Prix d'achat*/}
+            {FormField({
+              label: "Prix d'achat",
+              typeInput: 'number',
+              placeholder: "Entrez le prix d'achat (en $)",
+              value: price,
+              functionOnChange: setPrice,
+              error: errorPrice,
+              hasStep: true, //Pour avoir un step de 0.1.
+            })}
+            {/*Date d'acquisition*/}
+            {FormField({
+              label: "Date d'acquisition",
+              typeInput: 'date',
+              value: dateAcquisition,
+              functionOnChange: setDateAcquisition,
+            })}
+            {/*Commentaire*/}
+            <StyledPart>
+              <label className="label">Commentaire</label>
+              <div className="control">
+                <textarea
+                  className="textarea"
+                  placeholder="Commentaire à propos de la machine"
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                />
+              </div>
+            </StyledPart>
+            {/*Localisation*/}
+            {FormField({
+              label: 'Localisation',
+              typeInput: 'text',
+              placeholder: 'Adresse, lieu, etc.',
+              value: location,
+              functionOnChange: setLocation,
+            })}
+            {/*Bouton d'ajout*/}
+            <div className="has-text-centered">
+              <CustomButton
+                type="submit"
+                color={colors.greenButton}
+                hovercolor={colors.greenButtonHover}
+              >
+                Ajouter
+              </CustomButton>
+            </div>
+          </form>
+        </>
+      ) : (
+        /*Icône de succès.*/
+        <ModalSuccess />
+      )}
     </div>
   )
 }
 
 //Vérification des types des props.
-FormMachinery.propTypes = {}
+FormMachinery.propTypes = {
+  closeModal: PropTypes.func,
+  selectedMachinery: PropTypes.object /*Pour la modification.*/,
+}
 
 export default FormMachinery
 
 /*À FAIRE :
-- Toasts pour les erreurs et les succès.
-- Gestion d'erreurs (category_error, status_error) + loading.
 - Fermeture de la modale après ajout.
 - Rafraîchissement de la page.
 - Modification d'une machine (template à réutiliser).*/

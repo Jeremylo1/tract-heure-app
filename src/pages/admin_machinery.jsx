@@ -157,7 +157,14 @@ function AdminMachinery() {
       {/* MODALE POUR AJOUTER UNE MACHINE */}
       <Modal
         title={'Ajouter une machine'}
-        content={<FormMachinery />}
+        content={
+          <FormMachinery
+            closeModal={() => {
+              setAddModalOpen(false) //Fermeture de la modale.
+              window.location.reload() //Rafraîchissement de la page.
+            }}
+          />
+        }
         isOpen={isAddModalOpen}
         onClose={() => {
           setAddModalOpen(false)

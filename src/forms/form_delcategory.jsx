@@ -44,27 +44,6 @@ function FormDelCategory({ closeModal, selectedCategory }) {
     }
   }
 
-  /*VÉRIFICATION POUR LE TOAST D'ERREUR*/
-  useEffect(() => {
-    //Affichage d'un toast en cas d'erreur.
-    if (errorMachinery) {
-      toast.error(
-        "Impossible de supprimer cette catégorie car elle n'est pas vide.",
-      )
-      setErrorMachinery(false) //Pour pouvoir afficher le toast à nouveau.
-    }
-    if (errorCheck) {
-      toast.error(
-        "Erreur lors de la vérification de l'existence de machine(s).",
-      )
-      setErrorCheck(false) //Pour pouvoir afficher le toast à nouveau.
-    }
-    if (errorMutation) {
-      toast.error('Erreur lors de la suppression de la catégorie.')
-      setErrorMutation(false) //Pour pouvoir afficher le toast à nouveau.
-    }
-  }, [errorMachinery, errorCheck, errorMutation])
-
   /*VÉRIFICATION DE L'EXISTENCE DE MACHINE(S) POUR LA CATÉGORIE*/
   const checkMachinery = async () => {
     try {
@@ -86,6 +65,27 @@ function FormDelCategory({ closeModal, selectedCategory }) {
       setErrorCheck(true) //Pour afficher un toast.
     }
   }
+
+  /*VÉRIFICATION POUR LE TOAST D'ERREUR*/
+  useEffect(() => {
+    //Affichage d'un toast en cas d'erreur.
+    if (errorMachinery) {
+      toast.error(
+        "Impossible de supprimer cette catégorie car elle n'est pas vide.",
+      )
+      setErrorMachinery(false) //Pour pouvoir afficher le toast à nouveau.
+    }
+    if (errorCheck) {
+      toast.error(
+        "Erreur lors de la vérification de l'existence de machine(s).",
+      )
+      setErrorCheck(false) //Pour pouvoir afficher le toast à nouveau.
+    }
+    if (errorMutation) {
+      toast.error('Erreur lors de la suppression de la catégorie.')
+      setErrorMutation(false) //Pour pouvoir afficher le toast à nouveau.
+    }
+  }, [errorMachinery, errorCheck, errorMutation])
 
   /*SUPPRESSION DE LA CATÉGORIE DE LA BASE DE DONNÉES*/
   const deleteCategory = async () => {
