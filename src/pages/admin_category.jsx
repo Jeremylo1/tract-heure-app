@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { useCategory, useMutationHasura } from '../utils/react/hooks'
+import { useCategory } from '../utils/react/hooks'
 import { ScreenContext } from '../utils/react/context'
 /*Composants*/
 import CustomButton from '../components/button'
@@ -7,16 +7,9 @@ import AddButton from '../components/addbutton'
 import Modal from '../components/modal'
 /*Formulaire*/
 import FormCategory from '../forms/form_category'
-/*Toast*/
-import { toast } from 'react-toastify'
+import FormDelCategory from '../forms/form_delcategory'
 /*Base de données*/
-import {
-  LIEN_API,
-  COLUMN_ID,
-  COLUMN_NAME,
-  CHECK_CATEGORY_MACHINERY,
-  DELETE_CATEGORY,
-} from '../utils/database/query'
+import { COLUMN_ID, COLUMN_NAME } from '../utils/database/query'
 /*Style*/
 import colors from '../utils/styles/color'
 import '../styles/admin_category.css'
@@ -38,64 +31,11 @@ function AdminCategory() {
   const [isEditModalOpen, setEditModalOpen] = useState(false)
   //Hook pour la gestion de la modale de suppression.
   const [isDelModalOpen, setDelModalOpen] = useState(false)
-  //Pour savoir si on affiche l'icône de succès.
-  const [isSuccess, setIsSuccess] = useState(false)
 
   //Pour savoir si c'est un appareil mobile.
   const { isMobile } = useContext(ScreenContext)
   //Pour récupérer les catégories.
   const { sortedCategories, category_loading, category_error } = useCategory()
-
-  //Permet d'envoyer une requête de mutation (INSERT, UPDATE, DELETE) à Hasura.
-  const { doMutation, error_mutation } = useMutationHasura(LIEN_API)
-
-  /*SUPPRESSION*/
-  //Permet de supprimer une catégorie.
-  async function deleteCategory() {
-    //S'il y a erreur, ne pas exécuter la fonction.
-    if (error_mutation) {
-      return
-    }
-
-    //Variables pour la requête de suppression.
-    const variables = {
-      categoryId: selectedCategory?.[COLUMN_ID],
-    }
-
-    //Vérification de l'existence de machine(s) pour la catégorie.
-    const machineryExists = await doMutation(
-      CHECK_CATEGORY_MACHINERY,
-      variables,
-    )
-
-    //Si la catégorie contient (au moins) une machine.
-    if (machineryExists?.machinerie?.length > 0) {
-      toast.error(
-        'Impossible de supprimer cette catégorie car elle contient au moins une machine.',
-      )
-      //Sinon, si la catégorie est vide -> Suppression de la catégorie.
-    } else {
-      const deleteCategory = await doMutation(DELETE_CATEGORY, variables)
-
-      //Si la suppression a fonctionné.
-      if (deleteCategory?.delete_machinerie_categorie?.affected_rows > 0) {
-        toast.success('Catégorie supprimée.')
-        //Affichage de l'icône de succès.
-        setIsSuccess(true)
-        //Fermeture de la modale + rafraîchissement de la page après 3s.
-        setTimeout(() => {
-          setDelModalOpen(false)
-          window.location.reload()
-        }, 3000)
-      } else {
-        toast.error("La catégorie n'a pas été supprimée.")
-        //Fermeture de la modale.
-        setTimeout(() => {
-          setDelModalOpen(false)
-        }, 3000)
-      }
-    }
-  }
 
   /*AFFICHAGE*/
   //Permet de créer le tableau des catégories.
@@ -206,7 +146,6 @@ function AdminCategory() {
           <FormCategory
             closeModal={() => {
               setEditModalOpen(false) //Fermeture de la modale.
-              window.location.reload() //Rafraîchissement de la page.
             }}
             selectedCategory={selectedCategory}
           />
@@ -220,33 +159,12 @@ function AdminCategory() {
       <Modal
         title={'Supprimer une catégorie'}
         content={
-          <>
-            <span>Êtes-vous sûr(e) de vouloir supprimer cette catégorie ?</span>
-            <br />
-            <ul>
-              <li>{selectedCategory?.[COLUMN_NAME]}</li>
-            </ul>
-            <div className="delete-buttons">
-              <CustomButton
-                functionclick={() => {
-                  deleteCategory()
-                }}
-                color={colors.redButton}
-                hovercolor={colors.redButtonHover}
-              >
-                Oui
-              </CustomButton>
-              <CustomButton
-                functionclick={() => {
-                  setDelModalOpen(false)
-                }}
-                color={colors.greyButton}
-                hovercolor={colors.greyButtonHover}
-              >
-                Annuler
-              </CustomButton>
-            </div>
-          </>
+          <FormDelCategory
+            closeModal={() => {
+              setDelModalOpen(false) //Fermeture de la modale.
+            }}
+            selectedCategory={selectedCategory}
+          />
         }
         isOpen={isDelModalOpen}
         onClose={() => {

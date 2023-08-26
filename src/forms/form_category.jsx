@@ -48,9 +48,14 @@ function FormCategory({ closeModal, selectedCategory }) {
     e.preventDefault()
     setIsClicked(true) //Si le bouton est cliqué.
 
-    //Si erreur, ne pas exécuter la fonction.
+    //Si erreur (champ vide), ne pas exécuter la fonction.
     if (error) {
       return
+    }
+
+    //Si erreur de base de données, ne pas exécuter la fonction.
+    if (category_error) {
+      return true
     }
 
     //Vérification de l'existence de la catégorie.
@@ -61,22 +66,6 @@ function FormCategory({ closeModal, selectedCategory }) {
       await addEditCategory()
     }
   }
-
-  /*VÉRIFICATION POUR LE TOAST D'ERREUR*/
-  useEffect(() => {
-    //Affichage d'un toast en cas d'erreur.
-    if (category_error) {
-      toast.error('Erreur lors de la récupération des catégories.')
-    }
-    if (sameCategory) {
-      toast.error('Catégorie déjà existante.')
-      setSameCategory(false) //Pour pouvoir afficher le toast à nouveau.
-    }
-    if (errorMutation) {
-      toast.error("Erreur lors de l'enregistrement de la catégorie.")
-      setErrorMutation(false) //Pour pouvoir afficher le toast à nouveau.
-    }
-  }, [category_error, sameCategory, errorMutation])
 
   /*VÉRIFICATION DU CHAMP DU FORMULAIRE*/
   useEffect(() => {
@@ -95,12 +84,7 @@ function FormCategory({ closeModal, selectedCategory }) {
 
   /*VÉRIFICATION DE L'EXISTENCE DE LA CATÉGORIE*/
   function checkCategory() {
-    //Si erreur, ne pas exécuter la fonction.
-    if (category_error) {
-      return true
-    }
-
-    //Vérification de l'existence de la catégorie (comparaison sans accent et en minuscule).
+    //Comparaison sans accent et en minuscule.
     const lowerName = removeAccents(nameCategory.toLowerCase())
 
     const categoryExists = sortedCategories.some((category) => {
@@ -118,27 +102,42 @@ function FormCategory({ closeModal, selectedCategory }) {
     return false
   }
 
+  /*VÉRIFICATION POUR LE TOAST D'ERREUR*/
+  useEffect(() => {
+    //Affichage d'un toast en cas d'erreur.
+    if (category_error) {
+      toast.error('Erreur lors de la récupération des catégories.')
+    }
+    if (sameCategory) {
+      if (selectedCategory) {
+        toast.error('Nom identique.')
+      } else {
+        toast.error('Catégorie déjà existante.')
+      }
+      setSameCategory(false) //Pour pouvoir afficher le toast à nouveau.
+    }
+    if (errorMutation) {
+      toast.error("Erreur lors de l'enregistrement de la catégorie.")
+      setErrorMutation(false) //Pour pouvoir afficher le toast à nouveau.
+    }
+  }, [category_error, sameCategory, errorMutation, selectedCategory])
+
   /*AJOUT OU MODIFICATION DE LA CATÉGORIE DANS LA BASE DE DONNÉES*/
   const addEditCategory = async () => {
     try {
-      /*VERSION POUR LA MODIFICATION*/
+      /*VERSION POUR MODIFICATION*/
       if (selectedCategory) {
-        //Variables pour la requête de modification.
-        const variables = {
+        const resultMutation = await doMutation(UPDATE_CATEGORY, {
           categoryId: selectedCategory?.[COLUMN_ID],
           name: nameCategory,
-        }
-
-        //Modification de la catégorie.
-        const resultMutation = await doMutation(UPDATE_CATEGORY, variables)
+        })
 
         //Si la modification a fonctionné.
         if (resultMutation?.update_machinerie_categorie?.affected_rows > 0) {
           setSuccessMutation(true) //Pour toast + réinitialisation des variables.
         }
-        /*VERSION POUR L'AJOUT*/
+        /*VERSION POUR AJOUT*/
       } else {
-        //Ajout de la catégorie.
         const resultMutation = await doMutation(INSERT_CATEGORY, {
           name: nameCategory,
         })
@@ -176,9 +175,10 @@ function FormCategory({ closeModal, selectedCategory }) {
       //Affichage de l'icône de succès.
       setShowForm(false)
 
-      //Fermeture de la modale après 3s.
+      //Fermeture de la modale + rafraîchissement après 3s.
       setTimeout(() => {
         closeModal()
+        window.location.reload()
       }, 3000)
     }
   }, [successMutation, selectedCategory, closeModal])
