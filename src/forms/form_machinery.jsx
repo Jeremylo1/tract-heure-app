@@ -66,7 +66,7 @@ function FormMachinery({ closeModal, selectedMachinery }) {
     selectedMachinery ? selectedMachinery[COLUMN_PRICE] : '',
   )
   const [dateAcquisition, setDateAcquisition] = useState(
-    selectedMachinery ? selectedMachinery[COLUMN_DATE] : '',
+    selectedMachinery ? selectedMachinery[COLUMN_DATE] : null,
   )
   const [comment, setComment] = useState(
     selectedMachinery ? selectedMachinery[COLUMN_COMMENT] : '',
