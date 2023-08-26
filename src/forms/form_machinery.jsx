@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useCategory, useStatus, useMutationHasura } from '../utils/react/hooks'
-import { toISODateTime, formatSimpleDate } from '../utils/reusable/functions'
+import { toISODateTime, formatInputDate } from '../utils/reusable/functions'
 /*Composants*/
 import CustomButton from '../components/button'
 import ModalSuccess from '../components/message_success_modal'
@@ -413,7 +413,7 @@ function FormMachinery({ closeModal, selectedMachinery }) {
             {FormField({
               label: "Date d'acquisition",
               typeInput: 'date',
-              value: dateAcquisition,
+              value: formatInputDate(dateAcquisition),
               functionOnChange: setDateAcquisition,
             })}
             {/*Commentaire*/}

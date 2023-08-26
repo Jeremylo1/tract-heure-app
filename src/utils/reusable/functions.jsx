@@ -39,15 +39,19 @@ export { formatShortDate }
 
 //Permet de formater une date et de l'afficher en format simple.
 //Par exemple: 2021-03-01T15:00:00.000Z => yyyy-mm-dd.
-function formatSimpleDate(dateString) {
-  return dateString.toLocaleDateString('fr-FR', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  })
+function formatInputDate(dateString) {
+  const date = new Date(dateString)
+  let month = '' + (date.getMonth() + 1)
+  let day = '' + date.getDate()
+  const year = date.getFullYear()
+
+  if (month.length < 2) month = '0' + month
+  if (day.length < 2) day = '0' + day
+
+  return [year, month, day].join('-')
 }
 
-export { formatSimpleDate }
+export { formatInputDate }
 
 //Permet de formater une heure et de l'afficher.
 //Par exemple: 2021-03-01T15:00:00.000Z => 11:00.
