@@ -143,23 +143,6 @@ function Header() {
                 ) : null}
               </div>
               <div className="navbar-end">
-                <div className="navbar-item has-dropdown is-hoverable">
-                  <div className="narbar-link is-align-self-center">
-                    <Icon path={mdiMenu} size={1} color="black" />
-                  </div>
-                  <div className="navbar-dropdown is-right">
-                    <Link to="/" className="navbar-item">
-                      Profil
-                    </Link>
-                    <Link to="/" className="navbar-item">
-                      Historique
-                    </Link>
-                    <hr className="navbar-divider" />
-                    <Link to="/" className="navbar-item">
-                      Crédits
-                    </Link>
-                  </div>
-                </div>
                 <div className="navbar-item">
                   <div>
                     <button onClick={handleLogout} className="button is-info">
