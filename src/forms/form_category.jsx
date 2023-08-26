@@ -48,7 +48,7 @@ function FormCategory({ closeModal, selectedCategory }) {
     e.preventDefault()
     setIsClicked(true) //Si le bouton est cliqué.
 
-    //Si erreur, ne pas exécuter la fonction.
+    //Si erreur (champ vide), ne pas exécuter la fonction.
     if (error) {
       return
     }
@@ -176,9 +176,10 @@ function FormCategory({ closeModal, selectedCategory }) {
       //Affichage de l'icône de succès.
       setShowForm(false)
 
-      //Fermeture de la modale après 3s.
+      //Fermeture de la modale + rafraîchissement après 3s.
       setTimeout(() => {
         closeModal()
+        window.location.reload()
       }, 3000)
     }
   }, [successMutation, selectedCategory, closeModal])
