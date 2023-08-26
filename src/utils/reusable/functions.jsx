@@ -27,7 +27,7 @@ export { formatDate }
 //Permet de formater une date et de l'afficher en format court.
 //Par exemple: 2021-03-01T15:00:00.000Z => lun. 1 mars 2021.
 function formatShortDate(dateString) {
-  return dateString.toLocaleDateString('fr-FR', {
+  return dateString.toLocaleDateString('fr-CA', {
     weekday: 'short',
     year: 'numeric',
     month: 'short',
@@ -54,7 +54,7 @@ export { formatInputDate }
 //Permet de formater une heure et de l'afficher.
 //Par exemple: 2021-03-01T15:00:00.000Z => 11:00.
 function formatTime(dateString) {
-  return dateString.toLocaleTimeString('fr-FR', {
+  return dateString.toLocaleTimeString('fr-CA', {
     hour: '2-digit',
     minute: '2-digit',
   })
