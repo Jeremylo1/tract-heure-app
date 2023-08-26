@@ -4,6 +4,7 @@ import { toISODateTime } from '../utils/reusable/functions'
 /*Composants*/
 import CustomButton from '../components/button'
 import AvailabilityTable from '../components/availability_table'
+import ModalSuccess from '../components/message_success_modal'
 /*Toast*/
 import { toast } from 'react-toastify'
 /*Base de données*/
@@ -35,8 +36,8 @@ function FormAddReservation({
   const [reservationComment, setReservationComment] = useState('')
   //Succès lors de l'enregistrement.
   const [successMutation, setSuccessMutation] = useState(false)
-  //Cacher la modale.
-  const [isVisible, setIsVisible] = useState(true)
+  //Afficher le formulaire ou le check de succès.
+  const [showForm, setShowForm] = useState(true)
   //Permet d'envoyer une requête de mutation (INSERT, GET) à Hasura.
   const { doMutation } = useMutationHasura(LIEN_API)
 
@@ -76,7 +77,7 @@ function FormAddReservation({
       setReservationComment('')
       setSuccessMutation(false)
 
-      setIsVisible(false)
+      setShowForm(false)
 
       //Fermeture de la modale.
       setTimeout(() => {
@@ -147,141 +148,148 @@ function FormAddReservation({
 
   /*AFFICHAGE DU FORMULAIRE*/
   return (
-    <div style={{ display: isVisible ? 'block' : 'none' }}>
-      <p>Veuillez remplir les informations ci-dessous pour réserver.</p>
-      <form onSubmit={handleReservation}>
-        {/*Type de réservation*/}
-        <div className="form-group">
-          <label className="form-label">Type de réservation :</label>
-          <div>
-            <input
-              type="radio"
-              id="reservation"
-              name="reservationType"
-              value="1"
-              checked={reservationType === '1'}
-              required
-              onChange={(e) => setReservationType(e.target.value)}
-            />
-            <label htmlFor="reservation">Réservation</label>
-          </div>
-          <div>
-            <input
-              type="radio"
-              id="maintenance"
-              name="reservationType"
-              value="2"
-              checked={reservationType === '2'}
-              required
-              onChange={(e) => setReservationType(e.target.value)}
-            />
-            <label htmlFor="maintenance">Maintenance</label>
-          </div>
-        </div>
-        {/*Date de début*/}
-        <div className="columns">
-          <div className="column is-6 py-0">
+    <div>
+      {showForm ? (
+        <>
+          <p>Veuillez remplir les informations ci-dessous pour réserver.</p>
+          <form onSubmit={handleReservation}>
+            {/*Type de réservation*/}
             <div className="form-group">
-              <label className="form-label" htmlFor="startDate">
-                Date de début :
-              </label>
-              <div className="input-wrapper">
+              <label className="form-label">Type de réservation :</label>
+              <div>
                 <input
-                  id="startDate"
-                  type="date"
-                  className="form-input"
+                  type="radio"
+                  id="reservation"
+                  name="reservationType"
+                  value="1"
+                  checked={reservationType === '1'}
                   required
-                  onChange={(e) => setStartDate(e.target.value)}
+                  onChange={(e) => setReservationType(e.target.value)}
                 />
+                <label htmlFor="reservation">Réservation</label>
+              </div>
+              <div>
+                <input
+                  type="radio"
+                  id="maintenance"
+                  name="reservationType"
+                  value="2"
+                  checked={reservationType === '2'}
+                  required
+                  onChange={(e) => setReservationType(e.target.value)}
+                />
+                <label htmlFor="maintenance">Maintenance</label>
               </div>
             </div>
-          </div>
-          {/*Heure de début*/}
-          <div className="column is-6 py-0">
-            <div className="form-group">
-              <label className="form-label" htmlFor="startTime">
-                Heure de début :
-              </label>
-              <div className="input-wrapper">
-                <input
-                  id="startTime"
-                  type="time"
-                  className="form-input"
-                  required
-                  onChange={(e) => setStartTime(e.target.value)}
-                />
+            {/*Date de début*/}
+            <div className="columns">
+              <div className="column is-6 py-0">
+                <div className="form-group">
+                  <label className="form-label" htmlFor="startDate">
+                    Date de début :
+                  </label>
+                  <div className="input-wrapper">
+                    <input
+                      id="startDate"
+                      type="date"
+                      className="form-input"
+                      required
+                      onChange={(e) => setStartDate(e.target.value)}
+                    />
+                  </div>
+                </div>
+              </div>
+              {/*Heure de début*/}
+              <div className="column is-6 py-0">
+                <div className="form-group">
+                  <label className="form-label" htmlFor="startTime">
+                    Heure de début :
+                  </label>
+                  <div className="input-wrapper">
+                    <input
+                      id="startTime"
+                      type="time"
+                      className="form-input"
+                      required
+                      onChange={(e) => setStartTime(e.target.value)}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        {/*Date de fin*/}
-        <div className="columns">
-          <div className="column is-6 py-0">
-            <div className="form-group">
-              <label className="form-label" htmlFor="endDate">
-                Date de fin :
-              </label>
-              <div className="input-wrapper">
-                <input
-                  id="endDate"
-                  type="date"
-                  className="form-input"
-                  required
-                  onChange={(e) => setEndDate(e.target.value)}
-                />
+            {/*Date de fin*/}
+            <div className="columns">
+              <div className="column is-6 py-0">
+                <div className="form-group">
+                  <label className="form-label" htmlFor="endDate">
+                    Date de fin :
+                  </label>
+                  <div className="input-wrapper">
+                    <input
+                      id="endDate"
+                      type="date"
+                      className="form-input"
+                      required
+                      onChange={(e) => setEndDate(e.target.value)}
+                    />
+                  </div>
+                </div>
+              </div>
+              {/*Heure de fin*/}
+              <div className="column is-6 py-0">
+                <div className="form-group">
+                  <label className="form-label" htmlFor="endTime">
+                    Heure de fin :
+                  </label>
+                  <div className="input-wrapper">
+                    <input
+                      id="endTime"
+                      type="time"
+                      className="form-input"
+                      required
+                      onChange={(e) => setEndTime(e.target.value)}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-          {/*Heure de fin*/}
-          <div className="column is-6 py-0">
+            {/*Commentaire*/}
             <div className="form-group">
-              <label className="form-label" htmlFor="endTime">
-                Heure de fin :
+              <label className="form-label py-0" htmlFor="reservationComment">
+                Commentaire :
               </label>
-              <div className="input-wrapper">
-                <input
-                  id="endTime"
-                  type="time"
-                  className="form-input"
-                  required
-                  onChange={(e) => setEndTime(e.target.value)}
-                />
-              </div>
+              <textarea
+                id="reservationComment"
+                className="form-input"
+                rows="4"
+                placeholder="Entrez votre commentaire ici ..."
+                onChange={(e) => setReservationComment(e.target.value)}
+                value={reservationComment}
+              ></textarea>
             </div>
-          </div>
-        </div>
-        {/*Commentaire*/}
-        <div className="form-group">
-          <label className="form-label py-0" htmlFor="reservationComment">
-            Commentaire :
-          </label>
-          <textarea
-            id="reservationComment"
-            className="form-input"
-            rows="4"
-            placeholder="Entrez votre commentaire ici ..."
-            onChange={(e) => setReservationComment(e.target.value)}
-            value={reservationComment}
-          ></textarea>
-        </div>
-        {/* Centrer le bouton */}
-        <div className="has-text-centered">
-          <CustomButton
-            type="submit"
-            color={colors.greenButton}
-            hovercolor={colors.greenButtonHover}
-          >
-            Confirmer
-          </CustomButton>
-        </div>
+            {/* Centrer le bouton */}
+            <div className="has-text-centered">
+              <CustomButton
+                type="submit"
+                color={colors.greenButton}
+                hovercolor={colors.greenButtonHover}
+              >
+                Confirmer
+              </CustomButton>
+            </div>
 
-        <h3>Prochaines disponibilités</h3>
-        {availabilitiesIsLoading ? (
-          <div className="loader is-loading"></div>
-        ) : (
-          <AvailabilityTable availabilities={availabilities} />
-        )}
-      </form>
+            <h3>Prochaines disponibilités</h3>
+            {availabilitiesIsLoading ? (
+              <div className="loader is-loading"></div>
+            ) : (
+              <AvailabilityTable availabilities={availabilities} />
+            )}
+          </form>
+        </>
+      ) : (
+        //Icone de succès.
+        <ModalSuccess />
+      )}
     </div>
   )
 }

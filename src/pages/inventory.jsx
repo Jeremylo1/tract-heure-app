@@ -32,8 +32,6 @@ function Inventory() {
 
   //Pour stocker les disponibilités de la machinerie sélectionnée.
   const [availabilities, setAvailabilities] = useState([])
-  //Pour savoir si les disponibilités sont en cours de chargement.
-  const [availabilitiesIsLoading, setAvailabilitiesIsLoading] = useState(false)
 
   //Affichage des boutons du bas de l'accordéon.
   function groupButtons(machinery) {
