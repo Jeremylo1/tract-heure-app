@@ -31,9 +31,8 @@ function FormCategory({ closeModal, selectedCategory }) {
   const [isClicked, setIsClicked] = useState(false)
   //Pour savoir si la catégorie existe déjà.
   const [sameCategory, setSameCategory] = useState(false)
-  //Erreur lors de l'enregistrement.
+  //Erreur et succès lors de l'enregistrement.
   const [errorMutation, setErrorMutation] = useState(false)
-  //Succès lors de l'enregistrement.
   const [successMutation, setSuccessMutation] = useState(false)
   //Pour savoir si le champ est désactivé.
   const [isDisabled, setIsDisabled] = useState(false)

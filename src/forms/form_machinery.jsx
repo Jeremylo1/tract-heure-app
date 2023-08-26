@@ -27,10 +27,6 @@ const StyledPart = styled.div`
 
 //Formulaire d'ajout et de modification de machine.
 function FormMachinery({ closeModal, selectedMachinery }) {
-  //Erreurs possibles.
-  const [errorName, setErrorName] = useState('')
-  const [errorTime, setErrorTime] = useState('')
-  const [errorPrice, setErrorPrice] = useState('')
   //Pour stocker les données du formulaire.
   const [nameMachine, setNameMachine] = useState('')
   const [selectedCategoryId, setSelectedCategoryId] = useState(1)
@@ -43,12 +39,19 @@ function FormMachinery({ closeModal, selectedMachinery }) {
   const [dateAcquisition, setDateAcquisition] = useState('')
   const [comment, setComment] = useState('')
   const [location, setLocation] = useState('')
+  //Erreurs dans les données du formulaire.
+  const [errorName, setErrorName] = useState('')
+  const [errorTime, setErrorTime] = useState('')
+  const [errorPrice, setErrorPrice] = useState('')
   //Pour savoir si le bouton est cliqué.
   const [isClicked, setIsClicked] = useState(false)
+  //Erreur et succès lors de l'enregistrement.
+  const [errorMutation, setErrorMutation] = useState(false)
+  const [successMutation, setSuccessMutation] = useState(false)
 
-  //Pour récupérer les catégories.
+  //Pour récupérer les catégories (pour le sélecteur).
   const { sortedCategories, category_error } = useCategory()
-  //Pour récupérer les statuts.
+  //Pour récupérer les statuts (pour le sélecteur).
   const { status, status_error } = useStatus()
   //Permet d'envoyer une requête de mutation (INSERT, UPDATE) à Hasura.
   const { doMutation } = useMutationHasura(LIEN_API)
