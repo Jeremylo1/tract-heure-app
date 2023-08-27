@@ -5,6 +5,7 @@ import { AuthContext } from './context'
 import {
   LIEN_API,
   TABLE_CATEGORY,
+  GET_BREAKDOWN_STATUS,
   TABLE_STATUS,
   COLUMN_ID,
   COLUMN_NAME,
@@ -148,6 +149,43 @@ export function useCategory() {
   }, [category_data])
 
   return { sortedCategories, category_loading, category_error }
+}
+
+// Permet de récupérer les statuts de bris triés par ordre alphabétique depuis Hasura.
+export function useBreakdownStatus() {
+  // Pour savoir si c'est la première fois qu'on charge les données.
+  const [firstLoading, setFirstLoading] = useState(true)
+  // Pour stocker les statuts de bris triés.
+  const [sortedBreakdownStatus, setSortedBreakdownStatus] = useState([])
+
+  // Permet de récupérer la liste des statuts de bris depuis Hasura.
+  const {
+    data: breakdownStatusData,
+    isLoading: breakdownStatus_loading,
+    error: breakdownStatus_error,
+  } = useFetchHasura(LIEN_API, GET_BREAKDOWN_STATUS, firstLoading)
+
+  // Permet de définir si c'est la première fois qu'on charge la page.
+  useEffect(() => {
+    setFirstLoading(false)
+  }, [])
+
+  // Permet de trier les statuts de bris par ordre alphabétique.
+  useEffect(() => {
+    if (breakdownStatusData && breakdownStatusData.bris_statut) {
+      const sorted = breakdownStatusData.bris_statut
+        .slice()
+        .sort((a, b) => a[COLUMN_NAME].localeCompare(b[COLUMN_NAME]))
+      // On stocke les statuts de bris triés.
+      setSortedBreakdownStatus(sorted)
+    }
+  }, [breakdownStatusData])
+
+  return {
+    sortedBreakdownStatus,
+    breakdownStatus_loading,
+    breakdownStatus_error,
+  }
 }
 
 /*Permet de récupérer les statuts depuis Hasura.*/

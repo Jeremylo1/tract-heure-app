@@ -44,6 +44,13 @@ function Dashboard() {
             >
               <div className="box-content">Gestion des réservations</div>
             </Link>
+
+            <Link
+              to="/admin/breakdown"
+              className="box square-box breakdown-box mx-2"
+            >
+              <div className="box-content">Gestion des bris</div>
+            </Link>
           </div>
         </div>
       </div>

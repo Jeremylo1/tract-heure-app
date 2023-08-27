@@ -26,6 +26,7 @@ import ProtectedRoute from './utils/react/protectedroute'
 /*Style*/
 import styled from 'styled-components'
 import GlobalStyle from './utils/styles/globalStyle'
+import AdminBreakdown from './pages/admin_bris'
 
 //Style du wrapper.
 const StyledWrapper = styled.div`
@@ -77,6 +78,9 @@ root.render(
                 </Route>
                 <Route path="/admin/calendar" element={<ProtectedRoute />}>
                   <Route index element={<AdminCalendar />} />
+                </Route>
+                <Route path="/admin/breakdown" element={<ProtectedRoute />}>
+                  <Route index element={<AdminBreakdown />} />
                 </Route>
                 <Route path="/others" element={<ProtectedRoute />}>
                   <Route index element={<Burger />} />

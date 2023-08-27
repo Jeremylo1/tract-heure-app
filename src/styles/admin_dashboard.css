@@ -33,6 +33,14 @@
 }
 
 .calendar-box {
+    background-color: #AED581;
+
+    &:hover {
+        background-color: #81C784
+    }
+}
+
+.breakdown-box {
     background-color: #FFD54F;
 
     &:hover {
