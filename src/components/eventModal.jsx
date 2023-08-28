@@ -68,9 +68,25 @@ function EventModal({ isOpen, onClose, event }) {
               <h3>Type</h3>
               <p>{eventType(event?.type)}</p>
               <h3>Date de début</h3>
-              <p>{event?.start?.toLocaleString()}</p>
+              <p>
+                {event?.start?.toLocaleString(undefined, {
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </p>
               <h3>Date de fin</h3>
-              <p>{event?.end?.toLocaleString()}</p>
+              <p>
+                {event?.end?.toLocaleString(undefined, {
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </p>
               <CustomButton
                 color={colors.redButton}
                 hovercolor={colors.redButtonHover}
