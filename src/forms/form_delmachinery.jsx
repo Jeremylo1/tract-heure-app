@@ -49,9 +49,9 @@ function FormDelMachinery({ closeModal, selectedMachinery }) {
   /*VÉRIFICATION DE L'EXISTENCE DE RÉSERVATION(S) POUR LA MACHINE*/
   const checkReservation = async () => {
     try {
-      const reservationExists = await doMutation(CHECK_CATEGORY_MACHINERY, {
+      /*const reservationExists = await doMutation(CHECK_CATEGORY_MACHINERY, {
         machineryId: selectedMachinery?.[COLUMN_ID],
-      })
+      }) //À MODIFIER !!!!!
 
       //Si la machine a (au moins) une réservation.
       if (reservationExists?.machinerie_reservation?.length > 0) {
@@ -60,7 +60,7 @@ function FormDelMachinery({ closeModal, selectedMachinery }) {
       } else {
         //Si aucune réservation.
         return false
-      }
+      }*/
       /*ERREUR*/
     } catch (err) {
       console.error(err)
@@ -89,42 +89,44 @@ function FormDelMachinery({ closeModal, selectedMachinery }) {
     }
   }, [errorReservation, errorCheck, errorMutation])
 
-  /*SUPPRESSION DE LA MACHINE ET DE SES BRIS*/
+  /*SUPPRESSION DE LA MACHINE DE LA BASE DE DONNÉES*/
   async function deleteMachinery() {
-    //Variables pour la requête de suppression.
-    const variables = {
-      machineryId: selectedMachinery?.[COLUMN_ID],
-    }
-
-    //Vérification de l'existence de réservation(s) pour la machine.
-    const reservationExists = await doMutation(
-      CHECK_MACHINERY_RESERVATION,
-      variables,
-    )
-
-    //Si la machine a (au moins) une réservation.
-    if (reservationExists?.machinerie_reservation?.length > 0) {
-      alert(
-        'Impossible de supprimer cette machine, car elle a une (ou plusieurs) réservation(s).',
-      )
-      //Sinon, si la machine n'a pas de réservation -> Suppression de la machine.
-    } else {
-      const deleteMachinery = await doMutation(DELETE_MACHINERY, variables)
-
+    try {
+      const deleteMachinery = await doMutation(DELETE_MACHINERY, {
+        machineryId: selectedMachinery?.[COLUMN_ID],
+      })
       //Si la suppression a fonctionné.
       if (deleteMachinery?.delete_machinerie?.affected_rows > 0) {
-        alert('La machine a été supprimée avec succès.')
-      } else {
-        alert("La machine n'a pas été supprimée.")
+        setSuccessMutation(true) //Pour afficher un toast + réinitialisation des variables.
       }
-
-      //Fermeture de la modale de suppression.
-      setDelModalOpen(false)
-
-      //Rafraîchissement de la page.
-      window.location.reload()
+      /*ERREUR*/
+    } catch (err) {
+      console.error(err)
+      setErrorMutation(true) //Pour afficher un toast.
     }
   }
+
+  /*TOAST DE SUCCÈS ET RÉINITIALISATION DES VARIABLES*/
+  useEffect(() => {
+    if (successMutation) {
+      toast.success('Machine supprimée.')
+
+      //Réinitialisation des variables.
+      setErrorReservation(false)
+      setErrorCheck(false)
+      setErrorMutation(false)
+      setSuccessMutation(false)
+
+      //Affichage de l'icône de succès.
+      setShowForm(false)
+
+      //Fermeture de la modale + rafraîchissement après 3s.
+      setTimeout(() => {
+        closeModal()
+        window.location.reload()
+      }, 3000)
+    }
+  }, [successMutation, closeModal])
 
   return (
     <div>
