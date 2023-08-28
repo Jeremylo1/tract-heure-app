@@ -167,29 +167,29 @@ export const GET_MACHINE_BREAKDOWN = `
     }
 `
 
+//Permet de supprimer un bris.
+export const DELETE_BREAKDOWN = `
+    mutation DeleteBreakdown($breakdownId: Int!) {
+        delete_machinerie_bris_by_pk(id: $breakdownId) {
+        id
+        }
+    }
+`
+
+//Permet de supprimer tous les bris d'une machine.
+export const DELETE_ALL_MACHINE_BREAKDOWN = `
+    mutation DeleteAllMachineBreakdown($machineryId: Int!) {
+        delete_machinerie_bris(where: {machinerie_id: {_eq: $machineryId}}) {
+        affected_rows
+        }
+    }
+`
+
 //Permet de supprimer une réservation.
 export const DELETE_RESERVATION = `
     mutation DeleteReservation($id: Int!) {
         delete_machinerie_reservation_by_pk(id: $id) {
         id
-        }
-    }
-`
-
-//Permet de supprimer un bris.
-export const DELETE_BREAKDOWN = `
-    mutation DeleteBreakdown($id: Int!) {
-        delete_machinerie_bris_by_pk(id: $id) {
-        id
-        }
-    }
-`
-
-//Permet de supprimer tout les bris d'une machine.
-export const DELETE_ALL_MACHINE_BREAKDOWN = `
-    mutation DeleteAllMachineBreakdown($machineryId: Int!) {
-        delete_machinerie_bris(where: {machinerie_id: {_eq: $machineryId}}) {
-        affected_rows
         }
     }
 `
