@@ -13,11 +13,19 @@ const StyledWrapper = styled.div`
 function Burger() {
   //Pour savoir si l'utilisateur est connecté.
   const { isConnected, handleLogout } = useConnexion()
+  //Pour gérer les onglets.
+  const { handleTabClick } = useConnexion()
 
   return isConnected ? (
     /*Si l'utilisateur est connecté, alors déconnexion.*/
     <StyledWrapper>
-      <button onClick={handleLogout} className="button is-info">
+      <button
+        onClick={() => {
+          handleLogout()
+          handleTabClick('accueil')
+        }}
+        className="button is-info"
+      >
         <strong>Déconnexion</strong>
       </button>
     </StyledWrapper>

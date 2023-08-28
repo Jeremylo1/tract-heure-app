@@ -250,6 +250,7 @@ export function useTab() {
     const currentPath = window.location.pathname
 
     switch (currentPath) {
+      /*ACCUEIL, CATALOGUE, CALENDRIER*/
       case '/':
         setActiveTab('accueil')
         break
@@ -259,12 +260,27 @@ export function useTab() {
       case '/calendar':
         setActiveTab('calendrier')
         break
+      /*TABLEAU DE BORD*/
       case '/admin':
         setActiveTab('dashboard')
         break
+      case '/admin/category':
+        setActiveTab('dashboard')
+        break
+      case '/admin/machinery':
+        setActiveTab('dashboard')
+        break
+      case '/admin/calendar':
+        setActiveTab('dashboard')
+        break
+      case '/admin/breakdown':
+        setActiveTab('dashboard')
+        break
+      /*BURGER*/
       case '/others':
         setActiveTab('burger')
         break
+      /*PAR DÉFAUT*/
       default:
         setActiveTab('accueil')
         break
