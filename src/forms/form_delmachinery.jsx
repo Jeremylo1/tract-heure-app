@@ -182,6 +182,7 @@ function FormDelMachinery({ closeModal, selectedMachinery }) {
 export default FormDelMachinery
 
 /*À FAIRE :
-- Toast de succès et d'erreur.
+- Toasts de succès et d'erreur.
 - Vérifier si la machine a des réservations en cours et/ou futures.
+- Vérifier si la machine a des réservations passées et les supprimer avant de supprimer la machine.
 - Vérifier si la machine a des bris et les supprimer avant de supprimer la machine.*/
