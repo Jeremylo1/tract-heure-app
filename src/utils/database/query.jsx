@@ -177,7 +177,7 @@ export const DELETE_BREAKDOWN = `
 `
 
 //Permet de supprimer tous les bris d'une machine.
-export const DELETE_ALL_MACHINE_BREAKDOWN = `
+export const DELETE_MACHINE_BREAKDOWN = `
     mutation DeleteAllMachineBreakdown($machineryId: Int!) {
         delete_machinerie_bris(where: {machinerie_id: {_eq: $machineryId}}) {
         affected_rows
@@ -190,6 +190,15 @@ export const DELETE_RESERVATION = `
     mutation DeleteReservation($id: Int!) {
         delete_machinerie_reservation_by_pk(id: $id) {
         id
+        }
+    }
+`
+
+//Permet de supprimer les réservations d'une machine.
+export const DELETE_MACHINE_RESERVATION = `
+    mutation DeleteMachineReservation($machineryId: Int!) {
+        delete_machinerie_reservation(where: {machinerie_id: {_eq: $machineryId}}) {
+        affected_rows
         }
     }
 `
