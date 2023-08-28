@@ -20,10 +20,6 @@ import '../styles/admin_category.css'
 import colors from '../utils/styles/color'
 
 function FormDelBreakdown({ closeModal, selectedMachineryBreakdown }) {
-  //Erreur car machines existantes.
-  const [errorMachinery, setErrorBris] = useState(false)
-  //Erreur lors de la vérification de l'existence de machine(s).
-  const [errorCheck, setErrorCheck] = useState(false)
   //Erreur et succès lors de l'enregistrement.
   const [errorMutation, setErrorMutation] = useState(false)
   const [successMutation, setSuccessMutation] = useState(false)
@@ -37,32 +33,20 @@ function FormDelBreakdown({ closeModal, selectedMachineryBreakdown }) {
   async function handleClick(e) {
     e.preventDefault()
 
-    //Suppression de la catégorie si elle est vide.
+    //Suppression du bris.
     await deleteBreakdown()
   }
 
   /*VÉRIFICATION POUR LE TOAST D'ERREUR*/
   useEffect(() => {
     //Affichage d'un toast en cas d'erreur.
-    if (errorMachinery) {
-      toast.error(
-        "Impossible de supprimer cette catégorie car elle n'est pas vide.",
-      )
-      setErrorBris(false) //Pour pouvoir afficher le toast à nouveau.
-    }
-    if (errorCheck) {
-      toast.error(
-        "Erreur lors de la vérification de l'existence de machine(s).",
-      )
-      setErrorCheck(false) //Pour pouvoir afficher le toast à nouveau.
-    }
     if (errorMutation) {
-      toast.error('Erreur lors de la suppression de la catégorie.')
+      toast.error('Erreur lors de la suppression du bris.')
       setErrorMutation(false) //Pour pouvoir afficher le toast à nouveau.
     }
-  }, [errorMachinery, errorCheck, errorMutation])
+  }, [errorMutation])
 
-  /*SUPPRESSION DE LA CATÉGORIE DE LA BASE DE DONNÉES*/
+  /*SUPPRESSION DU BRIS DE LA BASE DE DONNÉES*/
   const deleteBreakdown = async () => {
     try {
       const deleteBreakdown = await doMutation(DELETE_BREAKDOWN, {
@@ -85,8 +69,6 @@ function FormDelBreakdown({ closeModal, selectedMachineryBreakdown }) {
       toast.success('Bris supprimé.')
 
       //Réinitialisation des variables.
-      setErrorBris(false)
-      setErrorCheck(false)
       setErrorMutation(false)
       setSuccessMutation(false)
 
@@ -115,13 +97,14 @@ function FormDelBreakdown({ closeModal, selectedMachineryBreakdown }) {
                 {'] : '}
                 {selectedMachineryBreakdown?.[COLUMN_MACHINERY_NOM]}
               </li>
-
+              {/*  Si la description est vide, ne pas l'afficher. */}
               {selectedMachineryBreakdown?.[COLUMN_DESCRIPTION] ? (
                 <li>
                   {'Description : '}
                   {selectedMachineryBreakdown?.[COLUMN_DESCRIPTION]}
                 </li>
               ) : null}
+              {/* Si les remarques sont vides, ne pas les afficher. */}
               {selectedMachineryBreakdown?.[COLUMN_REMARQUES] ? (
                 <li>
                   {'Remarques : '}
