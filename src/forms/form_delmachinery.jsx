@@ -21,6 +21,7 @@ import {
 import '../styles/admin_machinery.css'
 import colors from '../utils/styles/color'
 
+//Formulaire de suppression de machine.
 function FormDelMachinery({ closeModal, selectedMachinery }) {
   //Erreur car réservations existantes.
   const [errorReservation, setErrorReservation] = useState(false)

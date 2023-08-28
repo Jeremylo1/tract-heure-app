@@ -17,6 +17,7 @@ import {
 import '../styles/admin_category.css'
 import colors from '../utils/styles/color'
 
+//Formulaire de suppression de catégorie.
 function FormDelCategory({ closeModal, selectedCategory }) {
   //Erreur car machines existantes.
   const [errorMachinery, setErrorMachinery] = useState(false)
