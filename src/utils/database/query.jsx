@@ -59,16 +59,6 @@ export const DELETE_MACHINERY = `
         }
     }
 `
-//Permet de vérifier l'existence de réservation(s) pour une machine.
-export const CHECK_MACHINERY_RESERVATION = `
-    query CheckMachineryReservation($machineryId: Int!) {
-        machinerie_reservation(where: {
-            machinerie_id: {_eq: $machineryId}
-        }) {
-            id
-        }
-    }
-`
 
 //Permet de modifier une machine.
 export const UPDATE_MACHINERY = `
@@ -97,6 +87,15 @@ export const DELETE_CATEGORY = `
     }
 `
 
+//Permet de modifier une catégorie.
+export const UPDATE_CATEGORY = `
+    mutation UpdateCategory($categoryId: Int!, $name: String!) {
+        update_machinerie_categorie(where: {id: {_eq: $categoryId}}, _set: {nom: $name}) {
+        affected_rows
+        }
+    }
+`
+
 //Permet de vérifier l'existence de machine(s) pour une catégorie.
 export const CHECK_CATEGORY_MACHINERY = `
     query CheckCategoryMachinery($categoryId: Int!) {
@@ -108,11 +107,13 @@ export const CHECK_CATEGORY_MACHINERY = `
     }
 `
 
-//Permet de modifier une catégorie.
-export const UPDATE_CATEGORY = `
-    mutation UpdateCategory($categoryId: Int!, $name: String!) {
-        update_machinerie_categorie(where: {id: {_eq: $categoryId}}, _set: {nom: $name}) {
-        affected_rows
+//Permet de vérifier l'existence de réservation(s) (passées, présentes et futures) pour une machine.
+export const CHECK_MACHINERY_RESERVATION = `
+    query CheckMachineryReservation($machineryId: Int!) {
+        machinerie_reservation(where: {
+            machinerie_id: {_eq: $machineryId}
+        }) {
+            id
         }
     }
 `

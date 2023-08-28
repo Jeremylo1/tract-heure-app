@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react'
-import { useMutationHasura } from '../utils/react/hooks'
 import { ScreenContext } from '../utils/react/context'
 /*Composants*/
 import CustomButton from '../components/button'
@@ -8,16 +7,7 @@ import ShowMachinery from '../components/showmachinery'
 import Modal from '../components/modal'
 /*Formulaire*/
 import FormMachinery from '../forms/form_machinery'
-/*Base de données*/
-import {
-  LIEN_API,
-  COLUMN_ID,
-  COLUMN_NAME,
-  COLUMN_MODEL,
-  COLUMN_SERIAL_NUMBER,
-  CHECK_MACHINERY_RESERVATION,
-  DELETE_MACHINERY,
-} from '../utils/database/query'
+import FormDelMachinery from '../forms/form_delmachinery'
 /*Style*/
 import '../styles/admin_machinery.css'
 import colors from '../utils/styles/color'
@@ -41,52 +31,6 @@ function AdminMachinery() {
 
   //Pour savoir si c'est un appareil mobile.
   const { isMobile } = useContext(ScreenContext)
-
-  //Permet d'envoyer une requête de mutation (INSERT, UPDATE, DELETE) à Hasura.
-  const { doMutation, error_mutation } = useMutationHasura(LIEN_API)
-
-  /*SUPPRESSION*/
-  //Permet de supprimer une machine.
-  async function deleteMachinery() {
-    //S'il y a erreur, ne pas exécuter la fonction.
-    if (error_mutation) {
-      return
-    }
-
-    //Variables pour la requête de suppression.
-    const variables = {
-      machineryId: selectedMachinery?.[COLUMN_ID],
-    }
-
-    //Vérification de l'existence de réservation(s) pour la machine.
-    const reservationExists = await doMutation(
-      CHECK_MACHINERY_RESERVATION,
-      variables,
-    )
-
-    //Si la machine a (au moins) une réservation.
-    if (reservationExists?.machinerie_reservation?.length > 0) {
-      alert(
-        'Impossible de supprimer cette machine, car elle a une (ou plusieurs) réservation(s).',
-      )
-      //Sinon, si la machine n'a pas de réservation -> Suppression de la machine.
-    } else {
-      const deleteMachinery = await doMutation(DELETE_MACHINERY, variables)
-
-      //Si la suppression a fonctionné.
-      if (deleteMachinery?.delete_machinerie?.affected_rows > 0) {
-        alert('La machine a été supprimée avec succès.')
-      } else {
-        alert("La machine n'a pas été supprimée.")
-      }
-
-      //Fermeture de la modale de suppression.
-      setDelModalOpen(false)
-
-      //Rafraîchissement de la page.
-      window.location.reload()
-    }
-  }
 
   /*AFFICHAGE*/
   //Affichage des boutons du bas de l'accordéon.
@@ -195,46 +139,12 @@ function AdminMachinery() {
       <Modal
         title={'Supprimer une machine'}
         content={
-          <>
-            <span>Êtes-vous sûr(e) de vouloir supprimer cette machine ?</span>
-            <br />
-            <ul>
-              <li>{selectedMachinery?.[COLUMN_NAME]}</li>
-              <ul>
-                {/*Si le modèle est vide, ne pas l'afficher.*/}
-                {selectedMachinery?.[COLUMN_MODEL] ? (
-                  <li>Modèle : {selectedMachinery?.[COLUMN_MODEL]}</li>
-                ) : null}
-                {/*Si le numéro de série est vide, ne pas l'afficher.*/}
-                {selectedMachinery?.[COLUMN_SERIAL_NUMBER] ? (
-                  <li>
-                    Numéro de série :{' '}
-                    {selectedMachinery?.[COLUMN_SERIAL_NUMBER]}
-                  </li>
-                ) : null}
-              </ul>
-            </ul>
-            <div className="delete-buttons">
-              <CustomButton
-                functionclick={() => {
-                  deleteMachinery()
-                }}
-                color={colors.redButton}
-                hovercolor={colors.redButtonHover}
-              >
-                Oui
-              </CustomButton>
-              <CustomButton
-                functionclick={() => {
-                  setDelModalOpen(false)
-                }}
-                color={colors.greyButton}
-                hovercolor={colors.greyButtonHover}
-              >
-                Annuler
-              </CustomButton>
-            </div>
-          </>
+          <FormDelMachinery
+            closeModal={() => {
+              setDelModalOpen(false) //Fermeture de la modale.
+            }}
+            selectedMachinery={selectedMachinery}
+          />
         }
         isOpen={isDelModalOpen}
         onClose={() => {
