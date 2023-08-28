@@ -117,6 +117,23 @@ export const CHECK_MACHINERY_RESERVATION = `
         }
     }
 `
+//Permet d'ajouter un bris à une machine.
+export const INSERT_BREAKDOWN = `
+    mutation InsertBreakdown($id: Int!, $responsableId: String!, $statusId: Int!, $dateBreakdown: timestamptz!, $description: String, $dateReparation: timestamptz, $reparationEstimee: numeric, $remarques: String) {
+        insert_machinerie_bris(objects:[{machinerie_id:$id, responsable_id:$responsableId, statut_id: $statusId, date_bris: $dateBreakdown, description: $description, date_reparation: $dateReparation, reparation_estimee: $reparationEstimee, remarques: $remarques}]) {
+        affected_rows
+        }
+    }
+`
+
+//Permet de modifier un bris.
+export const UPDATE_BREAKDOWN = `
+    mutation UpdateBreakdown($breakdownId: Int!, $statusId: Int!, $dateBreakdown: timestamptz!, $description: String, $dateReparation: timestamptz, $reparationEstimee: numeric, $remarques: String) {
+        update_machinerie_bris(where: {id: {_eq: $breakdownId}}, _set: {statut_id: $statusId, date_bris: $dateBreakdown, description: $description, date_reparation: $dateReparation, reparation_estimee: $reparationEstimee, remarques: $remarques}) {
+        affected_rows
+        }
+    }
+`
 
 //Permet d'obtenir les statuts de bris.
 export const GET_BREAKDOWN_STATUS = `

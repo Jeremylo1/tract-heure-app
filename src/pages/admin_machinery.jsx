@@ -8,6 +8,7 @@ import Modal from '../components/modal'
 /*Formulaire*/
 import FormMachinery from '../forms/form_machinery'
 import FormDelMachinery from '../forms/form_delmachinery'
+import FormBreakdown from '../forms/form_breakdown'
 /*Style*/
 import '../styles/admin_machinery.css'
 import colors from '../utils/styles/color'
@@ -22,6 +23,8 @@ function AdminMachinery() {
 
   //Hook pour la gestion de la machinerie sélectionnée.
   const [selectedMachinery, setSelectedMachinery] = useState(null)
+  //Hook pour la gestion de la modale d'ajout de bris.
+  const [isAddBreakdownModalOpen, setAddBreakdownModalOpen] = useState(false)
   //Hook pour la gestion de la modale d'ajout.
   const [isAddModalOpen, setAddModalOpen] = useState(false)
   //Hook pour la gestion de la modale de modification.
@@ -55,14 +58,17 @@ function AdminMachinery() {
         </p>
         <p className="control">
           <CustomButton
-            /*to="" ou functionclick=""*/
+            functionclick={() => {
+              setAddBreakdownModalOpen(true) /*Pour la modale d'ajout de bris.*/
+              setSelectedMachinery(machinery)
+            }}
             color={colors.blueButton}
             hovercolor={colors.blueButtonHover}
           >
             {isMobile ? (
               <Icon path={mdiInformationBoxOutline} size={1} color="white" />
             ) : (
-              'Rapport'
+              'Bris'
             )}
           </CustomButton>
         </p>
@@ -101,7 +107,23 @@ function AdminMachinery() {
           <ShowMachinery functionButtons={groupButtonsAdmin} />
         </div>
       </div>
-
+      {/* MODALE POUR AJOUTER UN BRIS */}
+      <Modal
+        title={'Ajouter un bris'}
+        content={
+          <FormBreakdown
+            closeModal={() => {
+              setAddBreakdownModalOpen(false) //Fermeture de la modale.
+            }}
+            selectedMachinery={selectedMachinery}
+            userId={localStorage.getItem('userId')}
+          />
+        }
+        isOpen={isAddBreakdownModalOpen}
+        onClose={() => {
+          setAddBreakdownModalOpen(false)
+        }}
+      />
       {/* MODALE POUR AJOUTER UNE MACHINE */}
       <Modal
         title={'Ajouter une machine'}
@@ -134,7 +156,6 @@ function AdminMachinery() {
           setEditModalOpen(false)
         }}
       />
-
       {/* MODALE POUR SUPPRIMER UNE MACHINE */}
       <Modal
         title={'Supprimer une machine'}
