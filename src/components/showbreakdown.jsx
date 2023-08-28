@@ -38,6 +38,15 @@ const StyledText = styled.span`
 const StyledSelect = styled.div`
   display: flex;
   justify-content: space-between;
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+    align-items: center;
+
+    .select {
+      margin-bottom: 5px;
+    }
+  }
 `
 
 function ShowBreakdown({ functionButtons }) {
@@ -150,9 +159,9 @@ function ShowBreakdown({ functionButtons }) {
                 value={selectedStatusId}
                 onChange={(e) => setSelectedStatusId(parseInt(e.target.value))}
               >
-                {/*Statut "TOUT LES BRIS"*/}
+                {/*Statut "TOUS LES BRIS"*/}
                 <option key="all" value={0}>
-                  -- Tout les bris --
+                  -- Tous les bris --
                 </option>
                 {/*Autres statuts*/}
                 {sortedBreakdownStatus &&
