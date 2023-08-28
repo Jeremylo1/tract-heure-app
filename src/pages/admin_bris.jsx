@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react'
-import { useMutationHasura } from '../utils/react/hooks'
 import { ScreenContext } from '../utils/react/context'
 /*Composants*/
 import CustomButton from '../components/button'
@@ -14,7 +13,6 @@ import colors from '../utils/styles/color'
 /*Importation des icônes*/
 import Icon from '@mdi/react'
 import { mdiTrashCanOutline } from '@mdi/js'
-import { mdiInformationBoxOutline } from '@mdi/js'
 
 function AdminBreakdown() {
   //Titre de la page.
