@@ -8,7 +8,6 @@ import Calendar from './pages/calendar'
 import Dashboard from './pages/admin_dashboard'
 import Burger from './pages/burger'
 import Login from './pages/login'
-import Test from './trash-test/test' //! À SUPPRIMER
 import AdminCategory from './pages/admin_category'
 import AdminMachinery from './pages/admin_machinery'
 import AdminCalendar from './pages/admin_calendar'
@@ -83,11 +82,8 @@ root.render(
                   <Route index element={<AdminBreakdown />} />
                 </Route>
                 <Route path="/others" element={<ProtectedRoute />}>
+                  {/* TO DO : ACCESSIBLE SEULEMENT SUR MOBILE !!! */}
                   <Route index element={<Burger />} />
-                </Route>
-                {/* À SUPPRIMER */}
-                <Route path="/test" element={<ProtectedRoute />}>
-                  <Route index element={<Test />} />
                 </Route>
                 <Route path="*" element={<Error />} />
               </Routes>

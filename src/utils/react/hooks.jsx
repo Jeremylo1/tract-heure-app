@@ -262,6 +262,9 @@ export function useTab() {
       case '/admin':
         setActiveTab('dashboard')
         break
+      case '/others':
+        setActiveTab('burger')
+        break
       default:
         setActiveTab('accueil')
         break
