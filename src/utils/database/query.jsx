@@ -261,3 +261,17 @@ export const GET_UPCOMING_RESERVATIONS = `
         }
     }  
 `
+
+//Permet de vérifier l'existence de réservation(s) (présentes et futures) pour une machine.
+export const CHECK_CURRENT_UPCOMING_RESERVATIONS = `
+    query CheckCurrrentUpcomingReservations($machineryId: Int!, $currentDateTime: timestamptz!) {
+        machinerie_reservation_aggregate(
+        where: {
+            machinerie_id: {_eq: $machineryId}, 
+            date_fin: {_gte: $currentDateTime}
+        }
+        ) {
+            id
+        }
+    }
+`
