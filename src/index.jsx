@@ -11,7 +11,8 @@ import Login from './pages/login'
 import AdminCategory from './pages/admin_category'
 import AdminMachinery from './pages/admin_machinery'
 import AdminCalendar from './pages/admin_calendar'
-/*Components*/
+import AdminBreakdown from './pages/admin_breakdown'
+/*Composants*/
 import Header from './components/header'
 import Footer from './components/footer'
 import Error from './components/error'
@@ -25,7 +26,6 @@ import ProtectedRoute from './utils/react/protectedroute'
 /*Style*/
 import styled from 'styled-components'
 import GlobalStyle from './utils/styles/globalStyle'
-import AdminBreakdown from './pages/admin_bris'
 
 //Style du wrapper.
 const StyledWrapper = styled.div`

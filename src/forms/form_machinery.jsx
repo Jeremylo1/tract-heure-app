@@ -177,6 +177,7 @@ function FormMachinery({ closeModal, selectedMachinery }) {
         comment: comment ? comment : null,
         location: location ? location : null,
       }
+
       /*VERSION POUR MODIFICATION*/
       if (selectedMachinery) {
         const resultMutation = await doMutation(UPDATE_MACHINERY, {

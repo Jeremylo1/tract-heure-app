@@ -14,11 +14,11 @@ import {
   COLUMN_ID,
   COLUMN_NAME,
   COLUMN_STATUS_ID,
-  COLUMN_DATE_BRIS,
+  COLUMN_DATE_BREAKDOWN,
   COLUMN_DESCRIPTION,
-  COLUMN_DATE_REPARATION,
-  COLUMN_REMARQUES,
-  COLUMN_REPARATION_ESTIMEE,
+  COLUMN_DATE_REPAIR,
+  COLUMN_REMARKS,
+  COLUMN_ESTIMATED_REPAIR,
   INSERT_BREAKDOWN,
   UPDATE_BREAKDOWN,
 } from '../utils/database/query'
@@ -32,7 +32,7 @@ const StyledPart = styled.div`
   margin-bottom: 15px;
 `
 
-/*NOTE : si il y a 'selectedMachinery', c'est une modification, sinon c'est un ajout.*/
+/*NOTE : si il y a 'selectBreakdown', c'est une modification, sinon c'est un ajout.*/
 
 //Formulaire d'ajout et de modification de bris.
 function FormBreakdown({
@@ -41,37 +41,18 @@ function FormBreakdown({
   selectBreakdown,
   userId,
 }) {
+  //Infos sur le bris.
+  const [idMachine, setIdMachine] = useState(selectedMachinery[COLUMN_ID])
+  const [authorId, setAuthorId] = useState(userId)
+  /*const [breakdownId, setBreakdownId] = useState('')*/ /*Pour la modification.*/
   //Pour stocker les données du formulaire.
-  const [idMachine, setIdMachine] = useState(
-    selectedMachinery ? selectedMachinery[COLUMN_ID] : '',
-  )
-  const [selectedBreakdownId, setSelectedBreakdownId] = useState(
-    selectBreakdown ? selectBreakdown[COLUMN_ID] : '',
-  )
-  const [selectedBreakdownStatusId, setSelectedBreakdownStatusId] = useState(
-    selectBreakdown ? selectBreakdown[COLUMN_STATUS_ID] : 1,
-  )
-  const [selectedResponsableId, setSelectedResponsableId] = useState(
-    userId ? userId : '',
-  )
-  const [selectedDateBreakdown, setDateBreakdown] = useState(
-    selectBreakdown ? selectBreakdown[COLUMN_DATE_BRIS] : '',
-  )
-  const [selectedDescription, setDescription] = useState(
-    selectBreakdown ? selectBreakdown[COLUMN_DESCRIPTION] : '',
-  )
-  const [selectedDateReparation, setDateReparation] = useState(
-    selectBreakdown ? selectBreakdown[COLUMN_DATE_REPARATION] : '',
-  )
-  const [selectedReparationEstimee, setReparationEstimee] = useState(
-    selectBreakdown ? selectBreakdown[COLUMN_REPARATION_ESTIMEE] : '',
-  )
-  const [selectedRemarques, setRemarques] = useState(
-    selectBreakdown ? selectBreakdown[COLUMN_REMARQUES] : '',
-  )
-
+  const [selectedStatusId, setSelectedStatusId] = useState(1)
+  const [dateBreakdown, setDateBreakdown] = useState('')
+  const [description, setDescription] = useState('')
+  const [dateRepair, setDateRepair] = useState('')
+  const [estimatedPriceRepair, setEstimatedPriceRepair] = useState('')
+  const [remarks, setRemarks] = useState('')
   //Erreurs dans les données du formulaire.
-  const [errorName, setErrorName] = useState('')
   const [errorTime, setErrorTime] = useState('')
   const [errorPrice, setErrorPrice] = useState('')
   //Pour savoir si le bouton est cliqué.
@@ -93,7 +74,7 @@ function FormBreakdown({
     setIsClicked(true) //Si le bouton est cliqué.
 
     //Si erreur, ne pas exécuter la fonction.
-    if (errorName || errorTime || errorPrice) {
+    if (errorTime || errorPrice) {
       return
     }
 
@@ -109,21 +90,21 @@ function FormBreakdown({
   /*VÉRIFICATION DES CHAMPS DU FORMULAIRE*/
   useEffect(() => {
     //Vérification de la présence et de la validité du temps d'utilisation.
-    if (!selectedBreakdownStatusId) {
+    if (!selectedStatusId) {
       setErrorTime('Veuillez entrer un type de bris.')
-    } else if (selectedBreakdownStatusId < 0 || selectedBreakdownStatusId > 4) {
+    } else if (selectedStatusId < 0 || selectedStatusId > 4) {
       setErrorTime('Veuillez entrer un type de bris valide.')
     } else {
       setErrorTime('')
     }
 
     //Vérification du prix (s'il y en a un).
-    if (!selectedDateBreakdown) {
+    if (!dateBreakdown) {
       setErrorPrice('Veuillez entrer une date de bris.')
     } else {
       setErrorPrice('')
     }
-  }, [selectedBreakdownStatusId, selectedDateBreakdown])
+  }, [selectedStatusId, dateBreakdown])
 
   /*VÉRIFICATION POUR LE TOAST D'ERREUR*/
   useEffect(() => {
@@ -144,21 +125,19 @@ function FormBreakdown({
       const variables = {
         //Obligatoire.
         id: idMachine,
-        idBreakdown: selectedBreakdownId,
-        responsableId: selectedResponsableId,
-        statusId: selectedBreakdownStatusId,
-        dateBreakdown: toISODateTime(selectedDateBreakdown, '00:00'), //Transformation en ISO.
+        responsableId: authorId,
+        statusId: selectedStatusId,
+        dateBreakdown: toISODateTime(dateBreakdown, '00:00'), //Transformation en ISO.
         //Optionnel.
-        description: selectedDescription ? selectedDescription : null,
-        reparationEstimee: selectedReparationEstimee
-          ? parseFloat(selectedReparationEstimee)
+        description: description ? description : null,
+        reparationEstimee: estimatedPriceRepair
+          ? parseFloat(estimatedPriceRepair)
           : null, //Transformation en float.
-        dateReparation: selectedDateReparation
-          ? toISODateTime(selectedDateReparation, '00:00')
-          : null, //Transformation en ISO.
-        remarques: selectedRemarques ? selectedRemarques : null,
+        dateReparation: dateRepair ? toISODateTime(dateRepair, '00:00') : null, //Transformation en ISO.
+        remarques: remarks ? remarks : null,
       }
-      /*VERSION POUR MODIFICATION !!!!!!!!!!!!!!!!!!!!!!!*/
+
+      /*VERSION POUR MODIFICATION*/
       if (selectBreakdown) {
         const resultMutation = await doMutation(UPDATE_BREAKDOWN, {
           id: selectBreakdown?.[COLUMN_ID],
@@ -200,18 +179,16 @@ function FormBreakdown({
 
       //Réinitialisation des champs.
       setIdMachine('')
-      setSelectedBreakdownId('')
-      setSelectedBreakdownStatusId(1)
-      setSelectedBreakdownStatusId(null)
-      setSelectedResponsableId('')
+      setSelectedStatusId(1)
+      setSelectedStatusId(null)
+      setAuthorId('')
       setDateBreakdown('')
       setDescription('')
-      setDateReparation('')
-      setReparationEstimee('')
-      setRemarques('')
+      setDateRepair('')
+      setEstimatedPriceRepair('')
+      setRemarks('')
 
       //Réinitialisation des autres variables.
-      setErrorName('')
       setErrorTime('')
       setErrorPrice('')
       setIsClicked(false)
@@ -231,7 +208,6 @@ function FormBreakdown({
 
   //Vérification des types des variables.
   FormBreakdown.propTypes = {
-    errorName: PropTypes.string,
     errorTime: PropTypes.string,
     errorPrice: PropTypes.string,
     isClicked: PropTypes.bool,
@@ -301,9 +277,9 @@ function FormBreakdown({
               <label className="label">Statut</label>
               <div className="select">
                 <select
-                  value={selectedBreakdownStatusId}
+                  value={selectedStatusId}
                   onChange={(e) =>
-                    setSelectedBreakdownStatusId(parseInt(e.target.value))
+                    setSelectedStatusId(parseInt(e.target.value))
                   }
                 >
                   {sortedBreakdownStatus.map((statut) => (
@@ -321,49 +297,48 @@ function FormBreakdown({
             {FormField({
               label: 'Date du bris',
               typeInput: 'date',
-              value: selectedDateBreakdown,
+              value: dateBreakdown,
               functionOnChange: setDateBreakdown,
             })}
 
-            {/*Commentaire*/}
+            {/*Description*/}
             <StyledPart>
               <label className="label">Description</label>
               <div className="control">
                 <textarea
                   className="textarea"
-                  placeholder="Description du bris"
-                  value={selectedDescription ? selectedDescription : ''}
+                  placeholder="Entrez une description précise du bris"
+                  value={description ? description : ''}
                   onChange={(e) => setDescription(e.target.value)}
                 />
               </div>
             </StyledPart>
-            {/*Date réparation*/}
+            {/*Date de réparation*/}
             {FormField({
               label: 'Date de réparation',
               typeInput: 'date',
-              value: selectedDateReparation,
-              functionOnChange: setDateReparation,
+              value: dateRepair,
+              functionOnChange: setDateRepair,
             })}
             {/*Prix de réparation estimé*/}
             {FormField({
               label: 'Estimation du prix de réparation',
               typeInput: 'number',
               placeholder: 'Entrez une estimation du prix de réparation (en $)',
-              value: selectedReparationEstimee,
-              functionOnChange: setReparationEstimee,
+              value: estimatedPriceRepair,
+              functionOnChange: setEstimatedPriceRepair,
               error: errorPrice,
               hasStep: true, //Pour avoir un step de 0.1.
             })}
-            {/*Numéro de série*/}
-            {/*Commentaire*/}
+            {/*Remarques*/}
             <StyledPart>
               <label className="label">Remarques</label>
               <div className="control">
                 <textarea
                   className="textarea"
-                  placeholder="Toutes remarques"
-                  value={selectedRemarques ? selectedRemarques : ''}
-                  onChange={(e) => setRemarques(e.target.value)}
+                  placeholder="Toutes remarques pertinentes ..."
+                  value={remarks ? remarks : ''}
+                  onChange={(e) => setRemarks(e.target.value)}
                 />
               </div>
             </StyledPart>
@@ -395,3 +370,8 @@ FormBreakdown.propTypes = {
 }
 
 export default FormBreakdown
+
+/* À FAIRE :
+- Ajouter les champs obligatoires.
+- Vérifier les types des variables.
+- Faire la version pour modification.*/

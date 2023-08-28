@@ -2,17 +2,19 @@ import React, { useState, useContext } from 'react'
 import { ScreenContext } from '../utils/react/context'
 /*Composants*/
 import CustomButton from '../components/button'
-import AddButton from '../components/addbutton'
+//import AddButton from '../components/addbutton'
 import ShowBreakdown from '../components/showbreakdown'
 import Modal from '../components/modal'
 /*Formulaire*/
 import FormDelBreakdown from '../forms/form_delbreakdown'
+import FormBreakdown from '../forms/form_breakdown'
 /*Style*/
 import '../styles/admin_machinery.css'
 import colors from '../utils/styles/color'
 /*Importation des icônes*/
 import Icon from '@mdi/react'
 import { mdiTrashCanOutline } from '@mdi/js'
+import { mdiPencilOutline } from '@mdi/js'
 
 function AdminBreakdown() {
   //Titre de la page.
@@ -21,8 +23,6 @@ function AdminBreakdown() {
   //Hook pour la gestion du bris sélectionné.
   const [selectedMachineryBreakdown, setSelectedMachineryBreakdown] =
     useState(null)
-  //Hook pour la gestion de la modale d'ajout.
-  const [isAddModalOpen, setAddModalOpen] = useState(false)
   //Hook pour la gestion de la modale de modification.
   const [isEditModalOpen, setEditModalOpen] = useState(false)
   //Hook pour la gestion de la modale de suppression.
@@ -61,7 +61,11 @@ function AdminBreakdown() {
             color={colors.greenButton}
             hovercolor={colors.greenButtonHover}
           >
-            Modifier
+            {isMobile ? (
+              <Icon path={mdiPencilOutline} size={1} color="white" />
+            ) : (
+              'Modifier'
+            )}
           </CustomButton>
         </p>
       </div>
@@ -79,36 +83,20 @@ function AdminBreakdown() {
           }
         >
           <h1>Gestion des bris</h1>
-          <AddButton
+          {/*<AddButton
             onClick={() => {
               setAddModalOpen(true)
             }}
-          />
+          />*/}
           <ShowBreakdown functionButtons={groupButtonsAdmin} />
         </div>
       </div>
 
-      {/* MODALE POUR AJOUTER UNE MACHINE */}
-      {/* <Modal
-        title={'Ajouter une machine'}
+      {/* MODALE POUR MODIFIER UN BRIS */}
+      <Modal
+        title={'Modifier un bris'}
         content={
-          <FormMachinery
-            closeModal={() => {
-              setAddModalOpen(false) //Fermeture de la modale.
-            }}
-          />
-        }
-        isOpen={isAddModalOpen}
-        onClose={() => {
-          setAddModalOpen(false)
-        }}
-      /> */}
-
-      {/* MODALE POUR MODIFIER UNE MACHINE */}
-      {/* <Modal
-        title={'Modifier une machine'}
-        content={
-          <FormMachinery
+          <FormBreakdown
             closeModal={() => {
               setEditModalOpen(false) //Fermeture de la modale.
             }}
@@ -119,7 +107,7 @@ function AdminBreakdown() {
         onClose={() => {
           setEditModalOpen(false)
         }}
-      /> */}
+      />
 
       {/* MODALE POUR SUPPRIMER UN BRIS */}
       <Modal

@@ -9,10 +9,10 @@ import { toast } from 'react-toastify'
 import {
   LIEN_API,
   COLUMN_ID,
-  COLUMN_MACHINERY_NOM,
-  COLUMN_STATUS_BRIS_NOM,
+  COLUMN_MACHINERY_NAME,
+  COLUMN_STATUS_BREAKDOWN_NAME,
   COLUMN_DESCRIPTION,
-  COLUMN_REMARQUES,
+  COLUMN_REMARKS,
   DELETE_BREAKDOWN,
 } from '../utils/database/query'
 /*Style*/
@@ -93,9 +93,9 @@ function FormDelBreakdown({ closeModal, selectedMachineryBreakdown }) {
             <ul>
               <li>
                 Bris #{selectedMachineryBreakdown?.[COLUMN_ID]} {'['}
-                {selectedMachineryBreakdown?.[COLUMN_STATUS_BRIS_NOM]}
+                {selectedMachineryBreakdown?.[COLUMN_STATUS_BREAKDOWN_NAME]}
                 {'] : '}
-                {selectedMachineryBreakdown?.[COLUMN_MACHINERY_NOM]}
+                {selectedMachineryBreakdown?.[COLUMN_MACHINERY_NAME]}
               </li>
               {/*  Si la description est vide, ne pas l'afficher. */}
               {selectedMachineryBreakdown?.[COLUMN_DESCRIPTION] ? (
@@ -105,10 +105,10 @@ function FormDelBreakdown({ closeModal, selectedMachineryBreakdown }) {
                 </li>
               ) : null}
               {/* Si les remarques sont vides, ne pas les afficher. */}
-              {selectedMachineryBreakdown?.[COLUMN_REMARQUES] ? (
+              {selectedMachineryBreakdown?.[COLUMN_REMARKS] ? (
                 <li>
                   {'Remarques : '}
-                  {selectedMachineryBreakdown?.[COLUMN_REMARQUES]}
+                  {selectedMachineryBreakdown?.[COLUMN_REMARKS]}
                 </li>
               ) : null}
             </ul>

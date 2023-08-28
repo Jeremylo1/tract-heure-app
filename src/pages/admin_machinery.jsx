@@ -15,7 +15,7 @@ import colors from '../utils/styles/color'
 /*Importation des icônes*/
 import Icon from '@mdi/react'
 import { mdiTrashCanOutline } from '@mdi/js'
-import { mdiInformationBoxOutline } from '@mdi/js'
+import { mdiAlertOctagram } from '@mdi/js'
 
 function AdminMachinery() {
   //Titre de la page.
@@ -66,9 +66,9 @@ function AdminMachinery() {
             hovercolor={colors.blueButtonHover}
           >
             {isMobile ? (
-              <Icon path={mdiInformationBoxOutline} size={1} color="white" />
+              <Icon path={mdiAlertOctagram} size={1} color="white" />
             ) : (
-              'Bris'
+              'Signaler bris'
             )}
           </CustomButton>
         </p>
@@ -107,23 +107,7 @@ function AdminMachinery() {
           <ShowMachinery functionButtons={groupButtonsAdmin} />
         </div>
       </div>
-      {/* MODALE POUR AJOUTER UN BRIS */}
-      <Modal
-        title={'Ajouter un bris'}
-        content={
-          <FormBreakdown
-            closeModal={() => {
-              setAddBreakdownModalOpen(false) //Fermeture de la modale.
-            }}
-            selectedMachinery={selectedMachinery}
-            userId={localStorage.getItem('userId')}
-          />
-        }
-        isOpen={isAddBreakdownModalOpen}
-        onClose={() => {
-          setAddBreakdownModalOpen(false)
-        }}
-      />
+
       {/* MODALE POUR AJOUTER UNE MACHINE */}
       <Modal
         title={'Ajouter une machine'}
@@ -156,6 +140,25 @@ function AdminMachinery() {
           setEditModalOpen(false)
         }}
       />
+
+      {/* MODALE POUR SIGNALER UN BRIS */}
+      <Modal
+        title={'Signaler un bris'}
+        content={
+          <FormBreakdown
+            closeModal={() => {
+              setAddBreakdownModalOpen(false) //Fermeture de la modale.
+            }}
+            selectedMachinery={selectedMachinery}
+            userId={localStorage.getItem('userId')}
+          />
+        }
+        isOpen={isAddBreakdownModalOpen}
+        onClose={() => {
+          setAddBreakdownModalOpen(false)
+        }}
+      />
+
       {/* MODALE POUR SUPPRIMER UNE MACHINE */}
       <Modal
         title={'Supprimer une machine'}

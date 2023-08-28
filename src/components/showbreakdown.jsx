@@ -13,13 +13,13 @@ import {
   COLUMN_ID,
   COLUMN_NAME,
   COLUMN_STATUS_ID,
-  COLUMN_DATE_BRIS,
+  COLUMN_DATE_BREAKDOWN,
   COLUMN_DESCRIPTION,
-  COLUMN_DATE_REPARATION,
-  COLUMN_REPARATION_ESTIMEE,
-  COLUMN_REMARQUES,
-  COLUMN_STATUS_BRIS_NOM,
-  COLUMN_MACHINERY_NOM,
+  COLUMN_DATE_REPAIR,
+  COLUMN_ESTIMATED_REPAIR,
+  COLUMN_REMARKS,
+  COLUMN_STATUS_BREAKDOWN_NAME,
+  COLUMN_MACHINERY_NAME,
 } from '../utils/database/query'
 /*Style*/
 import styled from 'styled-components'
@@ -92,22 +92,22 @@ function ShowBreakdown({ functionButtons }) {
       <ul className="infoMachine">
         <li className="StyledListButton">
           <StyledText>Date du bris :</StyledText>{' '}
-          {`${formatDate(breakdown[COLUMN_DATE_BRIS])}`}
+          {`${formatDate(breakdown[COLUMN_DATE_BREAKDOWN])}`}
         </li>
         <li className="StyledListButton">
           <StyledText>Description :</StyledText> {breakdown[COLUMN_DESCRIPTION]}
         </li>
-        {breakdown[COLUMN_DATE_REPARATION] ? (
+        {breakdown[COLUMN_DATE_REPAIR] ? (
           <li className="StyledListButton">
             <StyledText>Date de réparation :</StyledText>{' '}
           </li>
         ) : null}
         <li className="StyledListButton">
           <StyledText>Prix de réparation estimée :</StyledText>{' '}
-          {breakdown[COLUMN_REPARATION_ESTIMEE]} $
+          {breakdown[COLUMN_ESTIMATED_REPAIR]} $
         </li>
         <li className="StyledListButton">
-          <StyledText>Remarques :</StyledText> {breakdown[COLUMN_REMARQUES]}
+          <StyledText>Remarques :</StyledText> {breakdown[COLUMN_REMARKS]}
         </li>
         {/* Ajoutez d'autres champs au besoin */}
       </ul>
@@ -138,7 +138,7 @@ function ShowBreakdown({ functionButtons }) {
     if (searchValue) {
       const filteredData = allBreakdownData[VUE_BREAKDOWN].filter((bris) =>
         //On compare en minuscule pour ne pas avoir de problème de casse.
-        bris[COLUMN_MACHINERY_NOM].toLowerCase().includes(
+        bris[COLUMN_MACHINERY_NAME].toLowerCase().includes(
           searchValue.toLowerCase(),
         ),
       )
@@ -202,7 +202,7 @@ function ShowBreakdown({ functionButtons }) {
             filteredBreakdownData.map((breakdown) => (
               <Accordion
                 key={breakdown[COLUMN_ID]}
-                title={`Bris #${breakdown[COLUMN_ID]} [${breakdown[COLUMN_STATUS_BRIS_NOM]}] : ${breakdown[COLUMN_MACHINERY_NOM]}`}
+                title={`Bris #${breakdown[COLUMN_ID]} [${breakdown[COLUMN_STATUS_BREAKDOWN_NAME]}] : ${breakdown[COLUMN_MACHINERY_NAME]}`}
                 content={panelContent(breakdown)}
                 others={functionButtons(breakdown)}
               />

@@ -32,14 +32,14 @@ export const COLUMN_TYPE = 'type'
 export const COLUMN_DESCRIPTION = 'description'
 
 /*Nom des colonnes (en lien avec les bris).*/
-export const COLUMN_DATE_BRIS = 'date_bris'
-export const COLUMN_DATE_REPARATION = 'date_reparation'
-export const COLUMN_REMARQUES = 'remarques'
-export const COLUMN_REPARATION_ESTIMEE = 'reparation_estimee'
-export const COLUMN_RESPONSABLE_ID = 'responsable_id'
+export const COLUMN_DATE_BREAKDOWN = 'date_bris'
+export const COLUMN_DATE_REPAIR = 'date_reparation'
+export const COLUMN_REMARKS = 'remarques'
+export const COLUMN_ESTIMATED_REPAIR = 'reparation_estimee'
+export const COLUMN_AUTHOR_ID = 'responsable_id'
 export const COLUMN_MACHINERY_ID = 'machinerie_id'
-export const COLUMN_STATUS_BRIS_NOM = 'bris_statut_nom'
-export const COLUMN_MACHINERY_NOM = 'machinerie_nom'
+export const COLUMN_STATUS_BREAKDOWN_NAME = 'bris_statut_nom'
+export const COLUMN_MACHINERY_NAME = 'machinerie_nom'
 
 /*Requêtes GraphQL.*/
 //Permet d'ajouter une machine.
@@ -152,15 +152,15 @@ export const GET_ALL_BREAKDOWN = `
         ${VUE_BREAKDOWN}(order_by: {date_bris: asc}) {
             ${COLUMN_ID}
             ${COLUMN_MACHINERY_ID}
-            ${COLUMN_RESPONSABLE_ID}
+            ${COLUMN_AUTHOR_ID}
             ${COLUMN_STATUS_ID}
-            ${COLUMN_DATE_BRIS}
+            ${COLUMN_DATE_BREAKDOWN}
             ${COLUMN_DESCRIPTION}
-            ${COLUMN_DATE_REPARATION}
-            ${COLUMN_REPARATION_ESTIMEE}
-            ${COLUMN_REMARQUES}
-            ${COLUMN_STATUS_BRIS_NOM}
-            ${COLUMN_MACHINERY_NOM}
+            ${COLUMN_DATE_REPAIR}
+            ${COLUMN_ESTIMATED_REPAIR}
+            ${COLUMN_REMARKS}
+            ${COLUMN_STATUS_BREAKDOWN_NAME}
+            ${COLUMN_MACHINERY_NAME}
         }
     }
 `
@@ -171,15 +171,15 @@ export const GET_MACHINE_BREAKDOWN = `
         ${VUE_BREAKDOWN}(where: {machinerie_id: {_eq: $machineryId}}, order_by: {date_bris: asc}) {
             ${COLUMN_ID}
             ${COLUMN_MACHINERY_ID}
-            ${COLUMN_RESPONSABLE_ID}
+            ${COLUMN_AUTHOR_ID}
             ${COLUMN_STATUS_ID}
-            ${COLUMN_DATE_BRIS}
+            ${COLUMN_DATE_BREAKDOWN}
             ${COLUMN_DESCRIPTION}
-            ${COLUMN_DATE_REPARATION}
-            ${COLUMN_REPARATION_ESTIMEE}
-            ${COLUMN_REMARQUES}
-            ${COLUMN_STATUS_BRIS_NOM}
-            ${COLUMN_MACHINERY_NOM}
+            ${COLUMN_DATE_REPAIR}
+            ${COLUMN_ESTIMATED_REPAIR}
+            ${COLUMN_REMARKS}
+            ${COLUMN_STATUS_BREAKDOWN_NAME}
+            ${COLUMN_MACHINERY_NAME}
         }
     }
 `
