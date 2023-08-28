@@ -66,7 +66,7 @@ function FormMachinery({ closeModal, selectedMachinery }) {
     selectedMachinery ? selectedMachinery[COLUMN_PRICE] : '',
   )
   const [dateAcquisition, setDateAcquisition] = useState(
-    selectedMachinery ? selectedMachinery[COLUMN_DATE] : null,
+    selectedMachinery ? formatInputDate(selectedMachinery[COLUMN_DATE]) : null, //Pour avoir le format 'yyyy-mm-dd'.
   )
   const [comment, setComment] = useState(
     selectedMachinery ? selectedMachinery[COLUMN_COMMENT] : '',
@@ -109,7 +109,7 @@ function FormMachinery({ closeModal, selectedMachinery }) {
     }
 
     //Ajout de la machine.
-    await addMachinery()
+    await addEditMachinery()
   }
 
   /*VÉRIFICATION DES CHAMPS DU FORMULAIRE*/
@@ -157,7 +157,7 @@ function FormMachinery({ closeModal, selectedMachinery }) {
   }, [category_error, status_error, errorMutation])
 
   /*AJOUT DE LA MACHINE DANS LA BASE DE DONNÉES*/
-  const addMachinery = async () => {
+  const addEditMachinery = async () => {
     try {
       /*VARIABLES POUR LES REQUÊTES*/
       const variables = {
@@ -173,7 +173,7 @@ function FormMachinery({ closeModal, selectedMachinery }) {
         price: price ? parseFloat(price) : null, //Transformation en float.
         dateAcquisition: dateAcquisition
           ? toISODateTime(dateAcquisition, '00:00')
-          : null,
+          : null, //Transformation en ISO.
         comment: comment ? comment : null,
         location: location ? location : null,
       }
@@ -414,7 +414,7 @@ function FormMachinery({ closeModal, selectedMachinery }) {
             {FormField({
               label: "Date d'acquisition",
               typeInput: 'date',
-              value: formatInputDate(dateAcquisition), //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+              value: dateAcquisition,
               functionOnChange: setDateAcquisition,
             })}
             {/*Commentaire*/}
@@ -464,6 +464,3 @@ FormMachinery.propTypes = {
 }
 
 export default FormMachinery
-
-/*À FAIRE :
-- Gestions des erreurs pour la modification (date au mauvais format, etc.).*/
