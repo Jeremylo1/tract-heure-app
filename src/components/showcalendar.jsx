@@ -268,7 +268,7 @@ function ShowCalendar({ isAdmin = false }) {
             </button>
           </div>
           {/* Barre de recherche */}
-          <div className="columns mb-4">
+          <div className="columns mb-4 custom-search">
             <input
               className="input column is-half is-offset-one-quarter"
               type="text"
