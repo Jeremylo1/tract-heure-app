@@ -53,7 +53,7 @@ function ShowBreakdown({ functionButtons }) {
   //Pour stocker l'ID du statut sélectionnée.
   const [selectedStatusId, setSelectedStatusId] = useState(0)
   //Pour savoir si c'est la première fois qu'on charge les données.
-
+  const [firstLoading, setFirstLoading] = useState(true)
   //Pour stocker les données filtrées.
   const [filteredBreakdownData, setFilteredBreakdownData] = useState([])
   //Pour récupérer les statuts de bris.
@@ -74,7 +74,12 @@ function ShowBreakdown({ functionButtons }) {
     data: allBreakdownData,
     isLoading,
     error,
-  } = useFetchHasura(LIEN_API, GET_ALL_BREAKDOWN)
+  } = useFetchHasura(LIEN_API, GET_ALL_BREAKDOWN, firstLoading)
+
+  //Permet de définir si c'est la première fois qu'on charge la page.
+  useEffect(() => {
+    setFirstLoading(false)
+  }, [])
 
   useEffect(() => {
     if (allBreakdownData && allBreakdownData[VUE_BREAKDOWN]) {
