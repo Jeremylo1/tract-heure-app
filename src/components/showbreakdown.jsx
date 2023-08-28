@@ -203,7 +203,7 @@ function ShowBreakdown({ functionButtons }) {
             filteredBreakdownData.map((breakdown) => (
               <Accordion
                 key={breakdown[COLUMN_ID]}
-                title={`Bris #${breakdown[COLUMN_ID]} : ${breakdown[COLUMN_MACHINERY_NOM]}`}
+                title={`Bris #${breakdown[COLUMN_ID]} [${breakdown[COLUMN_STATUS_BRIS_NOM]}] : ${breakdown[COLUMN_MACHINERY_NOM]}`}
                 content={panelContent(breakdown)}
                 others={functionButtons(breakdown)}
               />
