@@ -60,6 +60,8 @@ function FormDelMachinery({ closeModal, selectedMachinery }) {
         },
       )
 
+      console.log('Résultat de la vérification:', reservationExists)
+
       //Si la machine a (au moins) une réservation.
       if (reservationExists?.machinerie_reservation?.length > 0) {
         setErrorReservation(true) //Toast.
@@ -141,7 +143,7 @@ function FormDelMachinery({ closeModal, selectedMachinery }) {
       //Fermeture de la modale + rafraîchissement après 3s.
       setTimeout(() => {
         closeModal()
-        window.location.reload()
+        //window.location.reload()
       }, 3000)
     }
   }, [successMutation, closeModal])
