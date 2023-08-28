@@ -41,6 +41,15 @@ const StyledText = styled.span`
 const StyledSelect = styled.div`
   display: flex;
   justify-content: space-between;
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+    align-items: center;
+
+    .select {
+      margin-bottom: 5px;
+    }
+  }
 `
 
 function ShowMachinery({ functionButtons }) {
