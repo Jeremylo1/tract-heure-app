@@ -34,7 +34,7 @@ const StyledPart = styled.div`
 
 /*NOTE : si il y a 'selectedMachinery', c'est une modification, sinon c'est un ajout.*/
 
-//Formulaire d'ajout et de modification de machine.
+//Formulaire d'ajout et de modification de bris.
 function FormBreakdown({
   closeModal,
   selectedMachinery,
