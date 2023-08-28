@@ -1,5 +1,14 @@
 import React from 'react'
 import { useConnexion } from '../utils/react/hooks'
+/*Style*/
+import styled from 'styled-components'
+
+//Style du wrapper.
+const StyledWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+`
 
 function Burger() {
   //Pour savoir si l'utilisateur est connecté.
@@ -7,11 +16,11 @@ function Burger() {
 
   return isConnected ? (
     /*Si l'utilisateur est connecté, alors déconnexion.*/
-    <div>
+    <StyledWrapper>
       <button onClick={handleLogout} className="button is-info">
         <strong>Déconnexion</strong>
       </button>
-    </div>
+    </StyledWrapper>
   ) : null
 }
 
