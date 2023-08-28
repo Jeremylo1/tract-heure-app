@@ -63,18 +63,19 @@ function FormBreakdown({
   //Pour savoir si on affiche le formulaire ou l'icône de succès.
   const [showForm, setShowForm] = useState(true)
 
-  //Pour récupérer les catégories (pour le sélecteur).
+  //Pour récupérer les statuts (pour le sélecteur).
   const { sortedBreakdownStatus, breakdownStatus_error } = useBreakdownStatus()
   //Permet d'envoyer une requête de mutation (INSERT, UPDATE) à Hasura.
   const { doMutation } = useMutationHasura(LIEN_API)
 
-  /*FONCTION AGISSANT À L'ENVOI DU FORMULAIRE*/
-  async function handleClickMachinery(e) {
+  /*FONCTION AGISSANT À L'ENVOI DU FORMULAIRE*/ //OK !!!
+  async function handleClickBreakdown(e) {
     e.preventDefault()
     setIsClicked(true) //Si le bouton est cliqué.
 
     //Si erreur, ne pas exécuter la fonction.
     if (errorTime || errorPrice) {
+      //!!!!!!!!!!!!!
       return
     }
 
@@ -87,7 +88,7 @@ function FormBreakdown({
     await addEditBreakdown()
   }
 
-  /*VÉRIFICATION DES CHAMPS DU FORMULAIRE*/
+  /*VÉRIFICATION DES CHAMPS DU FORMULAIRE*/ //!!!!!!!!!!!!!
   useEffect(() => {
     //Vérification de la présence et de la validité du temps d'utilisation.
     if (!selectedStatusId) {
@@ -106,7 +107,7 @@ function FormBreakdown({
     }
   }, [selectedStatusId, dateBreakdown])
 
-  /*VÉRIFICATION POUR LE TOAST D'ERREUR*/
+  /*VÉRIFICATION POUR LE TOAST D'ERREUR*/ //!!!!!!!!!!!!!
   useEffect(() => {
     //Affichage d'un toast en cas d'erreur.
     if (breakdownStatus_error) {
@@ -118,7 +119,7 @@ function FormBreakdown({
     }
   }, [breakdownStatus_error, errorMutation])
 
-  /*AJOUT DU BRIS DANS LA BASE DE DONNÉES*/
+  /*AJOUT DU BRIS DANS LA BASE DE DONNÉES*/ //OK !!!
   const addEditBreakdown = async () => {
     try {
       /*VARIABLES POUR LES REQUÊTES*/
@@ -167,7 +168,7 @@ function FormBreakdown({
     }
   }
 
-  /*TOAST DE SUCCÈS ET RÉINITIALISATION DES VARIABLES*/
+  /*TOAST DE SUCCÈS ET RÉINITIALISATION DES VARIABLES*/ //!!!!!!!!!!!!!
   useEffect(() => {
     if (successMutation) {
       //Toast de succès selon l'action.
@@ -260,7 +261,7 @@ function FormBreakdown({
     hasStep: PropTypes.bool,
   }
 
-  /*AFFICHAGE DU FORMULAIRE*/
+  /*AFFICHAGE DU FORMULAIRE*/ //!!!!!!!!!!!!!
   return (
     <div>
       {showForm ? (
@@ -271,7 +272,7 @@ function FormBreakdown({
               ? 'Vous pouvez modifier les informations ci-dessous.'
               : 'Veuillez remplir les informations ci-dessous.'}
           </p>
-          <form onSubmit={handleClickMachinery}>
+          <form onSubmit={handleClickBreakdown}>
             {/*Statut*/}
             <StyledPart>
               <label className="label">Statut</label>
