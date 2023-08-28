@@ -26,6 +26,7 @@ import {
 import styled from 'styled-components'
 import colors from '../utils/styles/color'
 import '../styles/inventory.css'
+
 const StyledAccordionWrapper = styled.div`
   margin-top: 20px;
 `
