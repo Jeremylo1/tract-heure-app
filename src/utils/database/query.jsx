@@ -175,6 +175,24 @@ export const DELETE_RESERVATION = `
     }
 `
 
+//Permet de supprimer un bris.
+export const DELETE_BREAKDOWN = `
+    mutation DeleteBreakdown($id: Int!) {
+        delete_machinerie_bris_by_pk(id: $id) {
+        id
+        }
+    }
+`
+
+//Permet de supprimer tout les bris d'une machine.
+export const DELETE_ALL_MACHINE_BREAKDOWN = `
+    mutation DeleteAllMachineBreakdown($machineryId: Int!) {
+        delete_machinerie_bris(where: {machinerie_id: {_eq: $machineryId}}) {
+        affected_rows
+        }
+    }
+`
+
 //Permet d'obtenir toutes les réservations (récent à ancien).
 export const GET_ALL_RESERVATION = `
     {
