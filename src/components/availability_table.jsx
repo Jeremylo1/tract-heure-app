@@ -16,7 +16,13 @@ const AvailabilityTable = ({ availabilities }) => {
           </thead>
           <tbody>
             {availabilities.map((slot, index) => {
-              let startTimeStr = slot.start.toLocaleString()
+              let startTimeStr = slot.start.toLocaleString(undefined, {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+              })
               const currentTime = new Date().getTime()
 
               if (Math.abs(slot.start.getTime() - currentTime) <= 2000) {
@@ -26,7 +32,13 @@ const AvailabilityTable = ({ availabilities }) => {
               let endTimeStr =
                 slot.end === 'Indéfiniment'
                   ? slot.end
-                  : slot.end.toLocaleString()
+                  : slot.end.toLocaleString(undefined, {
+                      year: 'numeric',
+                      month: '2-digit',
+                      day: '2-digit',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })
 
               return (
                 <tr key={index}>

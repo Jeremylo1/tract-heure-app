@@ -115,4 +115,8 @@
     .level.calendar-header {
         display: flex;
     }
+
+    .custom-search {
+        padding: 15px;
+    }
 }

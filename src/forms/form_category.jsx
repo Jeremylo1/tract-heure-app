@@ -82,14 +82,23 @@ function FormCategory({ closeModal, selectedCategory }) {
     return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
   }
 
+  //Fonction pour enlever les espaces.
+  function removeSpaces(str) {
+    return str.replace(/\s+/g, '')
+  }
+
   /*VÉRIFICATION DE L'EXISTENCE DE LA CATÉGORIE*/
   function checkCategory() {
-    //Comparaison sans accent et en minuscule.
-    const lowerName = removeAccents(nameCategory.toLowerCase())
+    // Comparaison sans accent, en minuscule et sans espace.
+    const processedName = removeSpaces(
+      removeAccents(nameCategory.toLowerCase()),
+    )
 
     const categoryExists = sortedCategories.some((category) => {
-      const lowerCategory = removeAccents(category[COLUMN_NAME].toLowerCase())
-      return lowerCategory === lowerName
+      const processedCategory = removeSpaces(
+        removeAccents(category[COLUMN_NAME].toLowerCase()),
+      )
+      return processedCategory === processedName
     })
 
     //Si la catégorie existe déjà, affichage d'une erreur.
@@ -254,6 +263,3 @@ FormCategory.propTypes = {
 }
 
 export default FormCategory
-
-/*À FAIRE :
-- Vérification si catégories exactement identiques (même si espaces différents).*/
