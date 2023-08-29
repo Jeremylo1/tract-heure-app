@@ -124,7 +124,7 @@ function ShowMachinery({ functionButtons }) {
   }, [machinery_data, selectedCategoryId])
 
   /*AFFICHAGE*/
-  //Affichage du contenu d'un panneau d'accordéon (infos de la machine).
+  //Affichage du contenu du panneau d'accordéon (infos de la machine).
   function panelContent(machinery) {
     return (
       <ul className="infoMachine">
