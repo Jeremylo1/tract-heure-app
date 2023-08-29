@@ -126,7 +126,7 @@ function FormBreakdown({
       const variables = {
         //Obligatoire.
         id: idMachine,
-        responsableId: parseInt(authorId), //Transformation en Int.
+        responsableId: authorId,
         statusId: selectedStatusId,
         dateBreakdown: toISODateTime(dateBreakdown, '00:00'), //Transformation en ISO.
         //Optionnel.
