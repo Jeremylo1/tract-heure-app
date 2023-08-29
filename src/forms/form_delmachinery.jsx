@@ -143,7 +143,7 @@ function FormDelMachinery({ closeModal, selectedMachinery }) {
       //Fermeture de la modale + rafraîchissement après 3s.
       setTimeout(() => {
         closeModal()
-        //window.location.reload()
+        window.location.reload()
       }, 3000)
     }
   }, [successMutation, closeModal])
