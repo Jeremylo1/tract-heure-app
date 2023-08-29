@@ -62,8 +62,8 @@ function AdminMachinery() {
               setAddBreakdownModalOpen(true) /*Pour la modale d'ajout de bris.*/
               setSelectedMachinery(machinery)
             }}
-            color={colors.blueButton}
-            hovercolor={colors.blueButtonHover}
+            color={colors.orangeButton}
+            hovercolor={colors.orangeButtonHover}
           >
             {isMobile ? (
               <Icon path={mdiAlertOctagram} size={1} color="white" />
