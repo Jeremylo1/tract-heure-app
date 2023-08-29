@@ -92,26 +92,35 @@ function ShowBreakdown({ functionButtons }) {
   function panelContent(breakdown) {
     return (
       <ul className="infoMachine">
-        <li className="StyledListButton">
-          <StyledText>Date du bris :</StyledText>{' '}
-          {`${formatDate(breakdown[COLUMN_DATE_BREAKDOWN])}`}
-        </li>
-        <li className="StyledListButton">
-          <StyledText>Description :</StyledText> {breakdown[COLUMN_DESCRIPTION]}
-        </li>
+        {breakdown[COLUMN_DATE_BREAKDOWN] ? (
+          <li className="StyledListButton">
+            <StyledText>Date du bris :</StyledText>{' '}
+            {`${formatDate(breakdown[COLUMN_DATE_BREAKDOWN])}`}
+          </li>
+        ) : null}
+        {breakdown[COLUMN_DESCRIPTION] ? (
+          <li className="StyledListButton">
+            <StyledText>Description :</StyledText>{' '}
+            {breakdown[COLUMN_DESCRIPTION]}
+          </li>
+        ) : null}
         {breakdown[COLUMN_DATE_REPAIR] ? (
           <li className="StyledListButton">
             <StyledText>Date de réparation :</StyledText>{' '}
+            {`${formatDate(breakdown[COLUMN_DATE_REPAIR])}`}
           </li>
         ) : null}
-        <li className="StyledListButton">
-          <StyledText>Prix de réparation estimée :</StyledText>{' '}
-          {breakdown[COLUMN_ESTIMATED_REPAIR]} $
-        </li>
-        <li className="StyledListButton">
-          <StyledText>Remarques :</StyledText> {breakdown[COLUMN_REMARKS]}
-        </li>
-        {/* Ajoutez d'autres champs au besoin */}
+        {breakdown[COLUMN_ESTIMATED_REPAIR] ? (
+          <li className="StyledListButton">
+            <StyledText>Prix de réparation estimée :</StyledText>{' '}
+            {breakdown[COLUMN_ESTIMATED_REPAIR]} $
+          </li>
+        ) : null}
+        {breakdown[COLUMN_REMARKS] ? (
+          <li className="StyledListButton">
+            <StyledText>Remarques :</StyledText> {breakdown[COLUMN_REMARKS]}
+          </li>
+        ) : null}
       </ul>
     )
   }
@@ -222,6 +231,7 @@ function ShowBreakdown({ functionButtons }) {
   )
 }
 
+//Vérification des types des props.
 ShowBreakdown.propTypes = {
   functionButtons: PropTypes.func.isRequired,
 }
