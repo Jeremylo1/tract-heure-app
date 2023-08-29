@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import 'bulma/css/bulma.min.css'
 
 function Error() {

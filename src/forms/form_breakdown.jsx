@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useMutationHasura, useBreakdownStatus } from '../utils/react/hooks'
-import { toISODateTime, formatInputDate } from '../utils/reusable/functions'
+import { toISODateTime } from '../utils/reusable/functions'
 /*Composants*/
 import CustomButton from '../components/button'
 import ModalSuccess from '../components/message_success_modal'

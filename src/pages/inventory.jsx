@@ -17,7 +17,6 @@ import colors from '../utils/styles/color'
 /*Importation des icônes*/
 import Icon from '@mdi/react'
 import { mdiCalendarSearch } from '@mdi/js'
-import { mdiInformationBoxOutline } from '@mdi/js'
 import { mdiAlertOctagram } from '@mdi/js'
 
 function Inventory() {
