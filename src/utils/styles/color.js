@@ -9,6 +9,8 @@ const colors = {
   redButtonHover: '#CB4335',
   greyButton: '#99A3A4',
   greyButtonHover: '#707B7C',
+  orangeButton: '#F5B041',
+  orangeButtonHover: '#D68910',
   /* Couleurs de l'accordéon */
   panelTitle: '#16A085',
   /* Couleurs des listes de réservation */
