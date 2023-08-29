@@ -68,7 +68,7 @@ function FormBreakdown({
   //Permet d'envoyer une requête de mutation (INSERT, UPDATE) à Hasura.
   const { doMutation } = useMutationHasura(LIEN_API)
 
-  /*FONCTION AGISSANT À L'ENVOI DU FORMULAIRE*/ //OK !!!
+  /*FONCTION AGISSANT À L'ENVOI DU FORMULAIRE*/
   async function handleClickBreakdown(e) {
     e.preventDefault()
     setIsClicked(true) //Si le bouton est cliqué.
@@ -87,7 +87,7 @@ function FormBreakdown({
     await addEditBreakdown()
   }
 
-  /*VÉRIFICATION DES CHAMPS DU FORMULAIRE*/ //OK !!!
+  /*VÉRIFICATION DES CHAMPS DU FORMULAIRE*/
   useEffect(() => {
     //Vérification de la présence d'un statut valide.
     if (
@@ -107,7 +107,7 @@ function FormBreakdown({
     }
   }, [selectedStatusId, dateBreakdown])
 
-  /*VÉRIFICATION POUR LE TOAST D'ERREUR*/ //OK !!!
+  /*VÉRIFICATION POUR LE TOAST D'ERREUR*/
   useEffect(() => {
     //Affichage d'un toast en cas d'erreur.
     if (breakdownStatus_error) {
@@ -119,7 +119,7 @@ function FormBreakdown({
     }
   }, [breakdownStatus_error, errorMutation])
 
-  /*AJOUT DU BRIS DANS LA BASE DE DONNÉES*/ //OK !!!
+  /*AJOUT DU BRIS DANS LA BASE DE DONNÉES*/
   const addEditBreakdown = async () => {
     try {
       /*VARIABLES POUR LES REQUÊTES*/
@@ -168,7 +168,7 @@ function FormBreakdown({
     }
   }
 
-  /*TOAST DE SUCCÈS ET RÉINITIALISATION DES VARIABLES*/ //OK !!!
+  /*TOAST DE SUCCÈS ET RÉINITIALISATION DES VARIABLES*/
   useEffect(() => {
     if (successMutation) {
       //Toast de succès selon l'action.
@@ -254,7 +254,7 @@ function FormBreakdown({
     hasStep: PropTypes.bool,
   }
 
-  /*AFFICHAGE DU FORMULAIRE*/ //!!!!!!!!!!!!!
+  /*AFFICHAGE DU FORMULAIRE*/
   return (
     <div>
       {showForm ? (
@@ -377,6 +377,4 @@ FormBreakdown.propTypes = {
 export default FormBreakdown
 
 /* À FAIRE :
-- Ajouter les champs obligatoires.
-- Vérifier les types des variables.
 - Faire la version pour modification.*/
