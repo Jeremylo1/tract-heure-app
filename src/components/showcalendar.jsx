@@ -5,6 +5,7 @@ import { ScreenContext } from '../utils/react/context'
 import PropTypes from 'prop-types'
 /*Composants*/
 import EventModal from '../components/eventModal'
+import CustomButton from '../components/button'
 /*Base de données*/
 import {
   LIEN_API,
@@ -19,6 +20,7 @@ import {
   COLUMN_DESCRIPTION,
 } from '../utils/database/query'
 /*Style*/
+import colors from '../utils/styles/color'
 import '../styles/calendar.css'
 /*Importation des icônes*/
 import Icon from '@mdi/react'
@@ -257,15 +259,23 @@ function ShowCalendar({ isAdmin = false }) {
       <div className="container">
         <div>
           <div className="header level calendar-header">
-            <button onClick={prevPeriod} className="button is-link">
+            <CustomButton
+              functionclick={prevPeriod}
+              color={colors.blueButton}
+              hovercolor={colors.blueButtonHover}
+            >
               <Icon path={mdiArrowLeftThick} size={1} />
-            </button>
+            </CustomButton>
             <h2 className="title is-4 level-item">
               {monthName} {currentDate.getFullYear()}
             </h2>
-            <button onClick={nextPeriod} className="button is-link">
+            <CustomButton
+              functionclick={nextPeriod}
+              color={colors.blueButton}
+              hovercolor={colors.blueButtonHover}
+            >
               <Icon path={mdiArrowRightThick} size={1} />
-            </button>
+            </CustomButton>
           </div>
           {/* Barre de recherche */}
           <div className="columns mb-4 custom-search">
