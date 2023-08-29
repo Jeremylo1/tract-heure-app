@@ -8,6 +8,7 @@ import ShowMachinery from '../components/showmachinery'
 import AvailabilityTable from '../components/availability_table'
 /*Formulaire*/
 import FormAddReservation from '../forms/form_addreservation'
+import FormBreakdown from '../forms/form_breakdown'
 /*Base de données*/
 import { LIEN_API, GET_UPCOMING_RESERVATIONS } from '../utils/database/query'
 /*Style*/
@@ -17,6 +18,7 @@ import colors from '../utils/styles/color'
 import Icon from '@mdi/react'
 import { mdiCalendarSearch } from '@mdi/js'
 import { mdiInformationBoxOutline } from '@mdi/js'
+import { mdiAlertOctagram } from '@mdi/js'
 
 function Inventory() {
   //Titre de la page.
@@ -25,6 +27,7 @@ function Inventory() {
   //Hook pour la gestion des modales.
   const [isModalReservationOpen, setModalReservationOpen] = useState(false)
   const [isModalAvailabilityOpen, setModalAvailabilityOpen] = useState(false)
+  const [isAddBreakdownModalOpen, setAddBreakdownModalOpen] = useState(false)
   //Hook pour la gestion de la machinerie sélectionnée.
   const [selectedMachinery, setSelectedMachinery] = useState(null)
   //Pour savoir si c'est un appareil mobile.
@@ -55,14 +58,17 @@ function Inventory() {
         </p>
         <p className="control">
           <CustomButton
-            /*to="" ou functionclick=""*/
-            color={colors.blueButton}
-            hovercolor={colors.blueButtonHover}
+            functionclick={() => {
+              setAddBreakdownModalOpen(true) /*Pour la modale d'ajout de bris.*/
+              setSelectedMachinery(machinery)
+            }}
+            color={colors.orangeButton}
+            hovercolor={colors.orangeButtonHover}
           >
             {isMobile ? (
-              <Icon path={mdiInformationBoxOutline} size={1} color="white" />
+              <Icon path={mdiAlertOctagram} size={1} color="white" />
             ) : (
-              'Rapport'
+              'Signaler bris'
             )}
           </CustomButton>
         </p>
@@ -163,6 +169,24 @@ function Inventory() {
         isOpen={isModalAvailabilityOpen}
         onClose={() => {
           setModalAvailabilityOpen(false)
+        }}
+      />
+
+      {/* MODALE POUR SIGNALER UN BRIS */}
+      <Modal
+        title={'Signaler un bris'}
+        content={
+          <FormBreakdown
+            closeModal={() => {
+              setAddBreakdownModalOpen(false) //Fermeture de la modale.
+            }}
+            selectedMachinery={selectedMachinery}
+            userId={localStorage.getItem('userId')}
+          />
+        }
+        isOpen={isAddBreakdownModalOpen}
+        onClose={() => {
+          setAddBreakdownModalOpen(false)
         }}
       />
 
