@@ -130,7 +130,7 @@ function Header() {
                   Accueil
                 </Link>
                 <Link to="/inventory" className="navbar-item">
-                  Catalogue
+                  Inventaire
                 </Link>
                 <Link to="/calendar" className="navbar-item">
                   Calendrier
