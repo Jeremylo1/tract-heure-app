@@ -27,6 +27,7 @@ const StyledPart = styled.div`
 `
 
 /*NOTE : si il y a 'selectBreakdown', c'est une modification, sinon c'est un ajout.*/
+/*REMARQUE : pour le moment, on ne peut pas modifier un bris.*/
 
 //Formulaire d'ajout et de modification de bris.
 function FormBreakdown({
@@ -198,7 +199,6 @@ function FormBreakdown({
       //Fermeture de la modale + rafraîchissement après 3s.
       setTimeout(() => {
         closeModal()
-        window.location.reload()
       }, 3000)
     }
   }, [successMutation, closeModal, selectBreakdown])

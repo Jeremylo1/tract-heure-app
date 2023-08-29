@@ -27,6 +27,8 @@ function Inventory() {
   const [isModalReservationOpen, setModalReservationOpen] = useState(false)
   const [isModalAvailabilityOpen, setModalAvailabilityOpen] = useState(false)
   const [isAddBreakdownModalOpen, setAddBreakdownModalOpen] = useState(false)
+  //Pour savoir si c'est la première fois qu'on charge les données.
+  const [firstLoading, setFirstLoading] = useState(true)
   //Hook pour la gestion de la machinerie sélectionnée.
   const [selectedMachinery, setSelectedMachinery] = useState(null)
   //Pour savoir si c'est un appareil mobile.
@@ -34,6 +36,11 @@ function Inventory() {
 
   //Pour stocker les disponibilités de la machinerie sélectionnée.
   const [availabilities, setAvailabilities] = useState([])
+
+  //Permet de définir si c'est la première fois qu'on charge la page.
+  useEffect(() => {
+    setFirstLoading(false)
+  }, [])
 
   //Affichage des boutons du bas de l'accordéon.
   function groupButtons(machinery) {
@@ -99,7 +106,7 @@ function Inventory() {
   const { isLoading, data, error } = useFetchHasura(
     LIEN_API,
     GET_UPCOMING_RESERVATIONS,
-    false,
+    firstLoading,
     machineryVariables,
   )
 

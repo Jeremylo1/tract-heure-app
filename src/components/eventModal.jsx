@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useMutationHasura } from '../utils/react/hooks'
 /*Composants*/
 import Modal from '../components/modal'
 import CustomButton from '../components/button'
+import ModalSuccess from '../components/message_success_modal'
+/*Toast*/
+import { toast } from 'react-toastify'
 /*Base de données*/
 import { LIEN_API, DELETE_RESERVATION } from '../utils/database/query'
 /*Style*/
@@ -24,19 +27,27 @@ const eventType = (type) => {
 function EventModal({ isOpen, onClose, event }) {
   //Permet d'envoyer une requête de mutation (INSERT, UPDATE, DELETE) à Hasura.
   const { doMutation } = useMutationHasura(LIEN_API)
+  //Afficher le formulaire ou le check de succès.
+  const [showForm, setShowForm] = useState(true)
 
   const deleteReservation = async (id) => {
     try {
       const responseDataMutation = await doMutation(DELETE_RESERVATION, { id })
       if (responseDataMutation) {
-        alert('Réservation annulée avec succès!')
-        onClose() // Fermer la modale
+        toast.success('Réservation annulée avec succès!')
+
+        //Affichage du message de succès.
+        setShowForm(false)
+
+        setTimeout(() => {
+          onClose()
+        }, 3000)
         localStorage.setItem('currentDate', new Date().toISOString())
         window.location.reload()
       }
     } catch (err) {
       console.error(err)
-      alert("Une erreur s'est produite lors de l'annulation de la réservation.")
+      toast.error("Une erreur s'est produite!")
     }
   }
 
@@ -55,48 +66,56 @@ function EventModal({ isOpen, onClose, event }) {
       isOpen={isOpen}
       onClose={onClose}
       content={
-        <>
-          {event && (
-            <div>
-              {event?.description ? (
-                <>
-                  <h2>Commentaire</h2>
-                  <p>{event?.description}</p>
-                </>
-              ) : null}
+        showForm ? (
+          <>
+            {event && (
+              <div>
+                {event?.description ? (
+                  <>
+                    <h2>Commentaire</h2>
+                    <p>{event?.description}</p>
+                  </>
+                ) : null}
 
-              <h3>Type</h3>
-              <p>{eventType(event?.type)}</p>
-              <h3>Date de début</h3>
-              <p>
-                {event?.start?.toLocaleString(undefined, {
-                  year: 'numeric',
-                  month: '2-digit',
-                  day: '2-digit',
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })}
-              </p>
-              <h3>Date de fin</h3>
-              <p>
-                {event?.end?.toLocaleString(undefined, {
-                  year: 'numeric',
-                  month: '2-digit',
-                  day: '2-digit',
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })}
-              </p>
-              <CustomButton
-                color={colors.redButton}
-                hovercolor={colors.redButtonHover}
-                functionclick={() => confirmDeletion(event?.id)}
-              >
-                Annuler la réservation
-              </CustomButton>
-            </div>
-          )}
-        </>
+                <h3>Type</h3>
+                <p>{eventType(event?.type)}</p>
+                <h3>Date de début</h3>
+                <p>
+                  {event?.start?.toLocaleString(undefined, {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </p>
+                <h3>Date de fin</h3>
+                <p>
+                  {event?.end?.toLocaleString(undefined, {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </p>
+                {/* Centrer le bouton */}
+                <div className="has-text-centered">
+                  <CustomButton
+                    color={colors.redButton}
+                    hovercolor={colors.redButtonHover}
+                    functionclick={() => confirmDeletion(event?.id)}
+                  >
+                    Annuler la réservation
+                  </CustomButton>
+                </div>
+              </div>
+            )}
+          </>
+        ) : (
+          //Icone de succès.
+          <ModalSuccess />
+        )
       }
     />
   )
