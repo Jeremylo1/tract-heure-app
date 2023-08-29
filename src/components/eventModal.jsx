@@ -52,12 +52,13 @@ function EventModal({ isOpen, onClose, event }) {
   }
 
   const confirmDeletion = (id) => {
-    const userConfirmed = window.confirm(
-      'Êtes-vous sûr de vouloir annuler cette réservation?',
-    )
-    if (userConfirmed) {
-      deleteReservation(id)
-    }
+    // const userConfirmed = window.confirm(
+    //   'Êtes-vous sûr de vouloir annuler cette réservation?',
+    // )
+    // if (userConfirmed) {
+    //   deleteReservation(id)
+    // }
+    deleteReservation(id)
   }
 
   return (
@@ -72,14 +73,14 @@ function EventModal({ isOpen, onClose, event }) {
               <div>
                 {event?.description ? (
                   <>
-                    <h2>Commentaire</h2>
+                    <label className="label">Commentaire</label>
                     <p>{event?.description}</p>
                   </>
                 ) : null}
 
-                <h3>Type</h3>
+                <label className="label">Type</label>
                 <p>{eventType(event?.type)}</p>
-                <h3>Date de début</h3>
+                <label className="label">Date de début</label>
                 <p>
                   {event?.start?.toLocaleString(undefined, {
                     year: 'numeric',
@@ -89,7 +90,7 @@ function EventModal({ isOpen, onClose, event }) {
                     minute: '2-digit',
                   })}
                 </p>
-                <h3>Date de fin</h3>
+                <label className="label">Date de fin</label>
                 <p>
                   {event?.end?.toLocaleString(undefined, {
                     year: 'numeric',
