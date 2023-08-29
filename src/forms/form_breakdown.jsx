@@ -46,15 +46,15 @@ function FormBreakdown({
   const [authorId, setAuthorId] = useState(userId)
   /*const [breakdownId, setBreakdownId] = useState('')*/ /*Pour la modification.*/
   //Pour stocker les données du formulaire.
-  const [selectedStatusId, setSelectedStatusId] = useState(1)
+  const [selectedStatusId, setSelectedStatusId] = useState(0)
   const [dateBreakdown, setDateBreakdown] = useState('')
   const [description, setDescription] = useState('')
   const [dateRepair, setDateRepair] = useState('')
   const [estimatedPriceRepair, setEstimatedPriceRepair] = useState('')
   const [remarks, setRemarks] = useState('')
   //Erreurs dans les données du formulaire.
-  const [errorTime, setErrorTime] = useState('')
-  const [errorPrice, setErrorPrice] = useState('')
+  const [errorStatus, setErrorStatus] = useState(false)
+  const [errorDate, setErrorDate] = useState('')
   //Pour savoir si le bouton est cliqué.
   const [isClicked, setIsClicked] = useState(false)
   //Erreur et succès lors de l'enregistrement.
@@ -74,8 +74,7 @@ function FormBreakdown({
     setIsClicked(true) //Si le bouton est cliqué.
 
     //Si erreur, ne pas exécuter la fonction.
-    if (errorTime || errorPrice) {
-      //!!!!!!!!!!!!!
+    if (errorStatus || errorDate) {
       return
     }
 
@@ -88,30 +87,31 @@ function FormBreakdown({
     await addEditBreakdown()
   }
 
-  /*VÉRIFICATION DES CHAMPS DU FORMULAIRE*/ //!!!!!!!!!!!!!
+  /*VÉRIFICATION DES CHAMPS DU FORMULAIRE*/ //OK !!!
   useEffect(() => {
-    //Vérification de la présence et de la validité du temps d'utilisation.
-    if (!selectedStatusId) {
-      setErrorTime('Veuillez entrer un type de bris.')
-    } else if (selectedStatusId < 0 || selectedStatusId > 4) {
-      setErrorTime('Veuillez entrer un type de bris valide.')
+    //Vérification de la présence d'un statut valide.
+    if (
+      selectedStatusId < 1 ||
+      selectedStatusId > 4 //!!!!!!!!
+    ) {
+      setErrorStatus(true)
     } else {
-      setErrorTime('')
+      setErrorStatus(false)
     }
 
-    //Vérification du prix (s'il y en a un).
+    //Vérification de la présence d'une date de bris.
     if (!dateBreakdown) {
-      setErrorPrice('Veuillez entrer une date de bris.')
+      setErrorDate('Veuillez entrer une date de bris.')
     } else {
-      setErrorPrice('')
+      setErrorDate('')
     }
   }, [selectedStatusId, dateBreakdown])
 
-  /*VÉRIFICATION POUR LE TOAST D'ERREUR*/ //!!!!!!!!!!!!!
+  /*VÉRIFICATION POUR LE TOAST D'ERREUR*/ //OK !!!
   useEffect(() => {
     //Affichage d'un toast en cas d'erreur.
     if (breakdownStatus_error) {
-      toast.error('Erreur lors de la récupération des catégories.')
+      toast.error('Erreur lors de la récupération des statuts.')
     }
     if (errorMutation) {
       toast.error("Erreur lors de l'enregistrement du bris.")
@@ -126,7 +126,7 @@ function FormBreakdown({
       const variables = {
         //Obligatoire.
         id: idMachine,
-        responsableId: authorId,
+        responsableId: parseInt(authorId), //Transformation en Int.
         statusId: selectedStatusId,
         dateBreakdown: toISODateTime(dateBreakdown, '00:00'), //Transformation en ISO.
         //Optionnel.
@@ -168,7 +168,7 @@ function FormBreakdown({
     }
   }
 
-  /*TOAST DE SUCCÈS ET RÉINITIALISATION DES VARIABLES*/ //!!!!!!!!!!!!!
+  /*TOAST DE SUCCÈS ET RÉINITIALISATION DES VARIABLES*/ //OK !!!
   useEffect(() => {
     if (successMutation) {
       //Toast de succès selon l'action.
@@ -178,11 +178,13 @@ function FormBreakdown({
         toast.success('Bris ajouté.')
       }
 
-      //Réinitialisation des champs.
+      //Réinitialisation des infos.
       setIdMachine('')
-      setSelectedStatusId(1)
-      setSelectedStatusId(null)
       setAuthorId('')
+      //setBreakdownId('') //!!!!!!!!!!!!!
+
+      //Réinitialisation des champs.
+      setSelectedStatusId(0)
       setDateBreakdown('')
       setDescription('')
       setDateRepair('')
@@ -190,8 +192,8 @@ function FormBreakdown({
       setRemarks('')
 
       //Réinitialisation des autres variables.
-      setErrorTime('')
-      setErrorPrice('')
+      setErrorStatus(false)
+      setErrorDate('')
       setIsClicked(false)
       setErrorMutation(false)
       setSuccessMutation(false)
@@ -206,15 +208,6 @@ function FormBreakdown({
       }, 3000)
     }
   }, [successMutation, closeModal, selectBreakdown])
-
-  //Vérification des types des variables.
-  FormBreakdown.propTypes = {
-    errorTime: PropTypes.string,
-    errorPrice: PropTypes.string,
-    isClicked: PropTypes.bool,
-    errorMutation: PropTypes.bool,
-    successMutation: PropTypes.bool,
-  }
 
   /*COMPOSANT POUR LES CHAMPS DU FORMULAIRE*/
   function FormField({
@@ -276,13 +269,23 @@ function FormBreakdown({
             {/*Statut*/}
             <StyledPart>
               <label className="label">Statut</label>
-              <div className="select">
+              <div
+                className={
+                  /*Si bouton cliqué + erreur -> cadre rouge.*/
+                  isClicked && errorStatus ? 'select is-danger' : 'select'
+                }
+              >
                 <select
                   value={selectedStatusId}
                   onChange={(e) =>
                     setSelectedStatusId(parseInt(e.target.value))
                   }
                 >
+                  {/*Sélecteur en attente*/}
+                  <option key="all" value={0}>
+                    -- Sélectionner un statut --
+                  </option>
+                  {/*Choix de statuts*/}
                   {sortedBreakdownStatus.map((statut) => (
                     <option
                       key={`${statut[COLUMN_NAME]}-${statut[COLUMN_ID]}`}
@@ -300,6 +303,7 @@ function FormBreakdown({
               typeInput: 'date',
               value: dateBreakdown,
               functionOnChange: setDateBreakdown,
+              error: errorDate,
             })}
 
             {/*Description*/}
@@ -328,7 +332,6 @@ function FormBreakdown({
               placeholder: 'Entrez une estimation du prix de réparation (en $)',
               value: estimatedPriceRepair,
               functionOnChange: setEstimatedPriceRepair,
-              error: errorPrice,
               hasStep: true, //Pour avoir un step de 0.1.
             })}
             {/*Remarques*/}
@@ -365,9 +368,10 @@ function FormBreakdown({
 
 //Vérification des types des props.
 FormBreakdown.propTypes = {
-  closeModal: PropTypes.func,
-  selectedMachinery: PropTypes.object,
+  closeModal: PropTypes.func.isRequired,
+  selectedMachinery: PropTypes.object.isRequired,
   selectBreakdown: PropTypes.object /*Pour la modification.*/,
+  userId: PropTypes.string.isRequired,
 }
 
 export default FormBreakdown
