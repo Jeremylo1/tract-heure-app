@@ -87,6 +87,8 @@ function ShowBreakdown({ functionButtons }) {
     }
   }, [allBreakdownData])
 
+  /*AFFICHAGE*/
+  //Affichage du contenu du panneau d'accordéon (infos sur le bris).
   function panelContent(breakdown) {
     return (
       <ul className="infoMachine">
@@ -113,14 +115,15 @@ function ShowBreakdown({ functionButtons }) {
       </ul>
     )
   }
-  // Filtre les bris en fonction du statut sélectionné.
+
+  /*FILTRE DU MENU DÉROULANT*/
   useEffect(() => {
     if (allBreakdownData && allBreakdownData[VUE_BREAKDOWN]) {
       let filteredData = allBreakdownData[VUE_BREAKDOWN]
-      //Statut "TOUT" (ordre alphabétique).
+      //Statut "TOUS LES BRIS".
       if (selectedStatusId === 0) {
         setFilteredBreakdownData(filteredData)
-        //Autres Statuts (ordre alphabétique).
+        //Autres statuts (ordre alphabétique).
       } else {
         filteredData = filteredData.filter(
           (bris) => bris[COLUMN_STATUS_ID] === selectedStatusId,
@@ -150,6 +153,7 @@ function ShowBreakdown({ functionButtons }) {
     }
   }
 
+  //Affichage du contenu de la page.
   return (
     <div>
       {breakdownStatus_loading ? (
