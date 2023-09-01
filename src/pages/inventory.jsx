@@ -138,8 +138,6 @@ function Inventory() {
 
       setAvailabilities(slots)
     }
-
-    // vous pourriez gérer des erreurs ici si nécessaire, en utilisant la variable 'error'
   }, [data])
 
   //Affichage selon le type d'appareil.

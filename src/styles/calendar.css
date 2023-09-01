@@ -14,12 +14,11 @@
     align-items: flex-start;
     width: 80px;
     margin-top: 22px;
-    /* Augmentez la largeur si nécessaire */
 }
 
 .time-space {
     height: 70px;
-    /* Ajustez cette valeur en fonction de la hauteur de l'information de la journée */
+    /* Hauteur de l'information de la journée */
 }
 
 .time-marker {
@@ -45,7 +44,7 @@
     flex-basis: calc(100% / 7);
     display: flex;
     flex-direction: column;
-    /* Ajoutez cette ligne pour aligner correctement les éléments à l'intérieur du jour */
+    /* Aligner correctement les éléments à l'intérieur du jour */
 }
 
 .date {

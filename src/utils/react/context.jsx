@@ -41,6 +41,7 @@ export function AuthProvider({ children }) {
   }, [])
 
   return (
+    //Fournit les données de connexion de l'utilisateur à toute l'application.
     <AuthContext.Provider
       value={{
         userType,
@@ -49,7 +50,7 @@ export function AuthProvider({ children }) {
         setLogin,
         setLogout,
         userId: localStorage.getItem('userId'),
-      }} // exposez l'ID de l'utilisateur
+      }}
     >
       {children}
     </AuthContext.Provider>

@@ -52,7 +52,7 @@ function Connection() {
         setConnectionTryCount(0)
       }
 
-      // Trouvez l'utilisateur qui correspond au nom d'utilisateur et au mot de passe saisis
+      //On cherche l'utilisateur dans le tableau.
       const user = users.find(
         (user) => user.username === username && user.password === password,
       )

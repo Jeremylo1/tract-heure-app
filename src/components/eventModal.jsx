@@ -52,12 +52,6 @@ function EventModal({ isOpen, onClose, event }) {
   }
 
   const confirmDeletion = (id) => {
-    // const userConfirmed = window.confirm(
-    //   'Êtes-vous sûr de vouloir annuler cette réservation?',
-    // )
-    // if (userConfirmed) {
-    //   deleteReservation(id)
-    // }
     deleteReservation(id)
   }
 
