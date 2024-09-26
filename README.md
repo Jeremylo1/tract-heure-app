@@ -1,70 +1,54 @@
-# Getting Started with Create React App
+# tract-heure 🗃️🗓️
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+*Single-page application (SPA)* en React permettant de gérer un inventaire de machines ainsi que leurs réservations.
 
-## Available Scripts
+## Create React App
 
-In the project directory, you can run:
+Ce projet a été initié avec Create React App.
 
-### `yarn start`
+`yarn start` pour exécuter l'application en mode développement ([http://localhost:3000](http://localhost:3000)).\
+`yarn build` pour construire l'application pour la production. Ainsi, l'application sera prête à être déployée.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Pour en savoir plus, voir la [documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Base de données
 
-### `yarn test`
+Hasura a été utilisée pour créer une API GraphQL facilitant la communication entre notre application et notre base de données PostgreSQL.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Gestion du CSS
 
-### `yarn build`
+- Fichiers CSS.
+- [Styled Components](https://styled-components.com/) (bibliothèque JavaScript).
+- [Bulma](https://bulma.io/) (framework CSS).
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Types d’usager
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Il existe deux types d’usager : l’utilisateur et l’administrateur.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### `Fonctionnalités d’un utilisateur`
 
-### `yarn eject`
+- Système de connexion / déconnexion (rudimentaire).
+- Interface utilisateur (simple et efficace).
+- Design responsive.
+- Accueil : 
+  - Visualisation des réservations en cours, futures et passées.
+  - Annulation d’une réservation.
+- Inventaire : 
+  - Visualisation de la machinerie disponible, par catégorie.
+  - Description brève de chacune des machines (nom, modèle, etc.).
+  - Réservation d’une machine.
+  - Consultation des horaires d’une machine (i.e. voir les disponibilités).
+  - Signalement de bris.
+  - Recherche par mots-clés.
+- Calendrier : 
+  - Visualisation des réservations sous forme de calendrier.
+  - Visualisation des détails d’une réservation sous forme de fenêtre modale.
+  - Recherche par mots-clés.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### `Fonctionnalités d’un administrateur`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+En plus d’avoir toutes les fonctionnalités précédentes, il a aussi :
+- Ajout, suppression et modification d’une catégorie de machinerie.
+- Ajout, suppression et modification d’une machine.
+- Visualisation et gestion de toutes les réservations existantes.
+- Visualisation, ajout et suppression des bris.
